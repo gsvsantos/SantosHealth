@@ -48,7 +48,7 @@
                 "input": "public"
               }
             ],
-            "styles": ["src/styles.scss"]
+            "styles": ["src/styles.scss", "src/app/styles/tokens.scss"]
           },
           "configurations": {
             "production": {
