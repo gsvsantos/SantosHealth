@@ -22,7 +22,9 @@ public class ValidadorAtividadeMedica : AbstractValidator<AtividadeMedica>
     private bool ValidarMedicosParaConsulta(AtividadeMedica atividade)
     {
         if (atividade.TipoAtividade == TipoAtividadeMedica.Consulta)
+        {
             return atividade.Medicos.Count == 1;
+        }
 
         return true;
     }

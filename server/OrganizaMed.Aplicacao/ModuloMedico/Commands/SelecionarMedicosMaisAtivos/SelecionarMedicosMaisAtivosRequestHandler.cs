@@ -2,7 +2,7 @@
 using MediatR;
 using OrganizaMed.Dominio.ModuloMedico;
 
-namespace OrganizaMed.Aplicacao.ModuloMedico.Commands.SelecionarTodos;
+namespace OrganizaMed.Aplicacao.ModuloMedico.Commands.SelecionarMedicosMaisAtivos;
 
 public class SelecionarMedicosMaisAtivosRequestHandler(
     IRepositorioMedico repositorioMedico
@@ -10,12 +10,12 @@ public class SelecionarMedicosMaisAtivosRequestHandler(
 {
     public async Task<Result<SelecionarMedicosMaisAtivosResponse>> Handle(SelecionarMedicosMaisAtivosRequest request, CancellationToken cancellationToken)
     {
-        var registros = await repositorioMedico.SelecionarMedicosMaisAtivosPorPeriodo(
+        List<RegistroDeHorasTrabalhadas> registros = await repositorioMedico.SelecionarMedicosMaisAtivosPorPeriodo(
             request.inicioPeriodo,
             request.terminoPeriodo
         );
 
-        var response = new SelecionarMedicosMaisAtivosResponse
+        SelecionarMedicosMaisAtivosResponse response = new()
         {
             QuantidadeRegistros = registros.Count,
             Registros = registros.Select(m => new SelecionarRegistroDeHorasTrabalhadasDto(

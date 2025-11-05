@@ -13,12 +13,14 @@ public class SelecionarPacientePorIdRequestHandler(
     public async Task<Result<SelecionarPacientePorIdResponse>> Handle(
         SelecionarPacientePorIdRequest request, CancellationToken cancellationToken)
     {
-        var pacienteSelecionado = await repositorioPaciente.SelecionarPorIdAsync(request.Id);
+        Paciente? pacienteSelecionado = await repositorioPaciente.SelecionarPorIdAsync(request.Id);
 
         if (pacienteSelecionado is null)
+        {
             return Result.Fail(ErrorResults.NotFoundError(request.Id));
+        }
 
-        var resposta = new SelecionarPacientePorIdResponse(
+        SelecionarPacientePorIdResponse resposta = new(
             pacienteSelecionado.Id,
             pacienteSelecionado.Nome,
             pacienteSelecionado.Cpf,

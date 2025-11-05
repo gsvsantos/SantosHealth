@@ -24,15 +24,19 @@ public static class DependencyInjection
         IWebHostEnvironment environment
     )
     {
-        var connectionString = config["SQL_CONNECTION_STRING"];
+        string? connectionString = config["SQL_CONNECTION_STRING"];
 
         if (connectionString == null)
+        {
             throw new ArgumentNullException("'SQL_CONNECTION_STRING' não foi fornecida para o ambiente.");
+        }
 
         services.AddDbContext<IContextoPersistencia, OrganizaMedDbContext>(optionsBuilder =>
         {
             if (!environment.IsDevelopment())
+            {
                 optionsBuilder.EnableSensitiveDataLogging(false);
+            }
 
             optionsBuilder.UseSqlServer(connectionString, dbOptions =>
             {
@@ -53,7 +57,7 @@ public static class DependencyInjection
         services.AddControllers(options =>
         {
             options.Filters.Add<ResponseWrapperFilter>();
-        }).AddJsonOptions(options =>options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+        }).AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
     }
 
     public static void ConfigureOpenApiAuthHeaders(this IServiceCollection services)
@@ -125,12 +129,14 @@ public static class DependencyInjection
             }
             else
             {
-                var origensPermitidasString = configuration["CORS_ALLOWED_ORIGINS"];
+                string? origensPermitidasString = configuration["CORS_ALLOWED_ORIGINS"];
 
                 if (string.IsNullOrWhiteSpace(origensPermitidasString))
+                {
                     throw new Exception("A variável de ambiente \"CORS_ALLOWED_ORIGINS\" não foi fornecida.");
+                }
 
-                var origensPermitidas = origensPermitidasString
+                string[] origensPermitidas = origensPermitidasString
                     .Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
                     .Select(x => x.TrimEnd('/'))
                     .Distinct(StringComparer.OrdinalIgnoreCase)
@@ -148,10 +154,7 @@ public static class DependencyInjection
         });
     }
 
-    public static void ConfigureFluentValidation(this IServiceCollection services)
-    {
-        services.AddValidatorsFromAssemblyContaining<ValidadorMedico>();
-    }
+    public static void ConfigureFluentValidation(this IServiceCollection services) => services.AddValidatorsFromAssemblyContaining<ValidadorMedico>();
 
     public static void ConfigureSerilog(this IServiceCollection services, ILoggingBuilder logging, IConfiguration config)
     {

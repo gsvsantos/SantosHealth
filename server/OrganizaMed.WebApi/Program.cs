@@ -7,7 +7,7 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        var builder = WebApplication.CreateBuilder(args);
+        WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
         // Logging [env NEWRELIC_LICENSE_KEY]
         builder.Services.ConfigureSerilog(builder.Logging, builder.Configuration);
@@ -35,7 +35,7 @@ public class Program
         // CORS [env CORS_ALLOWED_ORIGINS]
         builder.Services.ConfigureCorsPolicy(builder.Environment, builder.Configuration);
 
-        var app = builder.Build();
+        WebApplication app = builder.Build();
 
         app.UseGlobalExceptionHandler();
 

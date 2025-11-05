@@ -11,16 +11,13 @@ public class Paciente : EntidadeBase
     public string Telefone { get; set; }
     public List<AtividadeMedica> Atividades { get; set; }
 
-    protected Paciente()
-    {
-        Atividades = [];
-    }
+    protected Paciente() => this.Atividades = [];
 
-    public Paciente(string nome, string cpf, string email, string telefone): this()
+    public Paciente(string nome, string cpf, string email, string telefone) : this()
     {
-        Nome = nome;
-        Cpf = cpf;
-        Email = email;
-        Telefone = telefone;
+        this.Nome = nome;
+        this.Cpf = cpf;
+        this.Email = email;
+        this.Telefone = telefone;
     }
 }

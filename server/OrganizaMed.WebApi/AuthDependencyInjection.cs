@@ -26,17 +26,21 @@ public static class AuthDependencyInjection
 
     public static void ConfigureJwtAuthentication(this IServiceCollection services, IConfiguration config)
     {
-        var chaveAssinaturaJwt = config["JWT_GENERATION_KEY"];
+        string? chaveAssinaturaJwt = config["JWT_GENERATION_KEY"];
 
         if (chaveAssinaturaJwt == null)
+        {
             throw new ArgumentException("Não foi possível obter a chave de assinatura de tokens.");
+        }
 
-        var chaveEmBytes = Encoding.ASCII.GetBytes(chaveAssinaturaJwt);
+        byte[] chaveEmBytes = Encoding.ASCII.GetBytes(chaveAssinaturaJwt);
 
-        var audienciaValida = config["JWT_AUDIENCE_DOMAIN"];
+        string? audienciaValida = config["JWT_AUDIENCE_DOMAIN"];
 
         if (audienciaValida == null)
+        {
             throw new ArgumentException("Não foi possível obter o domínio da audiência dos tokens.");
+        }
 
         services.AddAuthentication(x =>
         {

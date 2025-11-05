@@ -13,10 +13,12 @@ public class ExcluirMedicoRequestHandler(
 {
     public async Task<Result<ExcluirMedicoResponse>> Handle(ExcluirMedicoRequest request, CancellationToken cancellationToken)
     {
-        var medicoSelecionado = await repositorioMedico.SelecionarPorIdAsync(request.Id);
+        Medico? medicoSelecionado = await repositorioMedico.SelecionarPorIdAsync(request.Id);
 
         if (medicoSelecionado is null)
+        {
             return Result.Fail(ErrorResults.NotFoundError(request.Id));
+        }
 
         try
         {

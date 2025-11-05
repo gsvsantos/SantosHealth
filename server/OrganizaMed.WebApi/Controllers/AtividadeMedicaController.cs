@@ -20,7 +20,7 @@ public class AtividadeMedicaController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(InserirAtividadeMedicaResponse), 200)]
     public async Task<IActionResult> Inserir(InserirAtividadeMedicaRequest request)
     {
-        var response = await mediator.Send(request);
+        FluentResults.Result<InserirAtividadeMedicaResponse> response = await mediator.Send(request);
 
         return response.ToHttpResponse();
     }
@@ -29,14 +29,14 @@ public class AtividadeMedicaController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(EditarAtividadeMedicaResponse), 200)]
     public async Task<IActionResult> Editar(Guid id, EditarAtividadeMedicaPartialRequest partialRequest)
     {
-        var request = new EditarAtividadeMedicaRequest(
+        EditarAtividadeMedicaRequest request = new(
             id,
             partialRequest.Inicio,
             partialRequest.Termino,
             partialRequest.Medicos
         );
 
-        var response = await mediator.Send(request);
+        FluentResults.Result<EditarAtividadeMedicaResponse> response = await mediator.Send(request);
 
         return response.ToHttpResponse();
     }
@@ -45,9 +45,9 @@ public class AtividadeMedicaController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(ExcluirAtividadeMedicaResponse), 200)]
     public async Task<IActionResult> Excluir(Guid id)
     {
-        var request = new ExcluirAtividadeMedicaRequest(id);
+        ExcluirAtividadeMedicaRequest request = new(id);
 
-        var response = await mediator.Send(request);
+        FluentResults.Result<ExcluirAtividadeMedicaResponse> response = await mediator.Send(request);
 
         return response.ToHttpResponse();
     }
@@ -56,9 +56,9 @@ public class AtividadeMedicaController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(SelecionarAtividadesMedicasResponse), 200)]
     public async Task<IActionResult> SelecionarTodos([FromQuery] TipoAtividadeMedica? tipoAtividade)
     {
-        var request = new SelecionarAtividadesMedicasRequest(tipoAtividade);
+        SelecionarAtividadesMedicasRequest request = new(tipoAtividade);
 
-        var response = await mediator.Send(request);
+        FluentResults.Result<SelecionarAtividadesMedicasResponse> response = await mediator.Send(request);
 
         return response.ToHttpResponse();
     }
@@ -67,9 +67,9 @@ public class AtividadeMedicaController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(SelecionarAtividadeMedicaPorIdResponse), 200)]
     public async Task<IActionResult> SelecionarPorId(Guid id)
     {
-        var selecionarPorIdRequest = new SelecionarAtividadeMedicaPorIdRequest(id);
+        SelecionarAtividadeMedicaPorIdRequest selecionarPorIdRequest = new(id);
 
-        var resultado = await mediator.Send(selecionarPorIdRequest);
+        FluentResults.Result<SelecionarAtividadeMedicaPorIdResponse> resultado = await mediator.Send(selecionarPorIdRequest);
 
         return resultado.ToHttpResponse();
     }

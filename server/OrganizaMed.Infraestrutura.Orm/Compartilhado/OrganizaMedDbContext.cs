@@ -30,14 +30,11 @@ public class OrganizaMedDbContext(DbContextOptions options, ITenantProvider? ten
         base.OnModelCreating(modelBuilder);
     }
 
-    public async Task<int> GravarAsync()
-    {
-        return await SaveChangesAsync();
-    }
+    public async Task<int> GravarAsync() => await SaveChangesAsync();
 
     public async Task RollbackAsync()
     {
-        foreach (var entry in ChangeTracker.Entries())
+        foreach (Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry entry in this.ChangeTracker.Entries())
         {
             switch (entry.State)
             {

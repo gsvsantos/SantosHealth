@@ -6,11 +6,11 @@ public static class DatabaseConfig
 {
     public static bool AutoMigrateDatabase(this IApplicationBuilder app)
     {
-        using var scope = app.ApplicationServices.CreateScope();
+        using IServiceScope scope = app.ApplicationServices.CreateScope();
 
-        var dbContext = scope.ServiceProvider.GetRequiredService<OrganizaMedDbContext>();
+        OrganizaMedDbContext dbContext = scope.ServiceProvider.GetRequiredService<OrganizaMedDbContext>();
 
-        var migracaoConcluida = MigradorBancoDados.AtualizarBancoDados(dbContext);
+        bool migracaoConcluida = MigradorBancoDados.AtualizarBancoDados(dbContext);
 
         return migracaoConcluida;
     }

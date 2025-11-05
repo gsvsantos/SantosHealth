@@ -10,7 +10,7 @@ public class RepositorioAtividadeMedicaEmOrm(IContextoPersistencia context)
 {
     public override async Task<List<AtividadeMedica>> SelecionarTodosAsync()
     {
-        return await registros
+        return await this.registros
             .Include(a => a.Medicos)
             .Include(a => a.Paciente)
             .ToListAsync();
@@ -18,7 +18,7 @@ public class RepositorioAtividadeMedicaEmOrm(IContextoPersistencia context)
 
     public async Task<List<Consulta>> SelecionarConsultasAsync()
     {
-        return await registros.OfType<Consulta>()
+        return await this.registros.OfType<Consulta>()
             .Include(c => c.Medicos)
             .Include(a => a.Paciente)
             .ToListAsync();
@@ -26,7 +26,7 @@ public class RepositorioAtividadeMedicaEmOrm(IContextoPersistencia context)
 
     public async Task<List<Cirurgia>> SelecionarCirurgiasAsync()
     {
-        return await registros.OfType<Cirurgia>()
+        return await this.registros.OfType<Cirurgia>()
             .Include(c => c.Medicos)
             .Include(a => a.Paciente)
             .ToListAsync();
@@ -38,7 +38,7 @@ public class RepositorioAtividadeMedicaEmOrm(IContextoPersistencia context)
         DateTime termino
     )
     {
-        return await registros
+        return await this.registros
             .Where(a => a.Medicos.Any(m => medicoIds.Contains(m.Id)) &&
                         a.Inicio < termino &&
                         (a.Termino ?? DateTime.MaxValue) > inicio)
@@ -47,7 +47,7 @@ public class RepositorioAtividadeMedicaEmOrm(IContextoPersistencia context)
 
     public override async Task<AtividadeMedica?> SelecionarPorIdAsync(Guid id)
     {
-        return await registros
+        return await this.registros
             .Include(a => a.Medicos)
             .ThenInclude(m => m.Atividades)
             .Include(a => a.Paciente)
@@ -60,7 +60,7 @@ public class RepositorioAtividadeMedicaEmOrm(IContextoPersistencia context)
         DateTime periodoTermino
     )
     {
-        return await registros
+        return await this.registros
             .IgnoreQueryFilters()
             .Include(a => a.Paciente)
             .Where(a => !a.ConfirmacaoEnviada && a.Inicio >= periodoInicio && a.Inicio <= periodoTermino)

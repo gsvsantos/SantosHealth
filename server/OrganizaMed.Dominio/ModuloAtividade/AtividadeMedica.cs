@@ -22,35 +22,36 @@ public abstract class AtividadeMedica : EntidadeBase
     protected TipoAtividadeMedica tipoAtividade;
     public abstract TipoAtividadeMedica TipoAtividade { get; set; }
 
-    protected AtividadeMedica()
-    {
-        Medicos = [];
-    }
+    protected AtividadeMedica() => this.Medicos = [];
 
     protected AtividadeMedica(DateTime inicio, DateTime? termino) : this()
     {
-        Inicio = inicio;
-        Termino = termino;
+        this.Inicio = inicio;
+        this.Termino = termino;
     }
 
     public abstract TimeSpan ObterPeriodoDescanso();
 
     public void AdicionarMedico(Medico medicoParaAdicionar)
     {
-        if (Medicos.Contains(medicoParaAdicionar))
+        if (this.Medicos.Contains(medicoParaAdicionar))
+        {
             return;
+        }
 
-        Medicos.Add(medicoParaAdicionar);
+        this.Medicos.Add(medicoParaAdicionar);
 
         medicoParaAdicionar.RegistrarAtividade(this);
     }
 
     public void RemoverMedico(Medico medicoParaRemover)
     {
-        if (!Medicos.Contains(medicoParaRemover))
+        if (!this.Medicos.Contains(medicoParaRemover))
+        {
             return;
+        }
 
-        Medicos.Remove(medicoParaRemover);
+        this.Medicos.Remove(medicoParaRemover);
 
         medicoParaRemover.RemoverAtividade(this);
     }

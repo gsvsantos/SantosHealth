@@ -15,33 +15,37 @@ public class EditarPacienteRequestHandler(
 {
     public async Task<Result<EditarPacienteResponse>> Handle(EditarPacienteRequest request, CancellationToken cancellationToken)
     {
-        var pacienteSelecionado = await repositorioPaciente.SelecionarPorIdAsync(request.Id);
+        Paciente? pacienteSelecionado = await repositorioPaciente.SelecionarPorIdAsync(request.Id);
 
         if (pacienteSelecionado == null)
+        {
             return Result.Fail(ErrorResults.NotFoundError(request.Id));
-        
+        }
+
         pacienteSelecionado.Nome = request.Nome;
         pacienteSelecionado.Cpf = request.Cpf;
         pacienteSelecionado.Email = request.Email;
         pacienteSelecionado.Telefone = request.Telefone;
-        
-        var resultadoValidacao = 
+
+        FluentValidation.Results.ValidationResult resultadoValidacao =
             await validador.ValidateAsync(pacienteSelecionado, cancellationToken);
-        
+
         if (!resultadoValidacao.IsValid)
         {
-            var erros = resultadoValidacao.Errors
+            List<string> erros = resultadoValidacao.Errors
                 .Select(failure => failure.ErrorMessage)
                 .ToList();
 
             return Result.Fail(ErrorResults.BadRequestError(erros));
         }
 
-        var pacientes = await repositorioPaciente.SelecionarTodosAsync();
+        List<Paciente> pacientes = await repositorioPaciente.SelecionarTodosAsync();
 
         if (CpfDuplicado(pacienteSelecionado, pacientes))
+        {
             return Result.Fail(PacienteErrorResults.CpfDuplicadoError(pacienteSelecionado.Cpf));
-        
+        }
+
         try
         {
             await repositorioPaciente.EditarAsync(pacienteSelecionado);
@@ -51,13 +55,13 @@ public class EditarPacienteRequestHandler(
         catch (Exception ex)
         {
             await contexto.RollbackAsync();
-            
+
             return Result.Fail(ErrorResults.InternalServerError(ex));
         }
- 
+
         return Result.Ok(new EditarPacienteResponse(pacienteSelecionado.Id));
     }
-    
+
     private bool CpfDuplicado(Paciente paciente, IEnumerable<Paciente> pacientes)
     {
         return pacientes

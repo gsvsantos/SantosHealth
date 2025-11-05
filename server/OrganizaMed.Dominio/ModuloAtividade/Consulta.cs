@@ -7,7 +7,7 @@ public class Consulta : AtividadeMedica
     public override TipoAtividadeMedica TipoAtividade
     {
         get => TipoAtividadeMedica.Consulta;
-        set => tipoAtividade = value;
+        set => this.tipoAtividade = value;
     }
 
     protected Consulta() { }
@@ -18,7 +18,7 @@ public class Consulta : AtividadeMedica
 
     public Consulta(DateTime inicio, DateTime? termino, Medico medico) : base(inicio, termino)
     {
-        Medicos.Add(medico);
+        this.Medicos.Add(medico);
         medico.RegistrarAtividade(this);
     }
 

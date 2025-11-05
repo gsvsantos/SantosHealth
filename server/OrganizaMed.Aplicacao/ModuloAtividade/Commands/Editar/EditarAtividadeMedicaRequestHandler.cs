@@ -18,21 +18,23 @@ public class EditarAtividadeMedicaRequestHandler(
     public async Task<Result<EditarAtividadeMedicaResponse>> Handle(
         EditarAtividadeMedicaRequest request, CancellationToken cancellationToken)
     {
-        var atividadeSelecionada = await repositorioAtividadeMedica.SelecionarPorIdAsync(request.Id);
+        AtividadeMedica? atividadeSelecionada = await repositorioAtividadeMedica.SelecionarPorIdAsync(request.Id);
 
         if (atividadeSelecionada is null)
+        {
             return Result.Fail(ErrorResults.NotFoundError(request.Id));
-        
+        }
+
         atividadeSelecionada.Inicio = request.Inicio;
         atividadeSelecionada.Termino = request.Termino;
         atividadeSelecionada.Medicos = await repositorioMedico.SelecionarMuitosPorId(request.Medicos);
 
-        var resultadoValidacao =
+        FluentValidation.Results.ValidationResult resultadoValidacao =
             await validador.ValidateAsync(atividadeSelecionada, cancellationToken);
 
         if (!resultadoValidacao.IsValid)
         {
-            var erros = resultadoValidacao.Errors
+            List<string> erros = resultadoValidacao.Errors
                 .Select(failure => failure.ErrorMessage)
                 .ToList();
 

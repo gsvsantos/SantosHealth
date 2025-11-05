@@ -15,34 +15,40 @@ public class EditarMedicoRequestHandler(
 {
     public async Task<Result<EditarMedicoResponse>> Handle(EditarMedicoRequest request, CancellationToken cancellationToken)
     {
-        var medicoSelecionado = await repositorioMedico.SelecionarPorIdAsync(request.Id);
+        Medico? medicoSelecionado = await repositorioMedico.SelecionarPorIdAsync(request.Id);
 
         if (medicoSelecionado == null)
+        {
             return Result.Fail(ErrorResults.NotFoundError(request.Id));
-        
+        }
+
         medicoSelecionado.Nome = request.Nome;
         medicoSelecionado.Crm = request.Crm;
-        
-        var resultadoValidacao = 
+
+        FluentValidation.Results.ValidationResult resultadoValidacao =
             await validador.ValidateAsync(medicoSelecionado, cancellationToken);
-        
+
         if (!resultadoValidacao.IsValid)
         {
-            var erros = resultadoValidacao.Errors
+            List<string> erros = resultadoValidacao.Errors
                 .Select(failure => failure.ErrorMessage)
                 .ToList();
 
             return Result.Fail(ErrorResults.BadRequestError(erros));
         }
 
-        var medicos = await repositorioMedico.SelecionarTodosAsync();
+        List<Medico> medicos = await repositorioMedico.SelecionarTodosAsync();
 
         if (NomeDuplicado(medicoSelecionado, medicos))
+        {
             return Result.Fail(MedicoErrorResults.NomeDuplicadoError(medicoSelecionado.Nome));
-        
+        }
+
         if (CrmDuplicado(medicoSelecionado, medicos))
+        {
             return Result.Fail(MedicoErrorResults.CrmDuplicadoError(medicoSelecionado.Crm));
-        
+        }
+
         try
         {
             await repositorioMedico.EditarAsync(medicoSelecionado);
@@ -52,13 +58,13 @@ public class EditarMedicoRequestHandler(
         catch (Exception ex)
         {
             await contexto.RollbackAsync();
-            
+
             return Result.Fail(ErrorResults.InternalServerError(ex));
         }
- 
+
         return Result.Ok(new EditarMedicoResponse(medicoSelecionado.Id));
     }
-    
+
     private bool NomeDuplicado(Medico medico, IList<Medico> medicos)
     {
         return medicos
@@ -69,7 +75,7 @@ public class EditarMedicoRequestHandler(
                 StringComparison.CurrentCultureIgnoreCase)
             );
     }
-    
+
     private bool CrmDuplicado(Medico medico, IList<Medico> medicos)
     {
         return medicos

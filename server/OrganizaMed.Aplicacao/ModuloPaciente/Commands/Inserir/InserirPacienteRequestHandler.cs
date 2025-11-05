@@ -17,27 +17,29 @@ public class InserirPacienteRequestHandler(
 {
     public async Task<Result<InserirPacienteResponse>> Handle(InserirPacienteRequest request, CancellationToken cancellationToken)
     {
-        var paciente = new Paciente(request.Nome, request.Cpf, request.Email, request.Telefone)
+        Paciente paciente = new(request.Nome, request.Cpf, request.Email, request.Telefone)
         {
             UsuarioId = tenantProvider.UsuarioId.GetValueOrDefault()
         };
 
         // validações
-        var resultadoValidacao = await validador.ValidateAsync(paciente);
+        FluentValidation.Results.ValidationResult resultadoValidacao = await validador.ValidateAsync(paciente);
 
         if (!resultadoValidacao.IsValid)
         {
-            var erros = resultadoValidacao.Errors
+            List<string> erros = resultadoValidacao.Errors
                 .Select(failure => failure.ErrorMessage)
                 .ToList();
 
             return Result.Fail(ErrorResults.BadRequestError(erros));
         }
 
-        var medicosRegistrados = await repositorioPaciente.SelecionarTodosAsync();
+        List<Paciente> medicosRegistrados = await repositorioPaciente.SelecionarTodosAsync();
 
         if (CpfDuplicado(paciente, medicosRegistrados))
+        {
             return Result.Fail(PacienteErrorResults.CpfDuplicadoError(paciente.Nome));
+        }
 
         try
         {
@@ -54,7 +56,7 @@ public class InserirPacienteRequestHandler(
 
         return Result.Ok(new InserirPacienteResponse(paciente.Id));
     }
-    
+
     private bool CpfDuplicado(Paciente paciente, IEnumerable<Paciente> pacientes)
     {
         return pacientes

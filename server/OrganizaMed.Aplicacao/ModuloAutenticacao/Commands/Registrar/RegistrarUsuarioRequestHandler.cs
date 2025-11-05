@@ -15,17 +15,17 @@ public class RegistrarUsuarioRequestHandler(
     public async Task<Result<TokenResponse>> Handle(
         RegistrarUsuarioRequest request, CancellationToken cancellationToken)
     {
-        var usuario = new Usuario
+        Usuario usuario = new()
         {
             UserName = request.UserName,
             Email = request.Email
         };
-        
-        var usuarioResult = await userManager.CreateAsync(usuario, request.Password);
+
+        IdentityResult usuarioResult = await userManager.CreateAsync(usuario, request.Password);
 
         if (!usuarioResult.Succeeded)
         {
-            var erros = usuarioResult
+            List<string> erros = usuarioResult
                 .Errors
                 .Select(failure => failure.Description)
                 .ToList();
@@ -33,11 +33,13 @@ public class RegistrarUsuarioRequestHandler(
             return Result.Fail(ErrorResults.BadRequestError(erros));
         }
 
-        var tokenAcesso = tokenProvider.GerarTokenDeAcesso(usuario) as TokenResponse;
+        TokenResponse? tokenAcesso = tokenProvider.GerarTokenDeAcesso(usuario) as TokenResponse;
 
         if (tokenAcesso == null)
+        {
             return Result.Fail(ErrorResults.InternalServerError(new Exception("Falha ao gerar token de acesso")));
-        
+        }
+
         return Result.Ok(tokenAcesso);
     }
 }

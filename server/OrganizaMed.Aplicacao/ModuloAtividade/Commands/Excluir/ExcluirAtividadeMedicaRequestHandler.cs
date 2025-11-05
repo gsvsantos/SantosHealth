@@ -14,10 +14,12 @@ public class ExcluirAtividadeMedicaRequestHandler(
     public async Task<Result<ExcluirAtividadeMedicaResponse>> Handle(
         ExcluirAtividadeMedicaRequest request, CancellationToken cancellationToken)
     {
-        var atividadeSelecionada = await repositorioAtividadeMedica.SelecionarPorIdAsync(request.Id);
+        AtividadeMedica? atividadeSelecionada = await repositorioAtividadeMedica.SelecionarPorIdAsync(request.Id);
 
         if (atividadeSelecionada is null)
+        {
             return Result.Fail(ErrorResults.NotFoundError(request.Id));
+        }
 
         try
         {
@@ -28,10 +30,10 @@ public class ExcluirAtividadeMedicaRequestHandler(
         catch (Exception ex)
         {
             await contexto.RollbackAsync();
-            
+
             return Result.Fail(ErrorResults.InternalServerError(ex));
         }
-        
+
         return Result.Ok(new ExcluirAtividadeMedicaResponse());
     }
 }

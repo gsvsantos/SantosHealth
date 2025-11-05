@@ -22,15 +22,19 @@ public class InserirAtividadeMedicaRequestHandler(
     public async Task<Result<InserirAtividadeMedicaResponse>> Handle(
         InserirAtividadeMedicaRequest request, CancellationToken cancellationToken)
     {
-        var medicosSelecionados = await repositorioMedico.SelecionarMuitosPorId(request.Medicos);
+        List<Medico> medicosSelecionados = await repositorioMedico.SelecionarMuitosPorId(request.Medicos);
 
         if (medicosSelecionados.Count == 0)
+        {
             return Result.Fail(AtividadeMedicaErrorResults.MedicosNaoEncontradosError());
+        }
 
-        var pacienteSelecionado = await repositorioPaciente.SelecionarPorIdAsync(request.PacienteId);
+        Paciente? pacienteSelecionado = await repositorioPaciente.SelecionarPorIdAsync(request.PacienteId);
 
         if (pacienteSelecionado is null)
+        {
             return Result.Fail(AtividadeMedicaErrorResults.PacienteNaoEncontradoError());
+        }
 
         AtividadeMedica atividade;
 
@@ -54,12 +58,12 @@ public class InserirAtividadeMedicaRequestHandler(
         atividade.PacienteId = pacienteSelecionado.Id;
         atividade.UsuarioId = tenantProvider.UsuarioId.GetValueOrDefault();
 
-        var resultadoValidacao =
+        FluentValidation.Results.ValidationResult resultadoValidacao =
             await validador.ValidateAsync(atividade, cancellationToken);
 
         if (!resultadoValidacao.IsValid)
         {
-            var erros = resultadoValidacao.Errors
+            List<string> erros = resultadoValidacao.Errors
                 .Select(failure => failure.ErrorMessage)
                 .ToList();
 

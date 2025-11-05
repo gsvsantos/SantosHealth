@@ -19,7 +19,7 @@ public class PacienteController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(InserirPacienteResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> Inserir(InserirPacienteRequest request)
     {
-        var resultado = await mediator.Send(request);
+        FluentResults.Result<InserirPacienteResponse> resultado = await mediator.Send(request);
 
         return resultado.ToHttpResponse();
     }
@@ -28,7 +28,7 @@ public class PacienteController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(EditarPacienteResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> Editar(Guid id, EditarPacientePartialRequest request)
     {
-        var editarRequest = new EditarPacienteRequest(
+        EditarPacienteRequest editarRequest = new(
             id,
             request.Nome,
             request.Cpf,
@@ -36,7 +36,7 @@ public class PacienteController(IMediator mediator) : ControllerBase
             request.Telefone
         );
 
-        var resultado = await mediator.Send(editarRequest);
+        FluentResults.Result<EditarPacienteResponse> resultado = await mediator.Send(editarRequest);
 
         return resultado.ToHttpResponse();
     }
@@ -45,9 +45,9 @@ public class PacienteController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(ExcluirPacienteResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> Excluir(Guid id)
     {
-        var excluirRequest = new ExcluirPacienteRequest(id);
+        ExcluirPacienteRequest excluirRequest = new(id);
 
-        var resultado = await mediator.Send(excluirRequest);
+        FluentResults.Result<ExcluirPacienteResponse> resultado = await mediator.Send(excluirRequest);
 
         return resultado.ToHttpResponse();
     }
@@ -56,7 +56,7 @@ public class PacienteController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(SelecionarPacientesResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> SelecionarTodos()
     {
-        var resultado = await mediator.Send(new SelecionarPacientesRequest());
+        FluentResults.Result<SelecionarPacientesResponse> resultado = await mediator.Send(new SelecionarPacientesRequest());
 
         return resultado.ToHttpResponse();
     }
@@ -65,9 +65,9 @@ public class PacienteController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(SelecionarPacientePorIdResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> SelecionarPorId(Guid id)
     {
-        var selecionarPorIdRequest = new SelecionarPacientePorIdRequest(id);
+        SelecionarPacientePorIdRequest selecionarPorIdRequest = new(id);
 
-        var resultado = await mediator.Send(selecionarPorIdRequest);
+        FluentResults.Result<SelecionarPacientePorIdResponse> resultado = await mediator.Send(selecionarPorIdRequest);
 
         return resultado.ToHttpResponse();
     }

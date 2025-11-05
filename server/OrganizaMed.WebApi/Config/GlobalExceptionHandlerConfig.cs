@@ -12,9 +12,12 @@ public static class GlobalExceptionHandlerConfig
         {
             builder.Run(async httpContext =>
             {
-                var gerenciadorExcecoes = httpContext.Features.Get<IExceptionHandlerFeature>();
+                IExceptionHandlerFeature? gerenciadorExcecoes = httpContext.Features.Get<IExceptionHandlerFeature>();
 
-                if (gerenciadorExcecoes is null) return;
+                if (gerenciadorExcecoes is null)
+                {
+                    return;
+                }
 
                 httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 httpContext.Response.ContentType = "application/json";
@@ -25,7 +28,7 @@ public static class GlobalExceptionHandlerConfig
                     Erros = new string[] { "Erro interno do servidor" }
                 };
 
-                var respostaJson = JsonSerializer.Serialize(objeto);
+                string respostaJson = JsonSerializer.Serialize(objeto);
 
                 await httpContext.Response.WriteAsync(respostaJson);
             });

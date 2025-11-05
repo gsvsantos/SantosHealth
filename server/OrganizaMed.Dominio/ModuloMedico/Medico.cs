@@ -9,50 +9,62 @@ public class Medico : EntidadeBase
     public string Crm { get; set; }
     public List<AtividadeMedica> Atividades { get; set; }
 
-    protected Medico()
-    {
-        Atividades = [];
-    }
+    protected Medico() => this.Atividades = [];
 
     public Medico(string nome, string crm) : this()
     {
-        Nome = nome;
-        Crm = crm;
+        this.Nome = nome;
+        this.Crm = crm;
     }
 
     public bool RegistrarAtividade(AtividadeMedica atividade)
     {
-        if (Atividades.Contains(atividade)) return false;
+        if (this.Atividades.Contains(atividade))
+        {
+            return false;
+        }
 
-        Atividades.Add(atividade);
+        this.Atividades.Add(atividade);
 
         return true;
     }
 
     public bool RemoverAtividade(AtividadeMedica atividade)
     {
-        if (!Atividades.Contains(atividade)) return false;
+        if (!this.Atividades.Contains(atividade))
+        {
+            return false;
+        }
 
-        Atividades.Remove(atividade);
+        this.Atividades.Remove(atividade);
 
         return true;
     }
 
     public bool PeriodoDeDescansoEstaValido(AtividadeMedica atividade)
     {
-        foreach (var atividadeRegistrada in Atividades)
+        foreach (AtividadeMedica atividadeRegistrada in this.Atividades)
         {
-            if (atividadeRegistrada.Equals(atividade)) continue;
+            if (atividadeRegistrada.Equals(atividade))
+            {
+                continue;
+            }
 
             TimeSpan diferencial;
 
             if (atividade.Inicio > atividadeRegistrada.Termino)
+            {
                 diferencial = atividade.Inicio.Subtract(atividadeRegistrada.Termino.Value);
+            }
             else
+            {
                 diferencial = atividadeRegistrada.Inicio.Subtract(atividade.Termino!.Value);
+            }
 
             if (diferencial <= atividadeRegistrada.ObterPeriodoDescanso())
+            {
                 return false;
+            }
         }
 
         return true;

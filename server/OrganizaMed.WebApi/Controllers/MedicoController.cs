@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using OrganizaMed.Aplicacao.ModuloMedico.Commands.Editar;
 using OrganizaMed.Aplicacao.ModuloMedico.Commands.Excluir;
 using OrganizaMed.Aplicacao.ModuloMedico.Commands.Inserir;
+using OrganizaMed.Aplicacao.ModuloMedico.Commands.SelecionarMedicosMaisAtivos;
 using OrganizaMed.Aplicacao.ModuloMedico.Commands.SelecionarPorId;
 using OrganizaMed.Aplicacao.ModuloMedico.Commands.SelecionarTodos;
 using OrganizaMed.WebApi.Extensions;
@@ -20,7 +21,7 @@ public class MedicoController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(InserirMedicoResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> Inserir(InserirMedicoRequest request)
     {
-        var resultado = await mediator.Send(request);
+        FluentResults.Result<InserirMedicoResponse> resultado = await mediator.Send(request);
 
         return resultado.ToHttpResponse();
     }
@@ -29,13 +30,13 @@ public class MedicoController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(EditarMedicoResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> Editar(Guid id, EditarMedicoPartialRequest request)
     {
-        var editarRequest = new EditarMedicoRequest(
+        EditarMedicoRequest editarRequest = new(
             id,
             request.Nome,
             request.Crm
         );
 
-        var resultado = await mediator.Send(editarRequest);
+        FluentResults.Result<EditarMedicoResponse> resultado = await mediator.Send(editarRequest);
 
         return resultado.ToHttpResponse();
     }
@@ -44,9 +45,9 @@ public class MedicoController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(ExcluirMedicoResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> Excluir(Guid id)
     {
-        var excluirRequest = new ExcluirMedicoRequest(id);
+        ExcluirMedicoRequest excluirRequest = new(id);
 
-        var resultado = await mediator.Send(excluirRequest);
+        FluentResults.Result<ExcluirMedicoResponse> resultado = await mediator.Send(excluirRequest);
 
         return resultado.ToHttpResponse();
     }
@@ -55,7 +56,7 @@ public class MedicoController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(SelecionarMedicosResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> SelecionarTodos()
     {
-        var resultado = await mediator.Send(new SelecionarMedicosRequest());
+        FluentResults.Result<SelecionarMedicosResponse> resultado = await mediator.Send(new SelecionarMedicosRequest());
 
         return resultado.ToHttpResponse();
     }
@@ -64,9 +65,9 @@ public class MedicoController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(SelecionarMedicoPorIdResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> SelecionarPorId(Guid id)
     {
-        var selecionarPorIdRequest = new SelecionarMedicoPorIdRequest(id);
+        SelecionarMedicoPorIdRequest selecionarPorIdRequest = new(id);
 
-        var resultado = await mediator.Send(selecionarPorIdRequest);
+        FluentResults.Result<SelecionarMedicoPorIdResponse> resultado = await mediator.Send(selecionarPorIdRequest);
 
         return resultado.ToHttpResponse();
     }
@@ -76,7 +77,7 @@ public class MedicoController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> SelecionarMedicosMaisAtivosPorPeriodo(
         [FromQuery] DateTime inicioPeriodo, [FromQuery] DateTime terminoPeriodo)
     {
-        var resultado = await mediator.Send(new SelecionarMedicosMaisAtivosRequest(
+        FluentResults.Result<SelecionarMedicosMaisAtivosResponse> resultado = await mediator.Send(new SelecionarMedicosMaisAtivosRequest(
             inicioPeriodo,
             terminoPeriodo
         ));

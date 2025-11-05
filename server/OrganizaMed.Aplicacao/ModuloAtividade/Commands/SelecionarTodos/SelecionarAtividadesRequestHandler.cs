@@ -14,7 +14,7 @@ public class SelecionarAtividadesRequestHandler(
         SelecionarAtividadesMedicasRequest request, CancellationToken cancellationToken)
     {
         IEnumerable<AtividadeMedica> registrosFiltrados;
-        
+
         switch (request.TipoAtividade)
         {
             case TipoAtividadeMedica.Consulta:
@@ -28,14 +28,14 @@ public class SelecionarAtividadesRequestHandler(
                 break;
         }
 
-        var response = new SelecionarAtividadesMedicasResponse
+        SelecionarAtividadesMedicasResponse response = new()
         {
             QuantidadeRegistros = registrosFiltrados.Count(),
             Registros = registrosFiltrados.Select(a => new SelecionarAtividadesDto(
                 a.Id,
                 new SelecionarPacienteAtividadeDto(
                     a.PacienteId,
-                    a.Paciente.Nome, 
+                    a.Paciente.Nome,
                     a.Paciente.Email,
                     a.Paciente.Telefone
                 ),

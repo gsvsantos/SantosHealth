@@ -16,7 +16,7 @@ public class AuthController(IMediator mediator, SignInManager<Usuario> signInMan
     [HttpPost("registrar")]
     public async Task<IActionResult> Registrar(RegistrarUsuarioRequest request)
     {
-        var tokenResult = await mediator.Send(request);
+        FluentResults.Result<Aplicacao.ModuloAutenticacao.DTOs.TokenResponse> tokenResult = await mediator.Send(request);
 
         return tokenResult.ToHttpResponse();
     }
@@ -24,7 +24,7 @@ public class AuthController(IMediator mediator, SignInManager<Usuario> signInMan
     [HttpPost("autenticar")]
     public async Task<IActionResult> Autenticar(AutenticarUsuarioRequest request)
     {
-        var tokenResult = await mediator.Send(request);
+        FluentResults.Result<Aplicacao.ModuloAutenticacao.DTOs.TokenResponse> tokenResult = await mediator.Send(request);
 
         return tokenResult.ToHttpResponse();
     }

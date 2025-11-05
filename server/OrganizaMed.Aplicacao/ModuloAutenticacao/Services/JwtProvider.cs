@@ -12,33 +12,37 @@ public class JwtProvider : ITokenProvider
 {
     private readonly string? chaveJwt;
     private readonly DateTime dataExpiracaoJwt;
-    private string? audienciaValida;
+    private readonly string? audienciaValida;
 
     public JwtProvider(IConfiguration config)
     {
-        chaveJwt = config["JWT_GENERATION_KEY"];
+        this.chaveJwt = config["JWT_GENERATION_KEY"];
 
-        if (string.IsNullOrEmpty(chaveJwt))
+        if (string.IsNullOrEmpty(this.chaveJwt))
+        {
             throw new ArgumentException("Chave de geração de tokens não configurada");
+        }
 
-        audienciaValida = config["JWT_AUDIENCE_DOMAIN"];
+        this.audienciaValida = config["JWT_AUDIENCE_DOMAIN"];
 
-        if (string.IsNullOrEmpty(audienciaValida))
+        if (string.IsNullOrEmpty(this.audienciaValida))
+        {
             throw new ArgumentException("Audiência válida para transmissão de tokens não configurada");
+        }
 
-        dataExpiracaoJwt = DateTime.UtcNow.AddMinutes(5);
+        this.dataExpiracaoJwt = DateTime.UtcNow.AddMinutes(5);
     }
 
     public IAccessToken GerarTokenDeAcesso(Usuario usuario)
     {
-        var tokenHandler = new JwtSecurityTokenHandler();
+        JwtSecurityTokenHandler tokenHandler = new();
 
-        var chaveEmBytes = Encoding.ASCII.GetBytes(chaveJwt!);
+        byte[] chaveEmBytes = Encoding.ASCII.GetBytes(this.chaveJwt!);
 
-        var tokenDescriptor = new SecurityTokenDescriptor
+        SecurityTokenDescriptor tokenDescriptor = new()
         {
             Issuer = "OrganizaMed",
-            Audience = audienciaValida,
+            Audience = this.audienciaValida,
             Subject = new ClaimsIdentity(new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, usuario.Id.ToString()),
@@ -49,18 +53,18 @@ public class JwtProvider : ITokenProvider
                 new SymmetricSecurityKey(chaveEmBytes),
                 SecurityAlgorithms.HmacSha256Signature
             ),
-            Expires = dataExpiracaoJwt,
+            Expires = this.dataExpiracaoJwt,
             NotBefore = DateTime.UtcNow
         };
 
-        var token = tokenHandler.CreateToken(tokenDescriptor);
+        SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
 
-        var tokenString = tokenHandler.WriteToken(token);
+        string tokenString = tokenHandler.WriteToken(token);
 
         return new TokenResponse()
         {
             Chave = tokenString,
-            DataExpiracao = dataExpiracaoJwt,
+            DataExpiracao = this.dataExpiracaoJwt,
             Usuario = new UsuarioAutenticadoDto
             {
                 Id = usuario.Id,

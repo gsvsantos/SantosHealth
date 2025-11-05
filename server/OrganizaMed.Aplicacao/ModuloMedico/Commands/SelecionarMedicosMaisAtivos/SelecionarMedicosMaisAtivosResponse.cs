@@ -1,4 +1,4 @@
-﻿namespace OrganizaMed.Aplicacao.ModuloMedico.Commands.SelecionarTodos;
+﻿namespace OrganizaMed.Aplicacao.ModuloMedico.Commands.SelecionarMedicosMaisAtivos;
 
 public record SelecionarRegistroDeHorasTrabalhadasDto(
     Guid MedicoId, string Medico, int TotalDeHorasTrabalhadas);

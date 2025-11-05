@@ -18,30 +18,34 @@ public class InserirMedicoRequestHandler(
     public async Task<Result<InserirMedicoResponse>> Handle(
         InserirMedicoRequest request, CancellationToken cancellationToken)
     {
-        var medico = new Medico(request.Nome, request.Crm)
+        Medico medico = new(request.Nome, request.Crm)
         {
             UsuarioId = tenantProvider.UsuarioId.GetValueOrDefault()
         };
 
         // validações
-        var resultadoValidacao = await validador.ValidateAsync(medico);
+        FluentValidation.Results.ValidationResult resultadoValidacao = await validador.ValidateAsync(medico);
 
         if (!resultadoValidacao.IsValid)
         {
-            var erros = resultadoValidacao.Errors
+            List<string> erros = resultadoValidacao.Errors
                .Select(failure => failure.ErrorMessage)
                .ToList();
 
             return Result.Fail(ErrorResults.BadRequestError(erros));
         }
 
-        var medicosRegistrados = await repositorioMedico.SelecionarTodosAsync();
+        List<Medico> medicosRegistrados = await repositorioMedico.SelecionarTodosAsync();
 
         if (NomeDuplicado(medico, medicosRegistrados))
+        {
             return Result.Fail(MedicoErrorResults.NomeDuplicadoError(medico.Nome));
+        }
 
         if (CrmDuplicado(medico, medicosRegistrados))
+        {
             return Result.Fail(MedicoErrorResults.CrmDuplicadoError(medico.Crm));
+        }
 
         // inserção
         try

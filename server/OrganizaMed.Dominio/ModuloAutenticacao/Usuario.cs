@@ -6,7 +6,7 @@ public class Usuario : IdentityUser<Guid>
 {
     public Usuario()
     {
-        Id = Guid.NewGuid();
-        EmailConfirmed = true;
+        this.Id = Guid.NewGuid();
+        this.EmailConfirmed = true;
     }
 }

@@ -8,8 +8,5 @@ namespace OrganizaMed.Infraestrutura.Orm.ModuloPaciente;
 public class RepositorioPacienteEmOrm(IContextoPersistencia context)
     : RepositorioBase<Paciente>(context), IRepositorioPaciente
 {
-    public override Task<Paciente?> SelecionarPorIdAsync(Guid id)
-    {
-        return registros.Include(p => p.Atividades).ThenInclude(a => a.Medicos).FirstOrDefaultAsync(p => p.Id == id);
-    }
+    public override Task<Paciente?> SelecionarPorIdAsync(Guid id) => this.registros.Include(p => p.Atividades).ThenInclude(a => a.Medicos).FirstOrDefaultAsync(p => p.Id == id);
 }

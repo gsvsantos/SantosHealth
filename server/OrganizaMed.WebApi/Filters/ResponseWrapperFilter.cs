@@ -13,7 +13,7 @@ public class ResponseWrapperFilter : IActionFilter
     {
         if (context.Result is JsonResult jsonResult)
         {
-            var valor = jsonResult.Value;
+            object? valor = jsonResult.Value;
 
             if (valor is IEnumerable<string> mensagensDeErro)
             {

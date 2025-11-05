@@ -6,23 +6,24 @@ using OrganizaMed.Dominio.ModuloAtividade;
 
 namespace OrganizaMed.Aplicacao.ModuloAtividade.Commands.SelecionarPorId;
 
-public class SelecionarAtividadeMedicaPorIdRequestHandler(IRepositorioAtividadeMedica repositorioAtividadeMedica) 
+public class SelecionarAtividadeMedicaPorIdRequestHandler(IRepositorioAtividadeMedica repositorioAtividadeMedica)
     : IRequestHandler<SelecionarAtividadeMedicaPorIdRequest, Result<SelecionarAtividadeMedicaPorIdResponse>>
 {
     public async Task<Result<SelecionarAtividadeMedicaPorIdResponse>> Handle(
         SelecionarAtividadeMedicaPorIdRequest request, CancellationToken cancellationToken)
     {
-        var atividadeSelecionada = await repositorioAtividadeMedica.SelecionarPorIdAsync(request.Id);
+        AtividadeMedica? atividadeSelecionada = await repositorioAtividadeMedica.SelecionarPorIdAsync(request.Id);
 
         if (atividadeSelecionada == null)
+        {
             return Result.Fail(ErrorResults.NotFoundError(request.Id));
+        }
 
-
-        var resposta = new SelecionarAtividadeMedicaPorIdResponse(
+        SelecionarAtividadeMedicaPorIdResponse resposta = new(
             atividadeSelecionada.Id,
             new SelecionarPacienteAtividadeDto(
                 atividadeSelecionada.PacienteId,
-                atividadeSelecionada.Paciente.Nome, 
+                atividadeSelecionada.Paciente.Nome,
                 atividadeSelecionada.Paciente.Email,
                 atividadeSelecionada.Paciente.Telefone
             ),

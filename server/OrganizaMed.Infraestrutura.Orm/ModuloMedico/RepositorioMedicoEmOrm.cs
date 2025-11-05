@@ -8,20 +8,14 @@ namespace OrganizaMed.Infraestrutura.Orm.ModuloMedico;
 public class RepositorioMedicoEmOrm(IContextoPersistencia context)
     : RepositorioBase<Medico>(context), IRepositorioMedico
 {
-    public override Task<Medico?> SelecionarPorIdAsync(Guid id)
-    {
-        return registros.Include(m => m.Atividades).FirstOrDefaultAsync(x => x.Id == id);
-    }
+    public override Task<Medico?> SelecionarPorIdAsync(Guid id) => this.registros.Include(m => m.Atividades).FirstOrDefaultAsync(x => x.Id == id);
 
-    public async Task<List<Medico>> SelecionarMuitosPorId(IEnumerable<Guid> medicosRequisitados)
-    {
-        return await registros.Where(m => medicosRequisitados.Contains(m.Id)).Include(m => m.Atividades).ToListAsync();
-    }
+    public async Task<List<Medico>> SelecionarMuitosPorId(IEnumerable<Guid> medicosRequisitados) => await this.registros.Where(m => medicosRequisitados.Contains(m.Id)).Include(m => m.Atividades).ToListAsync();
 
     public async Task<List<RegistroDeHorasTrabalhadas>> SelecionarMedicosMaisAtivosPorPeriodo(
         DateTime inicioPeriodo, DateTime terminoPeriodo)
     {
-        return await registros.Select(medico => new RegistroDeHorasTrabalhadas
+        return await this.registros.Select(medico => new RegistroDeHorasTrabalhadas
         {
             MedicoId = medico.Id,
             Medico = medico.Nome,

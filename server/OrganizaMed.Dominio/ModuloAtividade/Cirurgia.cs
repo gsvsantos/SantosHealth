@@ -7,7 +7,7 @@ public class Cirurgia : AtividadeMedica
     public override TipoAtividadeMedica TipoAtividade
     {
         get => TipoAtividadeMedica.Cirurgia;
-        set => tipoAtividade = value;
+        set => this.tipoAtividade = value;
     }
 
     protected Cirurgia() { }
@@ -18,9 +18,9 @@ public class Cirurgia : AtividadeMedica
 
     public Cirurgia(DateTime inicio, DateTime? termino, List<Medico> medicos) : base(inicio, termino)
     {
-        foreach (var medico in medicos)
+        foreach (Medico medico in medicos)
         {
-            Medicos.Add(medico);
+            this.Medicos.Add(medico);
             medico.RegistrarAtividade(this);
         }
     }

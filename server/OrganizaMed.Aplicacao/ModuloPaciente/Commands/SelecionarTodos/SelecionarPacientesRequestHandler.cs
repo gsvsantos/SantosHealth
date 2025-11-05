@@ -11,9 +11,9 @@ public class SelecionarPacientesRequestHandler(
     public async Task<Result<SelecionarPacientesResponse>> Handle(
         SelecionarPacientesRequest request, CancellationToken cancellationToken)
     {
-        var registros = await repositorioPaciente.SelecionarTodosAsync();
+        List<Paciente> registros = await repositorioPaciente.SelecionarTodosAsync();
 
-        var response = new SelecionarPacientesResponse
+        SelecionarPacientesResponse response = new()
         {
             QuantidadeRegistros = registros.Count,
             Registros = registros
