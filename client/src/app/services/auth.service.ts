@@ -16,8 +16,8 @@ import {
 import {
   AccessTokenModel,
   AuthApiResponse,
-  LoginModel,
-  RegisterModel,
+  LoginAuthDto,
+  RegisterAuthDto,
 } from '../models/auth.models';
 import { LocalStorageService } from './local-storage.service';
 
@@ -59,7 +59,7 @@ export class AuthService {
     shareReplay({ bufferSize: 1, refCount: true }),
   );
 
-  public register(model: RegisterModel): Observable<AuthApiResponse> {
+  public register(model: RegisterAuthDto): Observable<AuthApiResponse> {
     const url = `${this.apiUrl}/registrar`;
 
     return this.http
@@ -67,7 +67,7 @@ export class AuthService {
       .pipe(tap((token) => this.accessTokenSubject$.next(token)));
   }
 
-  public login(loginModel: LoginModel): Observable<AuthApiResponse> {
+  public login(loginModel: LoginAuthDto): Observable<AuthApiResponse> {
     const url = `${this.apiUrl}/autenticar`;
 
     return this.http

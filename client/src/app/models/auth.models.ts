@@ -1,12 +1,12 @@
-export interface RegisterModel {
+export interface RegisterAuthDto {
   userName: string;
   email: string;
   password: string;
 }
 
-export interface LoginModel {
-  email: string;
-  senha: string;
+export interface LoginAuthDto {
+  userName: string;
+  password: string;
 }
 
 export interface AuthApiResponse {
@@ -27,11 +27,7 @@ export interface AccessTokenDto {
 export interface AccessTokenModel {
   key: string;
   expiration: Date;
-  authenticatedUser: {
-    id: string;
-    userName: string;
-    email: string;
-  };
+  authenticatedUser: AuthenticatedUserModel;
 }
 
 export interface AuthenticatedUserModel {
