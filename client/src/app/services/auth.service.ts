@@ -53,7 +53,6 @@ export class AuthService {
   ).pipe(
     distinctUntilChanged((prev, curr) => prev === curr),
     tap((accessToken) => {
-      console.log(accessToken);
       if (accessToken) this.localStorage.saveAccessToken(accessToken);
       else this.localStorage.clearAccessToken();
     }),
@@ -73,7 +72,7 @@ export class AuthService {
 
     return this.http
       .post<AuthApiResponse>(url, loginModel)
-      .pipe(tap((token) => (console.log(token), this.accessTokenSubject$.next(token))));
+      .pipe(tap((token) => this.accessTokenSubject$.next(token)));
   }
 
   public logout(): Observable<null> {

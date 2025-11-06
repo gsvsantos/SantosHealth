@@ -67,10 +67,8 @@ export class RegisterComponent {
     const registerModel: RegisterModel = this.formGroup.value as RegisterModel;
 
     const registerObserver: PartialObserver<AuthApiResponse> = {
-      error: (err: HttpErrorResponse) => (
-        console.log(err),
-        this.notificationService.error(err.error.erros as string, 'OK')
-      ),
+      error: (err: HttpErrorResponse) =>
+        this.notificationService.error(err.error.erros as string, 'OK'),
       complete: () => void this.router.navigate(['/home']),
     };
 
