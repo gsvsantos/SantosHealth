@@ -1,6 +1,6 @@
 import { EnvironmentProviders, makeEnvironmentProviders } from '@angular/core';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
-import { NotificacaoService } from '../services/notificacao.service';
+import { NotificationService } from '../services/notification.service';
 
 export const provideNotification = (): EnvironmentProviders => {
   return makeEnvironmentProviders([
@@ -13,6 +13,6 @@ export const provideNotification = (): EnvironmentProviders => {
       },
     },
 
-    NotificacaoService,
+    NotificationService,
   ]);
 };

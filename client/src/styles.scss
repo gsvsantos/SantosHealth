@@ -1,12 +1,15 @@
-@use './styles/material-theme';
+@use './app/styles/theme-colors';
 @use './app/styles/tokens.scss';
+@use 'bootstrap/scss/bootstrap-reboot';
+@use 'bootstrap/scss/bootstrap-grid';
+@use 'bootstrap/scss/bootstrap-utilities';
 @use '@angular/material' as mat;
 
 html,
 body {
   height: 100%;
 
-  .notificacao-sucesso {
+  .notification-success {
     @include mat.snack-bar-overrides(
       (
         button-color: var(--mat-sys-surface),
@@ -15,7 +18,7 @@ body {
     );
   }
 
-  .notificacao-aviso {
+  .notification-warning {
     @include mat.snack-bar-overrides(
       (
         button-color: var(--mat-sys-primary),
@@ -25,7 +28,7 @@ body {
     );
   }
 
-  .notificacao-erro {
+  .notification-error {
     @include mat.snack-bar-overrides(
       (
         button-color: var(--mat-sys-surface),

@@ -1,0 +1,37 @@
+import { HttpRequest, HttpHandlerFn, HttpEvent, HttpErrorResponse } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { catchError, Observable, throwError } from 'rxjs';
+import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
+import { NotificationService } from '../services/notification.service';
+
+export const authInterceptor = (
+  req: HttpRequest<unknown>,
+  next: HttpHandlerFn,
+): Observable<HttpEvent<unknown>> => {
+  const authService = inject(AuthService);
+  const notificationService = inject(NotificationService);
+  const router = inject(Router);
+
+  const accessToken = authService.accessTokenSubject$.getValue();
+
+  if (accessToken) {
+    const requisicaoClonada = req.clone({
+      headers: req.headers.set('Authorization', `Bearer ${accessToken.key}`),
+    });
+
+    return next(requisicaoClonada).pipe(
+      catchError((err: HttpErrorResponse) => {
+        if (err.status === 401) {
+          notificationService.error('Session expired. Please log in again', 'OK');
+          authService.accessTokenSubject$.next(undefined);
+          void router.navigate(['/auth', 'login']);
+        }
+
+        return throwError(() => err);
+      }),
+    );
+  }
+
+  return next(req);
+};
