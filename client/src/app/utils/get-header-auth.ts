@@ -1,11 +1,11 @@
-import { AccessTokenModel } from '../models/auth.models';
+import { AuthApiResponse } from '../models/auth.models';
 
-export function getHeaderAuthorizationOptions(accessToken?: AccessTokenModel): object {
-  if (!accessToken) throw new Error('The access token was not provided');
+export function getHeaderAuthorizationOptions(response?: AuthApiResponse): object {
+  if (!response) throw new Error('The access token was not provided');
 
   return {
     headers: {
-      Authorization: 'Bearer ' + accessToken.key,
+      Authorization: 'Bearer ' + response.dados.chave,
     },
   };
 }

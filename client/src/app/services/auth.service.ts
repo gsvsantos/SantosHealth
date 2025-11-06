@@ -5,6 +5,7 @@ import {
   BehaviorSubject,
   defer,
   distinctUntilChanged,
+  map,
   merge,
   Observable,
   of,
@@ -12,21 +13,29 @@ import {
   skip,
   tap,
 } from 'rxjs';
-import { AccessTokenModel, LoginModel, RegisterModel } from '../models/auth.models';
+import {
+  AccessTokenModel,
+  AuthApiResponse,
+  LoginModel,
+  RegisterModel,
+} from '../models/auth.models';
 import { LocalStorageService } from './local-storage.service';
-import { getHeaderAuthorizationOptions } from '../utils/get-header-auth';
 
 @Injectable()
 export class AuthService {
   private readonly localStorage = inject(LocalStorageService);
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = environment.apiUrl + '/auth';
+  private readonly apiUrl = environment.apiUrl + '/api/auth';
 
-  public readonly accessTokenSubject$ = new BehaviorSubject<AccessTokenModel | undefined>(
-    undefined,
-  );
+  public readonly accessTokenSubject$ = new BehaviorSubject<AuthApiResponse | undefined>(undefined);
 
-  public readonly storedAccessToken$ = defer(() => {
+  public readonly accessTokenFromApi$: Observable<AccessTokenModel | undefined> =
+    this.accessTokenSubject$.pipe(
+      skip(1),
+      map((apiResponse) => (apiResponse ? this.mapAccessToken(apiResponse) : undefined)),
+    );
+
+  public readonly storedAccessToken$: Observable<AccessTokenModel | undefined> = defer(() => {
     const accessToken = this.localStorage.getAccessToken();
 
     if (!accessToken) return of(undefined);
@@ -40,43 +49,56 @@ export class AuthService {
 
   public readonly accessToken$: Observable<AccessTokenModel | undefined> = merge(
     this.storedAccessToken$,
-    this.accessTokenSubject$.pipe(skip(1)),
+    this.accessTokenFromApi$,
   ).pipe(
-    distinctUntilChanged((first, second) => first === second),
+    distinctUntilChanged((prev, curr) => prev === curr),
     tap((accessToken) => {
+      console.log(accessToken);
       if (accessToken) this.localStorage.saveAccessToken(accessToken);
       else this.localStorage.clearAccessToken();
-
-      this.accessTokenSubject$.next(accessToken);
     }),
     shareReplay({ bufferSize: 1, refCount: true }),
   );
 
-  public register(model: RegisterModel): Observable<AccessTokenModel> {
-    const url = `${this.apiUrl}/registro`;
+  public register(model: RegisterModel): Observable<AuthApiResponse> {
+    const url = `${this.apiUrl}/registrar`;
 
     return this.http
-      .post<AccessTokenModel>(url, model)
+      .post<AuthApiResponse>(url, model)
       .pipe(tap((token) => this.accessTokenSubject$.next(token)));
   }
 
-  public login(loginModel: LoginModel): Observable<AccessTokenModel> {
-    const url = `${this.apiUrl}/login`;
+  public login(loginModel: LoginModel): Observable<AuthApiResponse> {
+    const url = `${this.apiUrl}/autenticar`;
 
     return this.http
-      .post<AccessTokenModel>(url, loginModel)
-      .pipe(tap((token) => this.accessTokenSubject$.next(token)));
+      .post<AuthApiResponse>(url, loginModel)
+      .pipe(tap((token) => (console.log(token), this.accessTokenSubject$.next(token))));
   }
 
   public logout(): Observable<null> {
     const urlCompleto = `${this.apiUrl}/sair`;
 
     return this.http
-      .post<null>(
-        urlCompleto,
-        {},
-        getHeaderAuthorizationOptions(this.accessTokenSubject$.getValue()),
-      )
+      .post<null>(urlCompleto, {})
       .pipe(tap(() => this.accessTokenSubject$.next(undefined)));
+  }
+
+  private mapAccessToken(dto: AuthApiResponse): AccessTokenModel {
+    if (!dto?.sucesso || !dto?.dados) {
+      throw new Error('Resposta da API inválida');
+    }
+
+    const { chave, dataExpiracao, usuario } = dto.dados;
+
+    return {
+      key: chave,
+      expiration: new Date(dataExpiracao),
+      authenticatedUser: {
+        id: usuario.id,
+        userName: usuario.userName,
+        email: usuario.email,
+      },
+    };
   }
 }

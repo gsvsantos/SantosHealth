@@ -4,6 +4,7 @@ import { catchError, Observable, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { NotificationService } from '../services/notification.service';
+import { LocalStorageService } from '../services/local-storage.service';
 
 export const authInterceptor = (
   req: HttpRequest<unknown>,
@@ -11,13 +12,15 @@ export const authInterceptor = (
 ): Observable<HttpEvent<unknown>> => {
   const authService = inject(AuthService);
   const notificationService = inject(NotificationService);
+  const localStorageService = inject(LocalStorageService);
   const router = inject(Router);
 
   const accessToken = authService.accessTokenSubject$.getValue();
+  const bearer = accessToken?.dados?.chave ?? localStorageService.getAccessToken()?.key;
 
-  if (accessToken) {
+  if (bearer) {
     const requisicaoClonada = req.clone({
-      headers: req.headers.set('Authorization', `Bearer ${accessToken.key}`),
+      headers: req.headers.set('Authorization', `Bearer ${bearer}`),
     });
 
     return next(requisicaoClonada).pipe(

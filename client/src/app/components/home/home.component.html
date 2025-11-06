@@ -1,0 +1,72 @@
+<div class="dashboard-grid">
+  <mat-card class="dashboard-card">
+    <mat-card-header>
+      <mat-card-title>Quick Actions</mat-card-title>
+      <mat-card-subtitle>Start here for new entries</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content class="quick-actions">
+      <button mat-stroked-button color="primary" routerLink="#">
+        <mat-icon>add_circle_outline</mat-icon>
+        Schedule New Activity
+      </button>
+      <button mat-stroked-button routerLink="#">
+        <mat-icon>person_add</mat-icon>
+        Register New Patient
+      </button>
+      <button mat-stroked-button routerLink="#">
+        <mat-icon>medical_services</mat-icon>
+        Register New Doctor
+      </button>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="dashboard-card">
+    <mat-card-header>
+      <mat-card-title>Upcoming Activities</mat-card-title>
+      <mat-card-subtitle>A preview of the schedule (e.g., next 5)</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-list role="list">
+        <mat-list-item role="listitem">
+          <mat-icon matListItemIcon>calendar_month</mat-icon>
+          <div matListItemTitle>Surgery - Dr. House #placeholder</div>
+          <div matListItemLine>Patient: John Doe | 09:00 - 11:00 #placeholder</div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item role="listitem">
+          <mat-icon matListItemIcon>calendar_month</mat-icon>
+          <div matListItemTitle>Appointment - Dr. Grey #placeholder</div>
+          <div matListItemLine>Patient: Jane Doe | 11:30 - 11:40 #placeholder</div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item class="view-all-link" routerLink="/activities" matRipple>
+          View full schedule...
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="dashboard-card">
+    <mat-card-header>
+      <mat-card-title>Top 10 Active Doctors</mat-card-title>
+      <mat-card-subtitle>Professionals with the most activities in the period</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-list role="list">
+        <mat-list-item role="listitem">
+          <div matListItemTitle>1. Dr. Santos #placeholder</div>
+          <div matListItemLine>CRM: 12345-SP | 22 Activities #placeholder</div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item role="listitem">
+          <div matListItemTitle>2. Dr. Silva #placeholder</div>
+          <div matListItemLine>CRM: 54321-RJ | 19 Activities #placeholder</div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item class="view-all-link" routerLink="/doctors" matRipple>
+          View all doctors...
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+</div>

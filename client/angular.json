@@ -48,11 +48,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.scss",
-              "src/app/styles/tokens.scss",
-              "src/app/styles/_theme-colors.scss"
-            ]
+            "styles": ["src/styles.scss"]
           },
           "configurations": {
             "production": {

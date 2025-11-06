@@ -1,0 +1,53 @@
+.login-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+.main-content {
+  width: 100%;
+  padding-inline: 1rem;
+  padding-block: 3rem;
+}
+
+.card {
+  padding: 0.5rem;
+}
+
+.card-content {
+  margin-top: 3rem;
+}
+
+.form-field {
+  width: 100%;
+}
+
+.form-field + .form-field {
+  margin-top: 0.5rem;
+}
+
+.botao {
+  margin-left: 1rem;
+  padding-left: 3rem;
+  padding-right: 3rem;
+}
+
+@media (min-width: 768px) {
+  .main-content {
+    width: 91.666667%;
+  }
+}
+
+@media (min-width: 992px) {
+  .main-content {
+    width: 33.333333%;
+    padding-inline: 0;
+  }
+}
+
+@media (min-width: 1200px) {
+  .main-content {
+    width: 25%;
+  }
+}

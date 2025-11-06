@@ -1,0 +1,42 @@
+@use '@angular/material' as mat;
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 36px;
+  padding: 0 16px;
+}
+.dashboard-card {
+  display: flex;
+  flex-direction: column;
+
+  .quick-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-top: 8px;
+
+    button {
+      padding: auto;
+      justify-content: center;
+      font-size: 1.1em;
+
+      mat-icon {
+        margin-right: 12px;
+      }
+    }
+  }
+
+  .view-all-link {
+    color: #3f51b5a6;
+    font-size: 0.9em;
+    font-style: italic;
+    cursor: pointer;
+    padding-top: 8px;
+    padding-bottom: 8px;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

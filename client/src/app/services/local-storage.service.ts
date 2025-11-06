@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AccessTokenModel } from '../models/auth.models';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class LocalStorageService {
   private readonly accessTokenKey: string = 'santoshealth:access-token';
 

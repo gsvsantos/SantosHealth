@@ -7,7 +7,7 @@ export const provideNotification = (): EnvironmentProviders => {
     {
       provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
       useValue: {
-        duration: 33000,
+        duration: 5000,
         horizontalPosition: 'end',
         verticalPosition: 'bottom',
       },

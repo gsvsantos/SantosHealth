@@ -1,0 +1,52 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    fixedInViewport
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="(isHandset$ | async) === false"
+  >
+    <mat-toolbar><mat-icon>emergency</mat-icon>Santos Health</mat-toolbar>
+    <mat-nav-list>
+      @for (item of itensNavbar; track $index) {
+        <a mat-list-item [routerLink]="item.link"
+          ><mat-icon matListItemIcon [fontIcon]="item.icone"></mat-icon>{{ item.titulo }}</a
+        >
+      }
+    </mat-nav-list>
+
+    <div class="profile">
+      <button class="button-profile" mat-raised-button [matMenuTriggerFor]="userOptions">
+        <mat-icon>person</mat-icon>
+        {{ authenticatedUser?.userName }}
+      </button>
+      <mat-menu #userOptions="matMenu" xPosition="before">
+        <button mat-menu-item style="min-width: 160px" (click)="logoutEvent.emit()">
+          <mat-icon>arrow_backwards</mat-icon>
+          Logout
+        </button>
+      </mat-menu>
+    </div>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      @if (isHandset$ | async) {
+        <button type="button" aria-label="Toggle sidenav" matIconButton (click)="drawer.toggle()">
+          <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+        </button>
+      }
+      <p class="theme-toggle">
+        <mat-icon>light_mode</mat-icon>
+        <mat-slide-toggle (change)="onThemeChange($event)"></mat-slide-toggle>
+        <mat-icon>dark_mode</mat-icon>
+      </p>
+    </mat-toolbar>
+    <svg class="borda-svg" height="32" width="32">
+      <path class="OkLq5b" d="M 32,0 H -32,0 V 0,32 a 32, 32 0 0, 1 32,-32"></path>
+    </svg>
+    <div class="conteudo">
+      <ng-content></ng-content>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

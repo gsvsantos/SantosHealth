@@ -1,8 +1,6 @@
-@use './app/styles/theme-colors';
-@use './app/styles/tokens.scss';
-@use 'bootstrap/scss/bootstrap-reboot';
-@use 'bootstrap/scss/bootstrap-grid';
-@use 'bootstrap/scss/bootstrap-utilities';
+@use './styles/material-theme.scss';
+@use './styles/_theme-colors.scss';
+@use './styles/tokens.scss';
 @use '@angular/material' as mat;
 
 html,
@@ -37,10 +35,79 @@ body {
     );
   }
 }
-
 body {
+  color-scheme: light;
   margin: 0;
   font: var(--mat-sys-body-medium);
   background: var(--mat-sys-surface);
   color: var(--mat-sys-on-surface);
+}
+
+.mat-primary {
+  @include mat.button-overrides(
+    (
+      filled-container-color: var(--mat-sys-primary),
+      filled-label-text-color: var(--mat-sys-on-primary),
+      outlined-label-text-color: var(--mat-sys-primary),
+      text-label-text-color: var(--mat-sys-primary),
+    )
+  );
+}
+
+.mat-secondary {
+  @include mat.button-overrides(
+    (
+      filled-container-color: var(--mat-sys-secondary),
+      filled-label-text-color: var(--mat-sys-on-secondary),
+      outlined-label-text-color: var(--mat-sys-secondary),
+      text-label-text-color: var(--mat-sys-secondary),
+    )
+  );
+}
+
+.mat-tertiary {
+  @include mat.button-overrides(
+    (
+      filled-container-color: var(--mat-sys-tertiary),
+      filled-label-text-color: var(--mat-sys-on-tertiary),
+      outlined-label-text-color: var(--mat-sys-tertiary),
+      text-label-text-color: var(--mat-sys-tertiary),
+    )
+  );
+}
+
+.mat-warn,
+.mat-error {
+  @include mat.button-overrides(
+    (
+      filled-container-color: var(--mat-sys-error),
+      filled-label-text-color: var(--mat-sys-on-error),
+      outlined-label-text-color: var(--mat-sys-error),
+      text-label-text-color: var(--mat-sys-error),
+    )
+  );
+}
+
+.btn-surface {
+  @include mat.button-overrides(
+    (
+      filled-container-color: var(--mat-sys-surface-variant),
+      filled-label-text-color: var(--mat-sys-on-surface-variant),
+      outlined-label-text-color: var(--mat-sys-on-surface),
+      text-label-text-color: var(--mat-sys-on-surface),
+    )
+  );
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px var(--mat-sys-surface-container-low) inset;
+  font-family: 'Roboto Slab' !important;
 }
