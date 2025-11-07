@@ -8,14 +8,14 @@ export const listPatientsResolver: ResolveFn<Patient[]> = () => {
   return patientService.getAll();
 };
 
-// export const patientDetailsResolver: ResolveFn<PatientDetailsDto> = (
-//   route: ActivatedRouteSnapshot,
-// ) => {
-//   const patientService = inject(PatientService);
+export const patientDetailsResolver: ResolveFn<PatientDetailsDto> = (
+  route: ActivatedRouteSnapshot,
+) => {
+  const patientService = inject(PatientService);
 
-//   if (!route.paramMap.has('id')) throw new Error('Missing "ID" parameter.');
+  if (!route.paramMap.has('id')) throw new Error('Missing "ID" parameter.');
 
-//   const id: string = route.paramMap.get('id')!;
+  const id: string = route.paramMap.get('id')!;
 
-//   return patientService.getById(id);
-// };
+  return patientService.getById(id);
+};

@@ -26,14 +26,14 @@
             </mat-card-content>
 
             <mat-card-actions align="end">
-              <a [routerLink]="['editar', patient.id]" mat-icon-button matTooltip="Editar">
+              <a [routerLink]="['edit', patient.id]" mat-icon-button matTooltip="Edit">
                 <mat-icon>edit</mat-icon>
               </a>
               <a
                 class="botao botao__danger"
-                [routerLink]="['excluir', patient.id]"
+                [routerLink]="['delete', patient.id]"
                 mat-icon-button
-                matTooltip="Excluir"
+                matTooltip="Delete"
               >
                 <mat-icon>delete</mat-icon>
               </a>

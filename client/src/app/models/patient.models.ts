@@ -14,16 +14,16 @@ export interface ListPatientsDto {
   registros: Patient[];
 }
 
-export interface PatientDetailsDto extends Patient {
-  atividades: Activity[];
-}
-
 export interface Patient {
   id: string;
   nome: string;
   cpf: string;
   email: string;
   telefone: string;
+}
+
+export interface PatientDetailsDto extends Patient {
+  atividades: Activity[];
 }
 
 export interface Activity {
@@ -40,9 +40,13 @@ export interface Doctor {
   crm: string;
 }
 
-export interface PatientApiResponse {
+export interface PatientApiResponseDto {
   sucesso: boolean;
   dados: PatientDataPayload;
 }
+
+export type PatientApiResponse =
+  | { sucesso: true; dados: PatientDataPayload }
+  | { sucesso: false; erro: string[] };
 
 export type PatientDataPayload = ListPatientsDto | IdApiResponse | PatientDetailsDto;

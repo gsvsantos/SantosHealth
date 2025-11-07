@@ -1,8 +1,16 @@
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
-import { PatientApiResponse, Patient, PatientDto, ListPatientsDto, IdApiResponse } from '../models/patient.models';
+import { map, Observable, tap } from 'rxjs';
+import {
+  PatientApiResponse,
+  Patient,
+  PatientDto,
+  IdApiResponse,
+  PatientDetailsDto,
+  ListPatientsDto,
+} from '../models/patient.models';
+import { mapApiReponse } from '../utils/map-api-response';
 
 @Injectable({
   providedIn: 'root',
@@ -16,13 +24,15 @@ export class PatientService {
   }
   public edit(): void {}
   public delete(): void {}
-  public getById(id: string): void {}
+  public getById(id: string): Observable<PatientDetailsDto> {
+    const url = `${this.apiUrl}/${id}`;
+
+    return this.http.get<PatientApiResponse>(url).pipe(map(mapApiReponse<PatientDetailsDto>));
+  }
   public getAll(): Observable<Patient[]> {
     return this.http.get<PatientApiResponse>(this.apiUrl).pipe(
-      map((res) => {
-        const lista = res.dados as ListPatientsDto;
-        return lista.registros;
-      }),
+      map(mapApiReponse<ListPatientsDto>),
+      map((res) => res.registros),
     );
   }
 }
