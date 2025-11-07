@@ -1,13 +1,14 @@
 import { Routes } from '@angular/router';
 import { listPatientsResolver } from '../resolvers/patient.resolvers';
 import { ListPatientsComponent } from '../components/patients/list/list-patients.component/list-patients.component';
+import { RegisterPatientsComponent } from '../components/patients/register/register-patients.component/register-patients.component';
 export const patientRoutes: Routes = [
   {
     path: '',
     component: ListPatientsComponent,
     resolve: { patients: listPatientsResolver },
   },
-  //   { path: 'register', component: RegisterPatientComponent },
+  { path: 'register', component: RegisterPatientsComponent },
   //   { path: 'edit', component: EditPatientComponent, resolve: { patient: patientDetailsResolver } },
   //   {
   //     path: 'delete',

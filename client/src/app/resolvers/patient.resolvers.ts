@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, ResolveFn } from '@angular/router';
-import { Patient, PatientDetailsApiResponse } from '../models/patient.models';
+import { Patient, PatientDetailsDto } from '../models/patient.models';
 import { PatientService } from '../services/patient.service';
 
 export const listPatientsResolver: ResolveFn<Patient[]> = () => {
@@ -8,7 +8,7 @@ export const listPatientsResolver: ResolveFn<Patient[]> = () => {
   return patientService.getAll();
 };
 
-// export const patientDetailsResolver: ResolveFn<PatientDetailsApiResponse> = (
+// export const patientDetailsResolver: ResolveFn<PatientDetailsDto> = (
 //   route: ActivatedRouteSnapshot,
 // ) => {
 //   const patientService = inject(PatientService);

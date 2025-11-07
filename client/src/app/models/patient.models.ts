@@ -9,17 +9,12 @@ export interface IdApiResponse {
   id: string;
 }
 
-export interface ListPatientsApiResponse {
-  sucesso: boolean;
-  dados: ListPatientsDto;
-}
-
 export interface ListPatientsDto {
   quantidadeRegistros: number;
   registros: Patient[];
 }
 
-export interface PatientDetailsApiResponse extends Patient {
+export interface PatientDetailsDto extends Patient {
   atividades: Activity[];
 }
 
@@ -44,3 +39,10 @@ export interface Doctor {
   nome: string;
   crm: string;
 }
+
+export interface PatientApiResponse {
+  sucesso: boolean;
+  dados: PatientDataPayload;
+}
+
+export type PatientDataPayload = ListPatientsDto | IdApiResponse | PatientDetailsDto;

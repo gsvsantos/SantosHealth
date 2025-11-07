@@ -38,7 +38,7 @@ public class InserirPacienteRequestHandler(
 
         if (CpfDuplicado(paciente, medicosRegistrados))
         {
-            return Result.Fail(PacienteErrorResults.CpfDuplicadoError(paciente.Nome));
+            return Result.Fail(PacienteErrorResults.CpfDuplicadoError(paciente.Cpf));
         }
 
         try
