@@ -9,7 +9,7 @@ import {
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { PartialObserver } from 'rxjs';
-import { LoginModel, AuthApiResponse } from '../../../models/auth.models';
+import { AuthApiResponse, LoginAuthDto } from '../../../models/auth.models';
 import { AuthService } from '../../../services/auth.service';
 import { NotificationService } from '../../../services/notification.service';
 import { MatButtonModule } from '@angular/material/button';
@@ -54,7 +54,7 @@ export class LoginComponent {
   public login(): void {
     if (this.formGroup.invalid) return;
 
-    const loginModel: LoginModel = this.formGroup.value as LoginModel;
+    const loginModel: LoginAuthDto = this.formGroup.value as LoginAuthDto;
 
     const loginObserver: PartialObserver<AuthApiResponse> = {
       error: (err: HttpErrorResponse) =>

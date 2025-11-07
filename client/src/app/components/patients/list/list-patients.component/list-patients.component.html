@@ -1,0 +1,46 @@
+<section class="listagem-section">
+  <div class="main-content">
+    <h2>Patients</h2>
+
+    <div class="itens">
+      <a class="botao" routerLink="register" mat-flat-button>
+        <mat-icon>add</mat-icon>
+        Cadastrar
+      </a>
+    </div>
+
+    <hr />
+
+    <div class="lista">
+      @for (patient of patients$ | async; track $index) {
+        <div class="item">
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title>{{ patient.nome | titlecase }} </mat-card-title>
+            </mat-card-header>
+
+            <mat-card-content style="min-height: 40px">
+              <p>{{ patient.cpf | titlecase }}</p>
+              <p>{{ patient.email }}</p>
+              <p>{{ patient.telefone | titlecase }}</p>
+            </mat-card-content>
+
+            <mat-card-actions align="end">
+              <a [routerLink]="['editar', patient.id]" mat-icon-button matTooltip="Editar">
+                <mat-icon>edit</mat-icon>
+              </a>
+              <a
+                class="botao botao__danger"
+                [routerLink]="['excluir', patient.id]"
+                mat-icon-button
+                matTooltip="Excluir"
+              >
+                <mat-icon>delete</mat-icon>
+              </a>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      }
+    </div>
+  </div>
+</section>

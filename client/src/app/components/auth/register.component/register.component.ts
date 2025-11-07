@@ -16,7 +16,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { AuthApiResponse, RegisterModel } from '../../../models/auth.models';
+import { AuthApiResponse, RegisterAuthDto } from '../../../models/auth.models';
 
 @Component({
   selector: 'app-register.component',
@@ -42,7 +42,6 @@ export class RegisterComponent {
     userName: ['', [Validators.required.bind(this), Validators.minLength(3)]],
     email: ['', [Validators.required.bind(this), Validators.email.bind(this)]],
     password: ['', [Validators.required.bind(this), Validators.minLength(6)]],
-    confirmPassword: ['', [Validators.required.bind(this), Validators.minLength(6)]],
   });
 
   public get userName(): AbstractControl<unknown, unknown, unknown> | null {
@@ -57,14 +56,10 @@ export class RegisterComponent {
     return this.formGroup.get('password');
   }
 
-  public get confirmPassword(): AbstractControl<unknown, unknown, unknown> | null {
-    return this.formGroup.get('confirmPassword');
-  }
-
   public register(): void {
     if (this.formGroup.invalid) return;
 
-    const registerModel: RegisterModel = this.formGroup.value as RegisterModel;
+    const registerModel: RegisterAuthDto = this.formGroup.value as RegisterAuthDto;
 
     const registerObserver: PartialObserver<AuthApiResponse> = {
       error: (err: HttpErrorResponse) =>

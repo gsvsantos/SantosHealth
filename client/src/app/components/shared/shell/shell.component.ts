@@ -57,7 +57,7 @@ export class ShellComponent {
     {
       titulo: 'Patients',
       icone: 'people_alt',
-      link: '#',
+      link: 'patients',
     },
     {
       titulo: 'Doctors',
