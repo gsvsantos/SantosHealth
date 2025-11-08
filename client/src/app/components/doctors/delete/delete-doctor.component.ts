@@ -8,13 +8,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { filter, map, Observer, shareReplay, switchMap, take } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
-import { PatientDetailsDto } from '../../../models/patient.models';
+import { Doctor } from '../../../models/doctor.models';
 import { NotificationService } from '../../../services/notification.service';
-import { PatientService } from '../../../services/patient.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { DoctorService } from '../../../services/doctor.service';
 
 @Component({
-  selector: 'app-delete-patient.component',
+  selector: 'app-delete-doctor.component',
   imports: [
     MatCardModule,
     MatButtonModule,
@@ -25,18 +25,18 @@ import { PatientService } from '../../../services/patient.service';
     AsyncPipe,
     FormsModule,
   ],
-  templateUrl: './delete-patient.component.html',
-  styleUrl: './delete-patient.component.scss',
+  templateUrl: './delete-doctor.component.html',
+  styleUrl: './delete-doctor.component.scss',
 })
-export class DeletePatientComponent {
-  private readonly route = inject(ActivatedRoute);
+export class DeleteDoctorComponent {
+  protected readonly route = inject(ActivatedRoute);
   protected readonly router = inject(Router);
-  protected readonly patientService = inject(PatientService);
+  protected readonly doctorService = inject(DoctorService);
   protected readonly notificationService = inject(NotificationService);
 
-  protected readonly patient$ = this.route.data.pipe(
-    filter((data) => data['patient'] as boolean),
-    map((data) => data['patient'] as PatientDetailsDto),
+  protected readonly doctor$ = this.route.data.pipe(
+    filter((data) => data['doctor'] as boolean),
+    map((data) => data['doctor'] as Doctor),
     shareReplay({ bufferSize: 1, refCount: true }),
   );
 
@@ -48,10 +48,10 @@ export class DeletePatientComponent {
       complete: () => void this.router.navigate(['/patients']),
     };
 
-    this.patient$
+    this.doctor$
       .pipe(
         take(1),
-        switchMap((patient) => this.patientService.delete(patient.id)),
+        switchMap((doctor) => this.doctorService.delete(doctor.id)),
       )
       .subscribe(deleteObserver);
   }
