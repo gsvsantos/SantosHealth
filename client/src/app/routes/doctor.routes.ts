@@ -1,7 +1,8 @@
 import { Routes } from '@angular/router';
-import { listDoctorsResolver } from '../resolvers/doctor.resolvers';
+import { doctorDetailsResolver, listDoctorsResolver } from '../resolvers/doctor.resolvers';
 import { ListDoctorsComponent } from '../components/doctors/list/list-doctors.component';
 import { RegisterDoctorsComponent } from '../components/doctors/register/register-doctor.component';
+import { EditDoctorComponent } from '../components/doctors/edit/edit-doctor.component';
 
 export const doctorRoutes: Routes = [
   {
@@ -10,11 +11,11 @@ export const doctorRoutes: Routes = [
     resolve: { doctors: listDoctorsResolver },
   },
   { path: 'register', component: RegisterDoctorsComponent },
-  //   {
-  //     path: 'edit/:id',
-  //     component: EditDoctorComponent,
-  //     resolve: { doctor: doctorDetailsResolver },
-  //   },
+  {
+    path: 'edit/:id',
+    component: EditDoctorComponent,
+    resolve: { doctor: doctorDetailsResolver },
+  },
   //   {
   //     path: 'delete/:id',
   //     component: DeleteDoctorComponent,

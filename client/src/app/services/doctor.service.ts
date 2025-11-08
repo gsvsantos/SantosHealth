@@ -14,6 +14,16 @@ export class DoctorService {
   public register(registerModel: DoctorDto): Observable<IdApiResponse> {
     return this.http.post<IdApiResponse>(this.apiUrl, registerModel);
   }
+  public edit(id: string, editModel: DoctorDto): Observable<IdApiResponse> {
+    const url = `${this.apiUrl}/${id}`;
+
+    return this.http.put<IdApiResponse>(url, editModel);
+  }
+  public getById(id: string): Observable<Doctor> {
+    const url = `${this.apiUrl}/${id}`;
+
+    return this.http.get<ApiResponseDto>(url).pipe(map(mapApiReponse<Doctor>));
+  }
   public getAll(): Observable<Doctor[]> {
     return this.http.get<ApiResponseDto>(this.apiUrl).pipe(
       map(mapApiReponse<ListDoctorsDto>),

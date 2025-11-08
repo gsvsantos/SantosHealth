@@ -1,0 +1,57 @@
+<section class="edit-section">
+  <div class="main-content">
+    <!-- Título alterado para Doutor -->
+    <h2>Edit Doctor</h2>
+    <hr />
+    <mat-card class="card">
+      <!-- Variável alterada para 'doctor$' -->
+      @if (doctor$ | async) {
+        <!-- Função de submit alterada para 'save()' (sugestão) -->
+        <form [formGroup]="formGroup" (ngSubmit)="edit()">
+          <mat-card-header>
+            <!-- Título do card alterado -->
+            <mat-card-title>Edit doctor information</mat-card-title>
+          </mat-card-header>
+
+          <mat-card-content class="card-content">
+            <!-- Campo NOME (com minlength) -->
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Name</mat-label>
+              <input matInput formControlName="nome" type="text" />
+              @if (nome?.errors?.['required']) {
+                <mat-error>Name is required.</mat-error>
+              }
+              <!-- Adicionada a validação de minlength do Doutor -->
+              @if (nome?.errors?.['minlength']) {
+                <mat-error>Name must be at least 3 characters long.</mat-error>
+              }
+            </mat-form-field>
+
+            <!-- Campo CRM (substituindo CPF) -->
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>CRM</mat-label>
+              <input matInput formControlName="crm" type="text" />
+              <!-- Getters alterados para 'crm' -->
+              @if (crm?.errors?.['required']) {
+                <mat-error>CRM is required.</mat-error>
+              }
+              <!-- Mensagem de erro do pattern do CRM -->
+              @if (crm?.errors?.['pattern']) {
+                <mat-error>CRM must be in the format 00000-UF.</mat-error>
+              }
+            </mat-form-field>
+          </mat-card-content>
+          <mat-card-actions align="end">
+            <!-- Rota alterada para /doctors -->
+            <a mat-stroked-button routerLink="/doctors">Cancel</a>
+            <!-- Botão alterado para 'Save' -->
+            <button mat-flat-button class="button" type="submit" [disabled]="formGroup.invalid">
+              <mat-icon>check</mat-icon>
+              Save
+            </button>
+          </mat-card-actions>
+        </form>
+      }
+    </mat-card>
+  </div>
+</section>
