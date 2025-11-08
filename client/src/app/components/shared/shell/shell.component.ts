@@ -52,7 +52,7 @@ export class ShellComponent {
     {
       titulo: 'Activities',
       icone: 'pending_actions',
-      link: '#',
+      link: 'activities',
     },
     {
       titulo: 'Patients',

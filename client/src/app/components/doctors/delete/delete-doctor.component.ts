@@ -45,7 +45,7 @@ export class DeleteDoctorComponent {
       next: () => this.notificationService.success(`Record deleted successfully!`, 'OK'),
       error: (err: HttpErrorResponse) =>
         this.notificationService.error(err.error.erros as string, 'OK'),
-      complete: () => void this.router.navigate(['/patients']),
+      complete: () => void this.router.navigate(['/doctors']),
     };
 
     this.doctor$

@@ -25,4 +25,9 @@ export const routes: Routes = [
     loadChildren: () => import('../routes/doctor.routes').then((route) => route.doctorRoutes),
     canActivate: [authenticatedUserGuard],
   },
+  {
+    path: 'activities',
+    loadChildren: () => import('../routes/activity.routes').then((route) => route.activityRoutes),
+    canActivate: [authenticatedUserGuard],
+  },
 ];

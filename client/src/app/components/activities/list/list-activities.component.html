@@ -1,0 +1,67 @@
+<section class="list-section">
+  <div class="main-content">
+    <h2>Activities</h2>
+
+    <div class="items-container">
+      <a class="button" routerLink="register" mat-flat-button>
+        <mat-icon>add</mat-icon>
+        Register New Activity
+      </a>
+      <div class="filters">
+        <mat-form-field appearance="outline" class="filter-select">
+          <mat-label>Filter by Type</mat-label>
+          <mat-select (selectionChange)="onFilterChange($event.value)">
+            <mat-option value="Consulta">Appointment</mat-option>
+            <mat-option value="Cirurgia">Surgery</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button mat-stroked-button (click)="clearFilter()">Clear Filter</button>
+      </div>
+    </div>
+
+    <hr />
+
+    <div class="list">
+      @for (activity of activities$ | async; track activity.id) {
+        <div class="item">
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title>
+                {{ activity.tipoAtividade }}
+              </mat-card-title>
+              <mat-card-subtitle>
+                Patient: {{ activity.paciente.nome | titlecase }}
+              </mat-card-subtitle>
+            </mat-card-header>
+
+            <mat-card-content class="activity-content">
+              <p>
+                <strong>When:</strong>
+                {{ activity.inicio | date: 'short' }} – {{ activity.termino | date: 'shortTime' }}
+              </p>
+
+              <p class="doctor-list-title"><strong>Doctor(s):</strong></p>
+              @for (medico of activity.medicos; track medico.id) {
+                <p class="doctor-name">{{ medico.nome | titlecase }}</p>
+              }
+            </mat-card-content>
+
+            <mat-card-actions align="end">
+              <a [routerLink]="['edit', activity.id]" mat-icon-button matTooltip="Edit">
+                <mat-icon>edit</mat-icon>
+              </a>
+              <a
+                class="button button__danger"
+                [routerLink]="['delete', activity.id]"
+                mat-icon-button
+                matTooltip="Delete"
+              >
+                <mat-icon>delete</mat-icon>
+              </a>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,81 @@
+.list-section {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
+}
+
+.main-content {
+  width: 100%;
+  max-width: 1200px;
+}
+
+.items-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.filters {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+  padding-top: 1rem;
+}
+
+.item {
+  mat-card {
+    border: 1px solid #f0f0f0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease-in-out;
+
+    &:hover,
+    &:focus {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+.activity-content {
+  .doctor-list-title {
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+    color: rgba(0, 0, 0, 0.7);
+  }
+
+  .doctor-name {
+    margin: 0 0 0.25rem 0.5rem;
+    color: rgba(0, 0, 0, 0.87);
+  }
+}
+
+.button__danger {
+  color: #dc3545;
+  margin-left: 0.25rem;
+}
+
+@media (max-width: 600px) {
+  .items-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-select {
+    width: 100%;
+  }
+}

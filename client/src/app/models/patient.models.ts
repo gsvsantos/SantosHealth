@@ -21,10 +21,10 @@ export interface Patient extends PatientDto {
 }
 
 export interface PatientDetailsDto extends Patient {
-  atividades: Activity[];
+  atividades: PacientActivityDto[];
 }
 
-export interface Activity {
+export interface PacientActivityDto {
   id: string;
   inicio: Date;
   termino: Date;
