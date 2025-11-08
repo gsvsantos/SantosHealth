@@ -7,11 +7,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { NotificationService } from '../../../../services/notification.service';
-import { PatientService } from '../../../../services/patient.service';
 import { filter, map, Observer, shareReplay, switchMap, take } from 'rxjs';
-import { PatientDetailsDto } from '../../../../models/patient.models';
 import { HttpErrorResponse } from '@angular/common/http';
+import { PatientDetailsDto } from '../../../models/patient.models';
+import { NotificationService } from '../../../services/notification.service';
+import { PatientService } from '../../../services/patient.service';
 
 @Component({
   selector: 'app-delete-patient.component',

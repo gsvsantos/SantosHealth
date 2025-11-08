@@ -1,4 +1,4 @@
-<section class="register-section">
+<section class="edit-section">
   <div class="main-content">
     <h2>Edit Patient</h2>
     <hr />
@@ -15,6 +15,9 @@
               <input matInput formControlName="nome" type="text" />
               @if (nome?.errors?.['required']) {
                 <mat-error>Name is required.</mat-error>
+              }
+              @if (nome?.errors?.['minlength']) {
+                <mat-error>Name must be at least 3 characters long.</mat-error>
               }
             </mat-form-field>
 

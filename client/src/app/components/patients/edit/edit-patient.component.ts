@@ -36,7 +36,7 @@ import { AsyncPipe } from '@angular/common';
 })
 export class EditPatientComponent {
   protected readonly formBuilder = inject(FormBuilder);
-  private readonly route = inject(ActivatedRoute);
+  protected readonly route = inject(ActivatedRoute);
   protected readonly router = inject(Router);
   protected readonly patientService = inject(PatientService);
   protected readonly notificationService = inject(NotificationService);
