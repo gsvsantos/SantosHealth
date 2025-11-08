@@ -1,6 +1,6 @@
-import { PatientApiResponse } from '../models/patient.models';
+import { ApiResponseDto } from "../models/api.models";
 
-export function mapApiReponse<T>(res: PatientApiResponse): T {
+export function mapApiReponse<T>(res: ApiResponseDto): T {
   if (!res.sucesso) throw new Error(res.erro.join('. '));
 
   return res.dados as T;

@@ -1,3 +1,5 @@
+import { Doctor } from './doctor.models';
+
 export interface PatientDto {
   nome: string;
   cpf: string;
@@ -29,20 +31,5 @@ export interface Activity {
   tipoAtividade: string;
   medicos: Doctor[];
 }
-
-export interface Doctor {
-  id: string;
-  nome: string;
-  crm: string;
-}
-
-export interface PatientApiResponseDto {
-  sucesso: boolean;
-  dados: PatientDataPayload;
-}
-
-export type PatientApiResponse =
-  | { sucesso: true; dados: PatientDataPayload }
-  | { sucesso: false; erro: string[] };
 
 export type PatientDataPayload = ListPatientsDto | IdApiResponse | PatientDetailsDto;

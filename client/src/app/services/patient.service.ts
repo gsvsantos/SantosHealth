@@ -3,7 +3,6 @@ import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import {
-  PatientApiResponse,
   Patient,
   PatientDto,
   IdApiResponse,
@@ -11,6 +10,7 @@ import {
   ListPatientsDto,
 } from '../models/patient.models';
 import { mapApiReponse } from '../utils/map-api-response';
+import { ApiResponseDto } from '../models/api.models';
 
 @Injectable({
   providedIn: 'root',
@@ -35,10 +35,10 @@ export class PatientService {
   public getById(id: string): Observable<PatientDetailsDto> {
     const url = `${this.apiUrl}/${id}`;
 
-    return this.http.get<PatientApiResponse>(url).pipe(map(mapApiReponse<PatientDetailsDto>));
+    return this.http.get<ApiResponseDto>(url).pipe(map(mapApiReponse<PatientDetailsDto>));
   }
   public getAll(): Observable<Patient[]> {
-    return this.http.get<PatientApiResponse>(this.apiUrl).pipe(
+    return this.http.get<ApiResponseDto>(this.apiUrl).pipe(
       map(mapApiReponse<ListPatientsDto>),
       map((res) => res.registros),
     );
