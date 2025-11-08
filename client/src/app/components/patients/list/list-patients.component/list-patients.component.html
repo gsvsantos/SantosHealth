@@ -1,17 +1,17 @@
-<section class="listagem-section">
+<section class="list-section">
   <div class="main-content">
     <h2>Patients</h2>
 
-    <div class="itens">
-      <a class="botao" routerLink="register" mat-flat-button>
+    <div class="items">
+      <a class="button" routerLink="register" mat-flat-button>
         <mat-icon>add</mat-icon>
-        Cadastrar
+        Register New Patient
       </a>
     </div>
 
     <hr />
 
-    <div class="lista">
+    <div class="list">
       @for (patient of patients$ | async; track $index) {
         <div class="item">
           <mat-card>
@@ -30,7 +30,7 @@
                 <mat-icon>edit</mat-icon>
               </a>
               <a
-                class="botao botao__danger"
+                class="button button__danger"
                 [routerLink]="['delete', patient.id]"
                 mat-icon-button
                 matTooltip="Delete"

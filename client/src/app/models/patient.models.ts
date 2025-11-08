@@ -14,12 +14,8 @@ export interface ListPatientsDto {
   registros: Patient[];
 }
 
-export interface Patient {
+export interface Patient extends PatientDto {
   id: string;
-  nome: string;
-  cpf: string;
-  email: string;
-  telefone: string;
 }
 
 export interface PatientDetailsDto extends Patient {

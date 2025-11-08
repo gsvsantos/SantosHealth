@@ -1,4 +1,4 @@
-.listagem-section {
+.list-section {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -15,14 +15,14 @@
   }
 }
 
-.itens {
+.items {
   display: flex;
   flex-wrap: wrap;
   gap: 0.25rem;
   margin: 1rem;
 }
 
-.lista {
+.list {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
@@ -36,8 +36,8 @@
   }
 }
 
-.botao {
-  .itens & {
+.button {
+  .items & {
     width: 100%;
   }
 
@@ -52,8 +52,8 @@
     flex: 0 0 auto;
     width: 33.333333%;
   }
-  .botao {
-    .itens & {
+  .button {
+    .items & {
       flex: 0 0 auto;
       width: 16.666667%;
     }
