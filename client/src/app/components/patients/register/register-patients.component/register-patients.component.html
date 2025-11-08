@@ -15,6 +15,9 @@
             @if (nome?.errors?.['required']) {
               <mat-error>Name is required.</mat-error>
             }
+            @if (nome?.errors?.['minlength']) {
+              <mat-error>Name must be at least 3 characters long.</mat-error>
+            }
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="form-field">
@@ -52,7 +55,7 @@
         </mat-card-content>
         <mat-card-actions align="end">
           <a mat-stroked-button routerLink="/patients">Cancel</a>
-          <button mat-flat-button class="botao" type="submit" [disabled]="formGroup.invalid">
+          <button mat-flat-button class="button" type="submit" [disabled]="formGroup.invalid">
             <mat-icon>check</mat-icon>
             Confirm
           </button>

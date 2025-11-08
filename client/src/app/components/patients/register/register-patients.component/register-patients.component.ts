@@ -69,7 +69,7 @@ export class RegisterPatientsComponent {
 
     const registerModel: PatientDto = this.formGroup.value as PatientDto;
 
-    const cadastroObserver: Observer<IdApiResponse> = {
+    const registerObserver: Observer<IdApiResponse> = {
       next: () =>
         this.notificationService.success(
           `Patient "${registerModel.nome}" registered successfully!`,
@@ -80,6 +80,6 @@ export class RegisterPatientsComponent {
       complete: () => void this.router.navigate(['/patients']),
     };
 
-    this.patientService.register(registerModel).subscribe(cadastroObserver);
+    this.patientService.register(registerModel).subscribe(registerObserver);
   }
 }
