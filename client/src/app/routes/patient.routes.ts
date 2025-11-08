@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { listPatientsResolver, patientDetailsResolver } from '../resolvers/patient.resolvers';
 import { ListPatientsComponent } from '../components/patients/list/list-patients.component';
-import { RegisterPatientsComponent } from '../components/patients/register/register-patients.component';
+import { RegisterPatientsComponent } from '../components/patients/register/register-patient.component';
 import { EditPatientComponent } from '../components/patients/edit/edit-patient.component';
 import { DeletePatientComponent } from '../components/patients/delete/delete-patient.component';
 

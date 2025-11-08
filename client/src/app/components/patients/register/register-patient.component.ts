@@ -29,8 +29,8 @@ import { IdApiResponse, PatientDto } from '../../../models/patient.models';
     RouterLink,
     ReactiveFormsModule,
   ],
-  templateUrl: './register-patients.component.html',
-  styleUrl: './register-patients.component.scss',
+  templateUrl: './register-patient.component.html',
+  styleUrl: './register-patient.component.scss',
 })
 export class RegisterPatientsComponent {
   protected readonly formBuilder = inject(FormBuilder);
