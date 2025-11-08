@@ -72,7 +72,7 @@ export class RegisterPatientsComponent {
     const cadastroObserver: Observer<IdApiResponse> = {
       next: () =>
         this.notificationService.success(
-          `Paciente "${registerModel.nome}" cadastrado com sucesso!`,
+          `Patient "${registerModel.nome}" registered successfully!`,
           'OK',
         ),
       error: (err: HttpErrorResponse) =>

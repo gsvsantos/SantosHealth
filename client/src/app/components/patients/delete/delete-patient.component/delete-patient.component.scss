@@ -1,0 +1,36 @@
+.delete-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+.main-content {
+  width: 100%;
+  padding-inline: 1rem;
+}
+
+.card {
+  padding: 0.5rem;
+}
+
+.card-content {
+  margin-top: 3rem;
+}
+
+.form-field {
+  width: 100%;
+}
+
+.botao {
+  margin-left: 0.5rem;
+  padding-left: 3rem;
+  padding-right: 3rem;
+}
+
+@media (min-width: 992px) {
+  .main-content {
+    width: 66.666667%;
+    padding-inline: 0;
+  }
+}

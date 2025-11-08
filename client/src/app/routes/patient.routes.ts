@@ -3,6 +3,7 @@ import { listPatientsResolver, patientDetailsResolver } from '../resolvers/patie
 import { ListPatientsComponent } from '../components/patients/list/list-patients.component/list-patients.component';
 import { RegisterPatientsComponent } from '../components/patients/register/register-patients.component/register-patients.component';
 import { EditPatientComponent } from '../components/patients/edit/edit-patient.component/edit-patient.component';
+import { DeletePatientComponent } from '../components/patients/delete/delete-patient.component/delete-patient.component';
 export const patientRoutes: Routes = [
   {
     path: '',
@@ -15,9 +16,9 @@ export const patientRoutes: Routes = [
     component: EditPatientComponent,
     resolve: { patient: patientDetailsResolver },
   },
-  //   {
-  //     path: 'delete',
-  //     component: DeletePatientComponent,
-  //     resolve: { patient: patientDetailsResolver },
-  //   },
+  {
+    path: 'delete/:id',
+    component: DeletePatientComponent,
+    resolve: { patient: patientDetailsResolver },
+  },
 ];

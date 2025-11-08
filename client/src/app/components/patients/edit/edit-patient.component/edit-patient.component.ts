@@ -81,7 +81,7 @@ export class EditPatientComponent {
 
     const editObserver: Observer<IdApiResponse> = {
       next: () =>
-        this.notificationService.success(`Paciente "${editModel.nome}" editado com sucesso!`, 'OK'),
+        this.notificationService.success(`Patient "${editModel.nome}" updated successfully!`, 'OK'),
       error: (err: HttpErrorResponse) =>
         this.notificationService.error(err.error.erros as string, 'OK'),
       complete: () => void this.router.navigate(['/patients']),

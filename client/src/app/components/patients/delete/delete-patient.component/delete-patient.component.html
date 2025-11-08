@@ -1,0 +1,28 @@
+<section class="delete-section">
+  <div class="main-content">
+    <h2>Delete Patient</h2>
+    <hr />
+    <mat-card class="card">
+      @if (patient$ | async; as patient) {
+        <form (ngSubmit)="delete()">
+          <mat-card-header>
+            <mat-card-title>Confirm record deletion</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="card-content">
+            <span class="fs-6">
+              Are you sure you want to delete the record "{{ patient.nome }}"? This action is
+              irreversible!
+            </span>
+          </mat-card-content>
+          <mat-card-actions align="end">
+            <a mat-stroked-button routerLink="/patients">Cancel</a>
+            <button mat-flat-button color="warn" class="botao" type="submit">
+              <mat-icon>check</mat-icon>
+              Confirm
+            </button>
+          </mat-card-actions>
+        </form>
+      }
+    </mat-card>
+  </div>
+</section>
