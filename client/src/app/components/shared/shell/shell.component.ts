@@ -62,7 +62,7 @@ export class ShellComponent {
     {
       titulo: 'Doctors',
       icone: 'medical_information',
-      link: '#',
+      link: 'doctors',
     },
   ];
 

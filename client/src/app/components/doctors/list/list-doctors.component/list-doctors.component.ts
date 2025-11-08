@@ -1,4 +1,4 @@
-import { AsyncPipe, TitleCasePipe } from '@angular/common';
+import { AsyncPipe, TitleCasePipe, UpperCasePipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import {
@@ -19,6 +19,7 @@ import { Doctor } from '../../../../models/doctor.models';
     MatButtonModule,
     AsyncPipe,
     TitleCasePipe,
+    UpperCasePipe,
     MatIcon,
     RouterLink,
     MatCard,
