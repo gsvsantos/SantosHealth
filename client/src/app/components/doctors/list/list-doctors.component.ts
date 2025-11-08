@@ -11,7 +11,7 @@ import {
 import { MatIcon } from '@angular/material/icon';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { filter, map } from 'rxjs';
-import { Doctor } from '../../../../models/doctor.models';
+import { Doctor } from '../../../models/doctor.models';
 
 @Component({
   selector: 'app-list-doctors.component',

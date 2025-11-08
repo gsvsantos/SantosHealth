@@ -1,9 +1,10 @@
 import { Routes } from '@angular/router';
 import { listPatientsResolver, patientDetailsResolver } from '../resolvers/patient.resolvers';
-import { ListPatientsComponent } from '../components/patients/list/list-patients.component/list-patients.component';
-import { RegisterPatientsComponent } from '../components/patients/register/register-patients.component/register-patients.component';
-import { EditPatientComponent } from '../components/patients/edit/edit-patient.component/edit-patient.component';
-import { DeletePatientComponent } from '../components/patients/delete/delete-patient.component/delete-patient.component';
+import { ListPatientsComponent } from '../components/patients/list/list-patients.component';
+import { RegisterPatientsComponent } from '../components/patients/register/register-patients.component';
+import { EditPatientComponent } from '../components/patients/edit/edit-patient.component';
+import { DeletePatientComponent } from '../components/patients/delete/delete-patient.component';
+
 export const patientRoutes: Routes = [
   {
     path: '',

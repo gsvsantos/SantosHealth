@@ -1,26 +1,25 @@
-import { DoctorService } from './../../../../services/doctor.service';
+import { PatientService } from '../../../services/patient.service';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import {
-  AbstractControl,
+  ReactiveFormsModule,
   FormBuilder,
   FormGroup,
-  ReactiveFormsModule,
   Validators,
+  AbstractControl,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { Router, RouterLink } from '@angular/router';
-import { NotificationService } from '../../../../services/notification.service';
-import { DoctorDto } from '../../../../models/doctor.models';
-import { HttpErrorResponse } from '@angular/common/http';
+import { RouterLink, Router } from '@angular/router';
 import { Observer } from 'rxjs';
-import { IdApiResponse } from '../../../../models/patient.models';
+import { NotificationService } from '../../../services/notification.service';
+import { IdApiResponse, PatientDto } from '../../../models/patient.models';
 
 @Component({
-  selector: 'app-register-doctors.component',
+  selector: 'app-register-patients.component',
   imports: [
     MatCardModule,
     MatButtonModule,
@@ -30,32 +29,45 @@ import { IdApiResponse } from '../../../../models/patient.models';
     RouterLink,
     ReactiveFormsModule,
   ],
-  templateUrl: './register-doctors.component.html',
-  styleUrl: './register-doctors.component.scss',
+  templateUrl: './register-patients.component.html',
+  styleUrl: './register-patients.component.scss',
 })
-export class RegisterDoctorsComponent {
+export class RegisterPatientsComponent {
   protected readonly formBuilder = inject(FormBuilder);
   protected readonly router = inject(Router);
-  protected readonly doctorService = inject(DoctorService);
+  protected readonly patientService = inject(PatientService);
   protected readonly notificationService = inject(NotificationService);
 
   protected formGroup: FormGroup = this.formBuilder.group({
     nome: ['', [Validators.required.bind(this), Validators.minLength(3)]],
-    crm: ['', [Validators.required.bind(this), Validators.pattern(/^\d{5}-[A-Z]{2}$/)]],
+    cpf: ['', [Validators.required.bind(this), Validators.pattern(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/)]],
+    email: ['', [Validators.required.bind(this), Validators.email.bind(this)]],
+    telefone: [
+      '',
+      [Validators.required.bind(this), Validators.pattern(/^\(\d{2}\)\s\d{4,5}-\d{4}$/)],
+    ],
   });
 
   public get nome(): AbstractControl | null {
     return this.formGroup.get('nome');
   }
 
-  public get crm(): AbstractControl | null {
-    return this.formGroup.get('crm');
+  public get cpf(): AbstractControl | null {
+    return this.formGroup.get('cpf');
+  }
+
+  public get email(): AbstractControl | null {
+    return this.formGroup.get('email');
+  }
+
+  public get telefone(): AbstractControl | null {
+    return this.formGroup.get('telefone');
   }
 
   public register(): void {
     if (this.formGroup.invalid) return;
 
-    const registerModel: DoctorDto = this.formGroup.value as DoctorDto;
+    const registerModel: PatientDto = this.formGroup.value as PatientDto;
 
     const registerObserver: Observer<IdApiResponse> = {
       next: () =>
@@ -65,9 +77,9 @@ export class RegisterDoctorsComponent {
         ),
       error: (err: HttpErrorResponse) =>
         this.notificationService.error(err.error.erros as string, 'OK'),
-      complete: () => void this.router.navigate(['/doctors']),
+      complete: () => void this.router.navigate(['/patients']),
     };
 
-    this.doctorService.register(registerModel).subscribe(registerObserver);
+    this.patientService.register(registerModel).subscribe(registerObserver);
   }
 }
