@@ -1,0 +1,44 @@
+<section class="list-section">
+  <div class="main-content">
+    <h2>Doctors</h2>
+
+    <div class="items">
+      <a class="button" routerLink="register" mat-flat-button>
+        <mat-icon>add</mat-icon>
+        Register New Doctor
+      </a>
+    </div>
+
+    <hr />
+
+    <div class="list">
+      @for (doctor of doctors$ | async; track $index) {
+        <div class="item">
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title>{{ doctor.nome | titlecase }} </mat-card-title>
+            </mat-card-header>
+
+            <mat-card-content style="min-height: 40px">
+              <p>{{ doctor.crm | titlecase }}</p>
+            </mat-card-content>
+
+            <mat-card-actions align="end">
+              <a [routerLink]="['edit', doctor.id]" mat-icon-button matTooltip="Edit">
+                <mat-icon>edit</mat-icon>
+              </a>
+              <a
+                class="button button__danger"
+                [routerLink]="['delete', doctor.id]"
+                mat-icon-button
+                matTooltip="Delete"
+              >
+                <mat-icon>delete</mat-icon>
+              </a>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      }
+    </div>
+  </div>
+</section>

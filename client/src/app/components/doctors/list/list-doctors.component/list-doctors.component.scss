@@ -1,0 +1,61 @@
+.list-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+.main-content {
+  width: 100%;
+  padding-inline: 1rem;
+
+  @media (min-width: 992px) {
+    width: 66.666667%;
+    padding-inline: 0;
+  }
+}
+
+.items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin: 1rem;
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.item {
+  width: 100%;
+
+  mat-card {
+    padding: 0.25rem;
+  }
+}
+
+.button {
+  .items & {
+    width: 100%;
+  }
+
+  &__danger {
+    color: #dc3545;
+    margin-left: 0.25rem;
+  }
+}
+
+@media (min-width: 992px) {
+  .item {
+    flex: 0 0 auto;
+    width: 33.333333%;
+  }
+  .button {
+    .items & {
+      flex: 0 0 auto;
+      width: 16.666667%;
+    }
+  }
+}

@@ -20,4 +20,9 @@ export const routes: Routes = [
     loadChildren: () => import('../routes/patient.routes').then((route) => route.patientRoutes),
     canActivate: [authenticatedUserGuard],
   },
+  {
+    path: 'doctors',
+    loadChildren: () => import('../routes/doctor.routes').then((route) => route.doctorRoutes),
+    canActivate: [authenticatedUserGuard],
+  },
 ];
