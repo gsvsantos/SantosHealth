@@ -13,7 +13,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { filter, map, Observer, shareReplay, tap } from 'rxjs';
+import { filter, map, Observer, shareReplay, switchMap, take, tap } from 'rxjs';
 import { NotificationService } from '../../../../services/notification.service';
 import { PatientDto, IdApiResponse, PatientDetailsDto } from '../../../../models/patient.models';
 import { PatientService } from '../../../../services/patient.service';
@@ -74,7 +74,7 @@ export class EditPatientComponent {
     return this.formGroup.get('telefone');
   }
 
-  public register(): void {
+  public edit(): void {
     if (this.formGroup.invalid) return;
 
     const editModel: PatientDto = this.formGroup.value as PatientDto;
@@ -87,6 +87,11 @@ export class EditPatientComponent {
       complete: () => void this.router.navigate(['/patients']),
     };
 
-    this.patientService.register(editModel).subscribe(editObserver);
+    this.patient$
+      .pipe(
+        take(1),
+        switchMap((patient) => this.patientService.edit(patient.id, editModel)),
+      )
+      .subscribe(editObserver);
   }
 }

@@ -1,12 +1,12 @@
 <section class="register-section">
   <div class="main-content">
-    <h2>Patient Registration</h2>
+    <h2>Edit Patient</h2>
     <hr />
     <mat-card class="card">
       @if (patient$ | async) {
-        <form [formGroup]="formGroup" (ngSubmit)="register()">
+        <form [formGroup]="formGroup" (ngSubmit)="edit()">
           <mat-card-header>
-            <mat-card-title>Fill out the registration form</mat-card-title>
+            <mat-card-title>Edit patient information</mat-card-title>
           </mat-card-header>
 
           <mat-card-content class="card-content">
@@ -53,7 +53,7 @@
           </mat-card-content>
           <mat-card-actions align="end">
             <a mat-stroked-button routerLink="/patients">Cancel</a>
-            <button mat-flat-button class="botao" type="submit" [disabled]="formGroup.invalid">
+            <button mat-flat-button class="button" type="submit" [disabled]="formGroup.invalid">
               <mat-icon>check</mat-icon>
               Confirm
             </button>

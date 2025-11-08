@@ -22,8 +22,11 @@ export class PatientService {
   public register(registerModel: PatientDto): Observable<IdApiResponse> {
     return this.http.post<IdApiResponse>(this.apiUrl, registerModel);
   }
-  public edit(): void {}
-  public delete(): void {}
+  public edit(id: string, editModel: PatientDto): Observable<IdApiResponse> {
+    const url = `${this.apiUrl}/${id}`;
+
+    return this.http.put<IdApiResponse>(url, editModel);
+  }
   public getById(id: string): Observable<PatientDetailsDto> {
     const url = `${this.apiUrl}/${id}`;
 
