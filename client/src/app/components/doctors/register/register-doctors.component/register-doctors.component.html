@@ -1,0 +1,45 @@
+<section class="register-section">
+  <div class="main-content">
+    <!-- Título alterado para Doutor -->
+    <h2>Doctor Registration</h2>
+    <hr />
+    <mat-card class="card">
+      <form [formGroup]="formGroup" (ngSubmit)="register()">
+        <mat-card-header>
+          <mat-card-title>Fill out the registration form</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content class="card-content">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="nome" type="text" />
+            @if (nome?.errors?.['required']) {
+              <mat-error>Name is required.</mat-error>
+            }
+            @if (nome?.errors?.['minlength']) {
+              <mat-error>Name must be at least 3 characters long.</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>CRM</mat-label>
+            <input matInput formControlName="crm" type="text" />
+            @if (crm?.errors?.['required']) {
+              <mat-error>CRM is required.</mat-error>
+            }
+            @if (crm?.errors?.['pattern']) {
+              <mat-error>CRM must be in the format 00000-UF.</mat-error>
+            }
+          </mat-form-field>
+        </mat-card-content>
+        <mat-card-actions align="end">
+          <a mat-stroked-button routerLink="/doctors">Cancel</a>
+          <button mat-flat-button class="button" type="submit" [disabled]="formGroup.invalid">
+            <mat-icon>check</mat-icon>
+            Confirm
+          </button>
+        </mat-card-actions>
+      </form>
+    </mat-card>
+  </div>
+</section>
