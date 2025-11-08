@@ -32,4 +32,4 @@ export interface Activity {
   medicos: Doctor[];
 }
 
-export type PatientDataPayload = ListPatientsDto | IdApiResponse | PatientDetailsDto;
+export type PatientDataPayload = ListPatientsDto | PatientDetailsDto;
