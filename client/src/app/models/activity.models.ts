@@ -9,6 +9,12 @@ export interface ActivityDto {
   medicos: string[];
 }
 
+export interface EditActivityDto {
+  inicio: Date;
+  termino: Date;
+  medicos: string[];
+}
+
 export interface ListActivitiesDto {
   quantidadeRegistros: number;
   registros: Activity[];

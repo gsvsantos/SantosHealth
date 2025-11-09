@@ -1,9 +1,10 @@
 import { Routes } from '@angular/router';
 import { ListActivitiesComponent } from '../components/activities/list/list-activities.component';
-import { listActivitiesResolver } from '../resolvers/activity.resolvers';
-import { RegisterActivitiesComponent } from '../components/activities/register/register-activities.component';
+import { activityDetailsResolver, listActivitiesResolver } from '../resolvers/activity.resolvers';
+import { RegisterActivitiesComponent } from '../components/activities/register/register-activity.component';
 import { listPatientsResolver } from '../resolvers/patient.resolvers';
 import { listDoctorsResolver } from '../resolvers/doctor.resolvers';
+import { EditActivityComponent } from '../components/activities/edit/edit-activity.component';
 
 export const activityRoutes: Routes = [
   {
@@ -17,11 +18,11 @@ export const activityRoutes: Routes = [
     component: RegisterActivitiesComponent,
     resolve: { patients: listPatientsResolver, doctors: listDoctorsResolver },
   },
-  //   {
-  //     path: 'edit/:id',
-  //     component: EditActivityComponent,
-  //     resolve: { activity: activityDetailsResolver },
-  //   },
+  {
+    path: 'edit/:id',
+    component: EditActivityComponent,
+    resolve: { activity: activityDetailsResolver, doctors: listDoctorsResolver },
+  },
   //   {
   //     path: 'delete/:id',
   //     component: DeleteActivityComponent,

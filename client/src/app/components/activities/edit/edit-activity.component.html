@@ -1,0 +1,89 @@
+<section class="edit-section">
+  <div class="main-content">
+    <h2>Edit Activity</h2>
+    <hr />
+    <mat-card class="card">
+      @if (activity$ | async) {
+        <form [formGroup]="formGroup" (ngSubmit)="edit()">
+          <mat-card-header>
+            <mat-card-title>Edit doctor information</mat-card-title>
+          </mat-card-header>
+
+          <mat-card-content class="card-content">
+            <mat-radio-group aria-label="Activity type" formControlName="tipoAtividade">
+              <mat-radio-button value="Consulta">Appointment</mat-radio-button>
+              <mat-radio-button value="Cirurgia">Surgery</mat-radio-button>
+              @if (tipoAtividade?.errors?.['required']) {
+                <mat-error>Select a type.</mat-error>
+              }
+            </mat-radio-group>
+
+            @if (tipoAtividade?.value) {
+              @if (tipoAtividade?.value === 'Consulta') {
+                <mat-form-field>
+                  <mat-label>Doctors</mat-label>
+                  <mat-select formControlName="medicos">
+                    @for (doctor of doctors$ | async; track doctor.id) {
+                      <mat-option [value]="doctor.id">{{ doctor.nome }}</mat-option>
+                    }
+                  </mat-select>
+                  @if (medicos?.errors?.['required']) {
+                    <mat-error>Doctor is required.</mat-error>
+                  }
+                </mat-form-field>
+              } @else if (tipoAtividade?.value === 'Cirurgia') {
+                <mat-form-field>
+                  <mat-label>Doctors</mat-label>
+                  <mat-select formControlName="medicos" multiple>
+                    @for (doctor of doctors$ | async; track doctor.id) {
+                      <mat-option [value]="doctor.id">{{ doctor.nome }}</mat-option>
+                    }
+                  </mat-select>
+                  @if (medicos?.errors?.['required']) {
+                    <mat-error>Doctors is required.</mat-error>
+                  }
+                </mat-form-field>
+              }
+              <div class="start-date">
+                <mat-form-field>
+                  <mat-label>Start Date</mat-label>
+                  <input matInput [matDatepicker]="startdatepicker" formControlName="inicio" />
+                  <mat-datepicker #startdatepicker />
+                  <mat-datepicker-toggle [for]="startdatepicker" matSuffix />
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-label>Start Time</mat-label>
+                  <input matInput [matTimepicker]="starttimepicker" formControlName="inicio" />
+                  <mat-timepicker #starttimepicker />
+                  <mat-timepicker-toggle [for]="starttimepicker" matSuffix />
+                </mat-form-field>
+              </div>
+
+              <div class="end-date">
+                <mat-form-field>
+                  <mat-label>End Date</mat-label>
+                  <input matInput [matDatepicker]="enddatepicker" formControlName="termino" />
+                  <mat-datepicker #enddatepicker />
+                  <mat-datepicker-toggle [for]="enddatepicker" matSuffix />
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-label>End Time</mat-label>
+                  <input matInput [matTimepicker]="endtimepicker" formControlName="termino" />
+                  <mat-timepicker #endtimepicker />
+                  <mat-timepicker-toggle [for]="endtimepicker" matSuffix />
+                </mat-form-field>
+              </div>
+            }
+          </mat-card-content>
+          <mat-card-actions align="end">
+            <a mat-stroked-button routerLink="/activities">Cancel</a>
+            <button mat-flat-button class="button" type="submit" [disabled]="formGroup.invalid">
+              <mat-icon>check</mat-icon>
+              Save
+            </button>
+          </mat-card-actions>
+        </form>
+      }
+    </mat-card>
+  </div>
+</section>
