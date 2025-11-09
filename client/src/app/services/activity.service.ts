@@ -22,6 +22,11 @@ export class ActivityService {
 
     return this.http.put<IdApiResponse>(url, editModel);
   }
+  public delete(id: string): Observable<null> {
+    const url = `${this.apiUrl}/${id}`;
+
+    return this.http.delete<null>(url);
+  }
   public getById(id: string): Observable<Activity> {
     const url = `${this.apiUrl}/${id}`;
 

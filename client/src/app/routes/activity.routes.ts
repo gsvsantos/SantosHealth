@@ -5,6 +5,7 @@ import { RegisterActivitiesComponent } from '../components/activities/register/r
 import { listPatientsResolver } from '../resolvers/patient.resolvers';
 import { listDoctorsResolver } from '../resolvers/doctor.resolvers';
 import { EditActivityComponent } from '../components/activities/edit/edit-activity.component';
+import { DeleteActivityComponent } from '../components/activities/delete/delete-activity.component';
 
 export const activityRoutes: Routes = [
   {
@@ -23,9 +24,9 @@ export const activityRoutes: Routes = [
     component: EditActivityComponent,
     resolve: { activity: activityDetailsResolver, doctors: listDoctorsResolver },
   },
-  //   {
-  //     path: 'delete/:id',
-  //     component: DeleteActivityComponent,
-  //     resolve: { activity: activityDetailsResolver },
-  //   },
+  {
+    path: 'delete/:id',
+    component: DeleteActivityComponent,
+    resolve: { activity: activityDetailsResolver },
+  },
 ];

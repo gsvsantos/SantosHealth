@@ -29,4 +29,4 @@ export interface Activity {
   medicos: Doctor[];
 }
 
-export type ActivityDataPayload = ListActivitiesDto /*| ActivityDetailsDto*/;
+export type ActivityDataPayload = ListActivitiesDto;
