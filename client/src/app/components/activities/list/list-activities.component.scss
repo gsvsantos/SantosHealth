@@ -23,6 +23,22 @@
   display: flex;
   gap: 0.5rem;
   align-items: center;
+
+  .mat-mdc-form-field {
+    flex-direction: row;
+  }
+}
+
+.filter-select {
+  height: 40px;
+  ::ng-deep .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mat-mdc-floating-label {
+    top: 20px;
+  }
+  ::ng-deep .mat-mdc-form-field-infix {
+    height: 0;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
 }
 
 .list {
@@ -33,7 +49,7 @@
 }
 
 .item {
-  mat-card {
+  .card {
     border: 1px solid #f0f0f0;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     transition: all 0.2s ease-in-out;
@@ -50,12 +66,10 @@
   .doctor-list-title {
     font-weight: 500;
     margin-bottom: 0.25rem;
-    color: rgba(0, 0, 0, 0.7);
   }
 
   .doctor-name {
     margin: 0 0 0.25rem 0.5rem;
-    color: rgba(0, 0, 0, 0.87);
   }
 }
 

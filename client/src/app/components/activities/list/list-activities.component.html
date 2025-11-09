@@ -8,7 +8,7 @@
         Register New Activity
       </a>
       <div class="filters">
-        <mat-form-field appearance="outline" class="filter-select">
+        <mat-form-field appearance="outline" class="filter-select" mat-density="-2">
           <mat-label>Filter by Type</mat-label>
           <mat-select (selectionChange)="onFilterChange($event.value)">
             <mat-option value="Consulta">Appointment</mat-option>
@@ -24,7 +24,7 @@
     <div class="list">
       @for (activity of activities$ | async; track activity.id) {
         <div class="item">
-          <mat-card>
+          <mat-card class="card">
             <mat-card-header>
               <mat-card-title>
                 {{ activity.tipoAtividade }}

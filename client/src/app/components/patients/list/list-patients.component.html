@@ -2,7 +2,7 @@
   <div class="main-content">
     <h2>Patients</h2>
 
-    <div class="items">
+    <div class="items-container">
       <a class="button" routerLink="register" mat-flat-button>
         <mat-icon>add</mat-icon>
         Register New Patient
@@ -12,17 +12,26 @@
     <hr />
 
     <div class="list">
-      @for (patient of patients$ | async; track $index) {
+      @for (patient of patients$ | async; track patient.id) {
         <div class="item">
-          <mat-card>
+          <mat-card class="card" tabindex="0">
             <mat-card-header>
               <mat-card-title>{{ patient.nome | titlecase }} </mat-card-title>
             </mat-card-header>
 
-            <mat-card-content style="min-height: 40px">
-              <p>{{ patient.cpf | titlecase }}</p>
-              <p>{{ patient.email }}</p>
-              <p>{{ patient.telefone | titlecase }}</p>
+            <mat-card-content class="patient-content">
+              <div class="info-row">
+                <mat-icon>badge</mat-icon>
+                <span>{{ patient.cpf }}</span>
+              </div>
+              <div class="info-row">
+                <mat-icon>email</mat-icon>
+                <span>{{ patient.email }}</span>
+              </div>
+              <div class="info-row">
+                <mat-icon>phone</mat-icon>
+                <span>{{ patient.telefone }}</span>
+              </div>
             </mat-card-content>
 
             <mat-card-actions align="end">

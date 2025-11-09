@@ -2,7 +2,7 @@
   <div class="main-content">
     <h2>Doctors</h2>
 
-    <div class="items">
+    <div class="items-container">
       <a class="button" routerLink="register" mat-flat-button>
         <mat-icon>add</mat-icon>
         Register New Doctor
@@ -14,13 +14,13 @@
     <div class="list">
       @for (doctor of doctors$ | async; track $index) {
         <div class="item">
-          <mat-card>
+          <mat-card class="card">
             <mat-card-header>
               <mat-card-title>{{ doctor.nome | titlecase }} </mat-card-title>
             </mat-card-header>
 
-            <mat-card-content style="min-height: 40px">
-              <p>{{ doctor.crm | uppercase }}</p>
+            <mat-card-content class="doctor-content">
+              <p class="info-row">{{ doctor.crm | uppercase }}</p>
             </mat-card-content>
 
             <mat-card-actions align="end">

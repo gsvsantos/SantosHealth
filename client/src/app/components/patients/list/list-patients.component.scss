@@ -1,61 +1,69 @@
 .list-section {
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
-  padding: 2rem 0;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
 }
 
 .main-content {
   width: 100%;
-  padding-inline: 1rem;
-
-  @media (min-width: 992px) {
-    width: 66.666667%;
-    padding-inline: 0;
-  }
+  max-width: 1200px;
 }
 
-.items {
+.items-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.25rem;
-  margin: 1rem;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+  padding-top: 1rem;
 }
 
 .item {
-  width: 100%;
-
   mat-card {
-    padding: 0.25rem;
+    border: 1px solid #f0f0f0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease-in-out;
+
+    &:hover,
+    &:focus {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
   }
 }
 
-.button {
-  .items & {
-    width: 100%;
-  }
+.patient-content {
+  .info-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
 
-  &__danger {
-    color: #dc3545;
-    margin-left: 0.25rem;
+    mat-icon {
+      font-size: 1.1rem;
+      height: 1.1rem;
+      width: 1.1rem;
+    }
   }
 }
 
-@media (min-width: 992px) {
-  .item {
-    flex: 0 0 auto;
-    width: 33.333333%;
+.button__danger {
+  color: #dc3545;
+  margin-left: 0.25rem;
+}
+
+@media (max-width: 600px) {
+  .items-container {
+    justify-content: stretch;
   }
   .button {
-    .items & {
-      flex: 0 0 auto;
-      width: 16.666667%;
-    }
+    width: 100%;
   }
 }
