@@ -53,16 +53,13 @@
     </mat-card-header>
     <mat-card-content>
       <mat-list role="list">
-        <mat-list-item role="listitem">
-          <div matListItemTitle>1. Dr. Santos #placeholder</div>
-          <div matListItemLine>CRM: 12345-SP | 22 Activities #placeholder</div>
-        </mat-list-item>
-        <mat-divider></mat-divider>
-        <mat-list-item role="listitem">
-          <div matListItemTitle>2. Dr. Silva #placeholder</div>
-          <div matListItemLine>CRM: 54321-RJ | 19 Activities #placeholder</div>
-        </mat-list-item>
-        <mat-divider></mat-divider>
+        @for (item of top10Doctors$ | async; track item.medicoId) {
+          <mat-list-item role="listitem">
+            <div matListItemTitle>{{ item.medico | titlecase }}</div>
+            <div matListItemLine>Worked hours: {{ item.totalDeHorasTrabalhadas }}h</div>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+        }
         <mat-list-item class="view-all-link" routerLink="/doctors" matRipple>
           View all doctors...
         </mat-list-item>

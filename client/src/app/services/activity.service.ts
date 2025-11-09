@@ -37,7 +37,7 @@ export class ActivityService {
     if (activityType != null) {
       params = params.set('tipoAtividade', activityType);
     }
-    console.log(activityType);
+
     return this.http.get<ApiResponseDto>(this.apiUrl, { params }).pipe(
       map(mapApiReponse<ListActivitiesDto>),
       map((res) => res.registros),

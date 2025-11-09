@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, ResolveFn } from '@angular/router';
-import { Doctor } from '../models/doctor.models';
+import { Doctor, DoctorDtoToTop10 } from '../models/doctor.models';
 import { DoctorService } from '../services/doctor.service';
 
 export const listDoctorsResolver: ResolveFn<Doctor[]> = () => {
@@ -16,4 +16,9 @@ export const doctorDetailsResolver: ResolveFn<Doctor> = (route: ActivatedRouteSn
   const id: string = route.paramMap.get('id')!;
 
   return doctorService.getById(id);
+};
+
+export const listTop10DoctorsResolver: ResolveFn<DoctorDtoToTop10[]> = () => {
+  const doctorService = inject(DoctorService);
+  return doctorService.getTop10(null, null);
 };
