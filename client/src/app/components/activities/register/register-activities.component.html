@@ -1,0 +1,99 @@
+<section class="register-section">
+  <div class="main-content">
+    <h2>Activity Registration</h2>
+    <hr />
+    <mat-card class="card">
+      <form [formGroup]="formGroup" (ngSubmit)="register()">
+        <mat-card-header>
+          <mat-card-title>Fill out the registration form</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content class="card-content">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Patient</mat-label>
+            <mat-select formControlName="pacienteId">
+              @for (patient of patients$ | async; track patient.id) {
+                <mat-option [value]="patient.id">{{ patient.nome }}</mat-option>
+              }
+            </mat-select>
+            @if (pacienteId?.errors?.['required']) {
+              <mat-error>Patient is required.</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-radio-group aria-label="Activity type" formControlName="tipoAtividade">
+            <mat-radio-button value="Consulta">Appointment</mat-radio-button>
+            <mat-radio-button value="Cirurgia">Surgery</mat-radio-button>
+            @if (tipoAtividade?.errors?.['required']) {
+              <mat-error>Select a type.</mat-error>
+            }
+          </mat-radio-group>
+
+          @if (tipoAtividade?.value) {
+            @if (tipoAtividade?.value === 'Consulta') {
+              <mat-form-field>
+                <mat-label>Doctors</mat-label>
+                <mat-select formControlName="medicos">
+                  @for (doctor of doctors$ | async; track doctor.id) {
+                    <mat-option [value]="doctor.id">{{ doctor.nome }}</mat-option>
+                  }
+                </mat-select>
+                @if (medicos?.errors?.['required']) {
+                  <mat-error>Doctor is required.</mat-error>
+                }
+              </mat-form-field>
+            } @else if (tipoAtividade?.value === 'Cirurgia') {
+              <mat-form-field>
+                <mat-label>Doctors</mat-label>
+                <mat-select formControlName="medicos" multiple>
+                  @for (doctor of doctors$ | async; track doctor.id) {
+                    <mat-option [value]="doctor.id">{{ doctor.nome }}</mat-option>
+                  }
+                </mat-select>
+                @if (medicos?.errors?.['required']) {
+                  <mat-error>Doctors is required.</mat-error>
+                }
+              </mat-form-field>
+            }
+            <div class="start-date">
+              <mat-form-field>
+                <mat-label>Start Date</mat-label>
+                <input matInput [matDatepicker]="startdatepicker" formControlName="inicio" />
+                <mat-datepicker #startdatepicker />
+                <mat-datepicker-toggle [for]="startdatepicker" matSuffix />
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Start Time</mat-label>
+                <input matInput [matTimepicker]="starttimepicker" formControlName="inicio" />
+                <mat-timepicker #starttimepicker />
+                <mat-timepicker-toggle [for]="starttimepicker" matSuffix />
+              </mat-form-field>
+            </div>
+
+            <div class="end-date">
+              <mat-form-field>
+                <mat-label>End Date</mat-label>
+                <input matInput [matDatepicker]="enddatepicker" formControlName="termino" />
+                <mat-datepicker #enddatepicker />
+                <mat-datepicker-toggle [for]="enddatepicker" matSuffix />
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>End Time</mat-label>
+                <input matInput [matTimepicker]="endtimepicker" formControlName="termino" />
+                <mat-timepicker #endtimepicker />
+                <mat-timepicker-toggle [for]="endtimepicker" matSuffix />
+              </mat-form-field>
+            </div>
+          }
+        </mat-card-content>
+        <mat-card-actions align="end">
+          <a mat-stroked-button routerLink="/activities">Cancel</a>
+          <button mat-flat-button class="button" type="submit">
+            <mat-icon>check</mat-icon>
+            Confirm
+          </button>
+        </mat-card-actions>
+      </form>
+    </mat-card>
+  </div>
+</section>

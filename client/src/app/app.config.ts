@@ -8,6 +8,7 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './routes/app.routes';
 import { provideAuth } from './providers/auth.provider';
+import { providePTBRDateFormat } from './providers/date-format.provider';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,5 +17,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideNotification(),
     provideAuth(),
+    providePTBRDateFormat(),
   ],
 };

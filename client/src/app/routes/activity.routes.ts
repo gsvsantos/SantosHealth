@@ -1,6 +1,9 @@
 import { Routes } from '@angular/router';
 import { ListActivitiesComponent } from '../components/activities/list/list-activities.component';
 import { listActivitiesResolver } from '../resolvers/activity.resolvers';
+import { RegisterActivitiesComponent } from '../components/activities/register/register-activities.component';
+import { listPatientsResolver } from '../resolvers/patient.resolvers';
+import { listDoctorsResolver } from '../resolvers/doctor.resolvers';
 
 export const activityRoutes: Routes = [
   {
@@ -9,7 +12,11 @@ export const activityRoutes: Routes = [
     resolve: { activities: listActivitiesResolver },
     runGuardsAndResolvers: 'paramsOrQueryParamsChange',
   },
-  //   { path: 'register', component: RegisterActivitiesComponent },
+  {
+    path: 'register',
+    component: RegisterActivitiesComponent,
+    resolve: { patients: listPatientsResolver, doctors: listDoctorsResolver },
+  },
   //   {
   //     path: 'edit/:id',
   //     component: EditActivityComponent,
