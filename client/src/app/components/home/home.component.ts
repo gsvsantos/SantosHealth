@@ -44,7 +44,6 @@ export class Home {
           const inicioMs = new Date(inicio).getTime();
           return Number.isFinite(inicioMs) && inicioMs >= nowUtcMs;
         })
-        .sort((first, next) => new Date(first.inicio).getTime() - new Date(next.inicio).getTime())
         .slice(0, 10);
     }),
   );
