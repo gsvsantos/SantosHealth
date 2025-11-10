@@ -15,16 +15,32 @@ public class RepositorioMedicoEmOrm(IContextoPersistencia context)
     public async Task<List<RegistroDeHorasTrabalhadas>> SelecionarMedicosMaisAtivosPorPeriodo(
         DateTime inicioPeriodo, DateTime terminoPeriodo)
     {
-        return await this.registros.Select(medico => new RegistroDeHorasTrabalhadas
+        if (inicioPeriodo.Equals(DateTime.MinValue) && terminoPeriodo.Equals(DateTime.MinValue))
         {
-            MedicoId = medico.Id,
-            Medico = medico.Nome,
-            TotalDeHorasTrabalhadas = medico.Atividades
-            .Where(a => a.Inicio >= inicioPeriodo && a.Termino <= terminoPeriodo)
-            .Sum(a => EF.Functions.DateDiffHour(a.Inicio, a.Termino))
-            .GetValueOrDefault()
-        }).OrderByDescending(m => m.TotalDeHorasTrabalhadas)
-        .Take(10)
-        .ToListAsync();
+            return await this.registros.Select(medico => new RegistroDeHorasTrabalhadas
+            {
+                MedicoId = medico.Id,
+                Medico = medico.Nome,
+                TotalDeHorasTrabalhadas = medico.Atividades
+                    .Sum(a => EF.Functions.DateDiffHour(a.Inicio, a.Termino))
+                    .GetValueOrDefault()
+            }).OrderByDescending(m => m.TotalDeHorasTrabalhadas)
+            .Take(10)
+            .ToListAsync();
+        }
+        else
+        {
+            return await this.registros.Select(medico => new RegistroDeHorasTrabalhadas
+            {
+                MedicoId = medico.Id,
+                Medico = medico.Nome,
+                TotalDeHorasTrabalhadas = medico.Atividades
+                    .Where(a => a.Inicio >= inicioPeriodo && a.Termino <= terminoPeriodo)
+                    .Sum(a => EF.Functions.DateDiffHour(a.Inicio, a.Termino))
+                    .GetValueOrDefault()
+            }).OrderByDescending(m => m.TotalDeHorasTrabalhadas)
+            .Take(10)
+            .ToListAsync();
+        }
     }
 }

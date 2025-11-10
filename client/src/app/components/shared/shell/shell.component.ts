@@ -47,7 +47,7 @@ export class ShellComponent {
     {
       titulo: 'Home',
       icone: 'home',
-      link: '/home',
+      link: 'home',
     },
     {
       titulo: 'Activities',
