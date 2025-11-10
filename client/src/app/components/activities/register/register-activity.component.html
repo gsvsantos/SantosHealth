@@ -58,6 +58,31 @@
             <div class="start-date">
               <mat-form-field>
                 <mat-label>Start Date</mat-label>
+                <input
+                  matInput
+                  [owlDateTimeTrigger]="startdatepicker"
+                  [owlDateTime]="startdatepicker"
+                  formControlName="inicio"
+                />
+                <owl-date-time #startdatepicker></owl-date-time>
+              </mat-form-field>
+            </div>
+
+            <div class="end-date">
+              <mat-form-field>
+                <mat-label>End Date</mat-label>
+                <input
+                  matInput
+                  [owlDateTimeTrigger]="enddatepicker"
+                  [owlDateTime]="enddatepicker"
+                  formControlName="termino"
+                />
+                <owl-date-time #enddatepicker></owl-date-time>
+              </mat-form-field>
+            </div>
+            <!-- <div class="start-date">
+              <mat-form-field>
+                <mat-label>Start Date</mat-label>
                 <input matInput [matDatepicker]="startdatepicker" formControlName="inicio" />
                 <mat-datepicker #startdatepicker />
                 <mat-datepicker-toggle [for]="startdatepicker" matSuffix />
@@ -83,7 +108,7 @@
                 <mat-timepicker #endtimepicker />
                 <mat-timepicker-toggle [for]="endtimepicker" matSuffix />
               </mat-form-field>
-            </div>
+            </div> -->
           }
         </mat-card-content>
         <mat-card-actions align="end">

@@ -37,7 +37,8 @@
             <mat-card-content class="activity-content">
               <p>
                 <strong>When:</strong>
-                {{ activity.inicio | date: 'short' }} – {{ activity.termino | date: 'short' }}
+                {{ activity.inicio | date: 'dd/MM/yyyy HH:mm' : '-06:00' }} –
+                {{ activity.termino | date: 'dd/MM/yyyy HH:mm' : '-06:00' }}
               </p>
 
               <p class="doctor-list-title"><strong>Doctor(s):</strong></p>

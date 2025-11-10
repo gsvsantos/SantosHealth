@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { unknownUserGuard } from '../guards/unknown-user.guard';
 import { authenticatedUserGuard } from '../guards/authenticated-user.guard';
 import { listTop10DoctorsResolver } from '../resolvers/doctor.resolvers';
+import { listActivitiesResolver } from '../resolvers/activity.resolvers';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -15,7 +16,7 @@ export const routes: Routes = [
     loadComponent: () =>
       import('../components/home/home.component').then((component) => component.Home),
     canActivate: [authenticatedUserGuard],
-    resolve: { top10Doctors: listTop10DoctorsResolver },
+    resolve: { top10Doctors: listTop10DoctorsResolver, upcomingActivities: listActivitiesResolver },
   },
   {
     path: 'patients',

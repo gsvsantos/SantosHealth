@@ -9,6 +9,7 @@ import { provideRouter } from '@angular/router';
 import { routes } from './routes/app.routes';
 import { provideAuth } from './providers/auth.provider';
 import { providePTBRDateFormat } from './providers/date-format.provider';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -18,5 +19,6 @@ export const appConfig: ApplicationConfig = {
     provideNotification(),
     provideAuth(),
     providePTBRDateFormat(),
+    provideAnimationsAsync(),
   ],
 };

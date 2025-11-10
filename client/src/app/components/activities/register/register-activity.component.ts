@@ -20,24 +20,25 @@ import { ActivityService } from '../../../services/activity.service';
 import { NotificationService } from '../../../services/notification.service';
 import { MatSelectModule } from '@angular/material/select';
 import { AsyncPipe } from '@angular/common';
-import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatRadioModule } from '@angular/material/radio';
-import { MatTimepickerModule } from '@angular/material/timepicker';
 import { Doctor } from '../../../models/doctor.models';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from '@danielmoncada/angular-datetime-picker';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 @Component({
   selector: 'app-register-activities.component',
   imports: [
+    OverlayModule,
     MatCardModule,
     MatButtonModule,
     MatIconModule,
     MatFormFieldModule,
-    MatTimepickerModule,
-    MatDatepickerModule,
     MatInputModule,
     MatSelectModule,
     MatRadioModule,
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule,
     AsyncPipe,
     ReactiveFormsModule,
     RouterLink,
@@ -106,6 +107,8 @@ export class RegisterActivitiesComponent {
       ...(this.formGroup.value as ActivityDto),
       medicos: medicosArray,
     };
+
+    console.log(registerModel);
 
     const registerObserver: Observer<IdApiResponse> = {
       next: () => this.notificationService.success(`Activity registered successfully!`, 'OK'),

@@ -23,22 +23,23 @@
   <mat-card class="dashboard-card">
     <mat-card-header>
       <mat-card-title>Upcoming Activities</mat-card-title>
-      <mat-card-subtitle>A preview of the schedule (e.g., next 5)</mat-card-subtitle>
+      <mat-card-subtitle>A preview of the schedule</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
       <mat-list role="list">
-        <mat-list-item role="listitem">
-          <mat-icon matListItemIcon>calendar_month</mat-icon>
-          <div matListItemTitle>Surgery - Dr. House #placeholder</div>
-          <div matListItemLine>Patient: John Doe | 09:00 - 11:00 #placeholder</div>
-        </mat-list-item>
-        <mat-divider></mat-divider>
-        <mat-list-item role="listitem">
-          <mat-icon matListItemIcon>calendar_month</mat-icon>
-          <div matListItemTitle>Appointment - Dr. Grey #placeholder</div>
-          <div matListItemLine>Patient: Jane Doe | 11:30 - 11:40 #placeholder</div>
-        </mat-list-item>
-        <mat-divider></mat-divider>
+        @for (item of upcomingActivities$ | async; track item.id) {
+          <mat-list-item role="listitem">
+            <mat-icon matListItemIcon>calendar_month</mat-icon>
+            <div matListItemTitle>
+              {{ item.tipoAtividade | titlecase }} - {{ item.medicos.length }}
+            </div>
+            <div matListItemLine>
+              Patient: {{ item.paciente.nome | titlecase }} |
+              {{ item.inicio | date: 'dd/MM/yyyy HH:mm' : '-06:00' }}
+            </div>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+        }
         <mat-list-item class="view-all-link" routerLink="/activities" matRipple>
           View full schedule...
         </mat-list-item>
