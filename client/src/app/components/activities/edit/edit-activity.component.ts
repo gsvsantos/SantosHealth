@@ -113,10 +113,8 @@ export class EditActivityComponent {
 
     const editObserver: Observer<IdApiResponse> = {
       next: () => this.notificationService.success(`Activity updated successfully!`, 'OK'),
-      error: (err: HttpErrorResponse) => (
-        console.log(err),
-        this.notificationService.error(err.error.erros as string, 'OK')
-      ),
+      error: (err: HttpErrorResponse) =>
+        this.notificationService.error(err.error.erros as string, 'OK'),
       complete: () => void this.router.navigate(['/activities']),
     };
 

@@ -47,7 +47,6 @@ export class Home {
         .sort((first, next) => new Date(first.inicio).getTime() - new Date(next.inicio).getTime())
         .slice(0, 10);
     }),
-    tap((res) => console.log(res)),
   );
 
   protected readonly top10Doctors$ = this.route.data.pipe(

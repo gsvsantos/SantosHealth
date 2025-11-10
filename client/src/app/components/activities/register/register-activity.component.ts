@@ -108,8 +108,6 @@ export class RegisterActivitiesComponent {
       medicos: medicosArray,
     };
 
-    console.log(registerModel);
-
     const registerObserver: Observer<IdApiResponse> = {
       next: () => this.notificationService.success(`Activity registered successfully!`, 'OK'),
       error: (err: HttpErrorResponse) =>
