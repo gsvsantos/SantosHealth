@@ -1,3 +1,4 @@
+using NoteKeeper.WebApi.Config;
 using OrganizaMed.WebApi.Config;
 using Serilog;
 
