@@ -33,6 +33,7 @@ public class Program
         builder.Services.ConfigureOpenApiAuthHeaders();
 
         // CORS [env CORS_ALLOWED_ORIGINS]
+        builder.Services.ConfigureOptions<CorsConfig>().AddCors();
         builder.Services.ConfigureCorsPolicy(builder.Environment, builder.Configuration);
 
         WebApplication app = builder.Build();
