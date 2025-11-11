@@ -111,7 +111,7 @@ export class RegisterActivitiesComponent {
     const registerObserver: Observer<IdApiResponse> = {
       next: () => this.notificationService.success(`Activity registered successfully!`, 'OK'),
       error: (err: HttpErrorResponse) =>
-        this.notificationService.error(err.error.erros as string, 'OK'),
+        this.notificationService.error(err.error.erros[0] as string, 'OK'),
       complete: () => void this.router.navigate(['/activities']),
     };
 

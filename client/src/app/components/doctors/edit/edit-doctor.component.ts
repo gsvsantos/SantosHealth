@@ -71,7 +71,7 @@ export class EditDoctorComponent {
       next: () =>
         this.notificationService.success(`Doctor "${editModel.nome}" updated successfully!`, 'OK'),
       error: (err: HttpErrorResponse) =>
-        this.notificationService.error(err.error.erros as string, 'OK'),
+        this.notificationService.error(err.error.erros[0] as string, 'OK'),
       complete: () => void this.router.navigate(['/doctors']),
     };
 

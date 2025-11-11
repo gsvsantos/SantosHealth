@@ -5,7 +5,7 @@ import { Activity } from '../models/activity.models';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { ApiResponseDto, IdApiResponse } from '../models/api.models';
-import { mapApiReponse } from '../utils/map-api-response';
+import { mapApiResponse } from '../utils/map-api-response';
 
 @Injectable({
   providedIn: 'root',
@@ -30,7 +30,7 @@ export class ActivityService {
   public getById(id: string): Observable<Activity> {
     const url = `${this.apiUrl}/${id}`;
 
-    return this.http.get<ApiResponseDto>(url).pipe(map(mapApiReponse<Activity>));
+    return this.http.get<ApiResponseDto>(url).pipe(map(mapApiResponse<Activity>));
   }
   public getAll(activityType: string | null): Observable<Activity[]> {
     let params = new HttpParams();
@@ -39,7 +39,7 @@ export class ActivityService {
     }
 
     return this.http.get<ApiResponseDto>(this.apiUrl, { params }).pipe(
-      map(mapApiReponse<ListActivitiesDto>),
+      map(mapApiResponse<ListActivitiesDto>),
       map((res) => res.registros),
     );
   }

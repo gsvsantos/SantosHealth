@@ -1,10 +1,11 @@
 import { HttpRequest, HttpHandlerFn, HttpEvent, HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { NotificationService } from '../services/notification.service';
 import { LocalStorageService } from '../services/local-storage.service';
+import { mapApiErroResponse } from '../utils/map-api-response';
 
 export const authInterceptor = (
   req: HttpRequest<unknown>,
@@ -31,7 +32,7 @@ export const authInterceptor = (
           void router.navigate(['/auth', 'login']);
         }
 
-        return throwError(() => err);
+        return mapApiErroResponse(err) as Observable<HttpEvent<unknown>>;
       }),
     );
   }

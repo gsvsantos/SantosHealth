@@ -3,7 +3,7 @@ import { PatientDataPayload } from './patient.models';
 
 export type ApiResponseDto =
   | { sucesso: true; dados: ApiResponseDataPayload }
-  | { sucesso: false; erro: string[] };
+  | { sucesso: false; erros: string[] };
 
 export type ApiResponseDataPayload = PatientDataPayload | DoctorDataPayload | IdApiResponse;
 

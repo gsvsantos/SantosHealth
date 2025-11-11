@@ -58,7 +58,7 @@ export class LoginComponent {
 
     const loginObserver: PartialObserver<AuthApiResponse> = {
       error: (err: HttpErrorResponse) =>
-        this.notificationService.error(err.error.erros as string, 'OK'),
+        this.notificationService.error(err.error.erros[0] as string, 'OK'),
       complete: () => void this.router.navigate(['/home']),
     };
 
