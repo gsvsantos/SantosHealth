@@ -13,7 +13,7 @@ import { mapApiResponse } from '../utils/map-api-response';
 import { ApiResponseDto } from '../models/api.models';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root', 
 })
 export class PatientService {
   private readonly apiUrl: string = environment.apiUrl + '/api/pacientes';

@@ -63,8 +63,7 @@ export class RegisterDoctorsComponent {
           `Doctor "${registerModel.nome}" registered successfully!`,
           'OK',
         ),
-      error: (err: HttpErrorResponse) =>
-        this.notificationService.error(err.error.erros[0] as string, 'OK'),
+      error: (err: string) => this.notificationService.error(err, 'OK'),
       complete: () => void this.router.navigate(['/doctors']),
     };
 

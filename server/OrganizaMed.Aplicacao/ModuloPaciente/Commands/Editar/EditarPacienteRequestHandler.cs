@@ -22,6 +22,11 @@ public class EditarPacienteRequestHandler(
             return Result.Fail(ErrorResults.NotFoundError(request.Id));
         }
 
+        pacienteSelecionado.Nome = request.Nome;
+        pacienteSelecionado.Cpf = request.Cpf;
+        pacienteSelecionado.Email = request.Email;
+        pacienteSelecionado.Telefone = request.Telefone;
+
         FluentValidation.Results.ValidationResult resultadoValidacao =
             await validador.ValidateAsync(pacienteSelecionado, cancellationToken);
 
@@ -36,15 +41,10 @@ public class EditarPacienteRequestHandler(
 
         List<Paciente> pacientes = await repositorioPaciente.SelecionarTodosAsync();
 
-        if (CpfDuplicado(request.Cpf, pacientes))
+        if (CpfDuplicado(pacienteSelecionado, pacientes))
         {
             return Result.Fail(PacienteErrorResults.CpfDuplicadoError(request.Cpf));
         }
-
-        pacienteSelecionado.Nome = request.Nome;
-        pacienteSelecionado.Cpf = request.Cpf;
-        pacienteSelecionado.Email = request.Email;
-        pacienteSelecionado.Telefone = request.Telefone;
 
         try
         {
@@ -62,12 +62,12 @@ public class EditarPacienteRequestHandler(
         return Result.Ok(new EditarPacienteResponse(pacienteSelecionado.Id));
     }
 
-    private bool CpfDuplicado(string cPF, IEnumerable<Paciente> pacientes)
+    private bool CpfDuplicado(Paciente paciente, IEnumerable<Paciente> pacientes)
     {
         return pacientes
-            .Any(registro => string.Equals(
+            .Any(registro => paciente.Id != registro.Id && string.Equals(
                 registro.Cpf,
-                cPF,
+                paciente.Cpf,
                 StringComparison.CurrentCultureIgnoreCase)
             );
     }

@@ -37,5 +37,9 @@ export const authInterceptor = (
     );
   }
 
-  return next(req);
+  return next(req).pipe(
+    catchError(
+      (err: HttpErrorResponse) => mapApiErroResponse(err) as Observable<HttpEvent<unknown>>,
+    ),
+  );
 };

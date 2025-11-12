@@ -44,8 +44,7 @@ export class DeleteActivityComponent {
   public delete(): void {
     const deleteObserver: Observer<null> = {
       next: () => this.notificationService.success(`Record deleted successfully!`, 'OK'),
-      error: (err: HttpErrorResponse) =>
-        this.notificationService.error(err.error.erros[0] as string, 'OK'),
+      error: (err: string) => this.notificationService.error(err, 'OK'),
       complete: () => void this.router.navigate(['/activities']),
     };
 

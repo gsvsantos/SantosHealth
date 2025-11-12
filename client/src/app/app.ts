@@ -1,7 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { ShellComponent } from './components/shared/shell/shell.component';
-import { HttpErrorResponse } from '@angular/common/http';
 import { PartialObserver } from 'rxjs';
 import { AuthService } from './services/auth.service';
 import { NotificationService } from './services/notification.service';
@@ -21,8 +20,7 @@ export class App {
 
   public logout(): void {
     const sairObserver: PartialObserver<null> = {
-      error: (err: HttpErrorResponse) =>
-        this.notificationService.error(err.error.erros[0] as string, 'OK'),
+      error: (err: string) => this.notificationService.error(err, 'OK'),
       complete: () => void this.router.navigate(['/auth', 'login']),
     };
 

@@ -62,8 +62,7 @@ export class RegisterComponent {
     const registerModel: RegisterAuthDto = this.formGroup.value as RegisterAuthDto;
 
     const registerObserver: PartialObserver<AuthApiResponse> = {
-      error: (err: HttpErrorResponse) =>
-        this.notificationService.error(err.error.erros[0] as string, 'OK'),
+      error: (err: string) => (console.log(err), this.notificationService.error(err, 'OK')),
       complete: () => void this.router.navigate(['/home']),
     };
 
