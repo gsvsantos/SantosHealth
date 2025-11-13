@@ -1,6 +1,10 @@
 ﻿using FluentValidation;
+using Hangfire;
+using Hangfire.MemoryStorage;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using OrganizaMed.Aplicacao.EmailSender.Commands;
+using OrganizaMed.Aplicacao.EmailSender.DTOs;
 using OrganizaMed.Aplicacao.ModuloMedico.Commands.Inserir;
 using OrganizaMed.Dominio.Compartilhado;
 using OrganizaMed.Dominio.ModuloAtividade;
@@ -179,5 +183,19 @@ public static class DependencyInjection
         {
             cfg.RegisterServicesFromAssemblyContaining<InserirMedicoRequest>();
         });
+    }
+
+    public static void ConfigureEmailSender(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<MailOptions>(configuration.GetSection("MailOptions"));
+        services.AddScoped<IEmailSender, EmailSender>();
+        services.AddScoped<AdicionarAtividade>();
+        services.AddHangfire(config => config.UseMemoryStorage());
+        services.AddHangfireServer();
+    }
+
+    public static void ConfigureHangFire(this IServiceCollection services)
+    {
+
     }
 }

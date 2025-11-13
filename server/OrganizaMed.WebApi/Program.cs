@@ -1,3 +1,4 @@
+using Hangfire;
 using OrganizaMed.WebApi.Config;
 using Serilog;
 
@@ -17,6 +18,9 @@ public class Program
 
         // Validation
         builder.Services.ConfigureFluentValidation();
+
+        // Mail
+        builder.Services.ConfigureEmailSender(builder.Configuration);
 
         // Services
         builder.Services.ConfigureRepositories();
@@ -41,6 +45,8 @@ public class Program
 
         app.AutoMigrateDatabase();
 
+        app.UseHangfireDashboard();
+
         app.UseSwagger();
 
         app.UseSwaggerUI();
@@ -54,6 +60,8 @@ public class Program
         app.UseAuthorization();
 
         app.MapControllers();
+
+        app.MapHangfireDashboard();
 
         try
         {

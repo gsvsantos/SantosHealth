@@ -25,6 +25,7 @@ import { Activity, EditActivityDto } from '../../../models/activity.models';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IdApiResponse } from '../../../models/patient.models';
 import { provideNativeDateAdapter } from '@angular/material/core';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from '@danielmoncada/angular-datetime-picker';
 
 @Component({
   selector: 'app-edit-activity.component',
@@ -38,6 +39,8 @@ import { provideNativeDateAdapter } from '@angular/material/core';
     MatInputModule,
     MatSelectModule,
     MatRadioModule,
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule,
     AsyncPipe,
     ReactiveFormsModule,
     RouterLink,

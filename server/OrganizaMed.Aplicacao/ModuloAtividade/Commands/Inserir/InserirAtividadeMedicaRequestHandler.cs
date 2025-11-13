@@ -2,6 +2,8 @@
 using FluentValidation;
 using MediatR;
 using OrganizaMed.Aplicacao.Compartilhado;
+using OrganizaMed.Aplicacao.EmailSender.Commands;
+using OrganizaMed.Aplicacao.EmailSender.DTOs;
 using OrganizaMed.Dominio.Compartilhado;
 using OrganizaMed.Dominio.ModuloAtividade;
 using OrganizaMed.Dominio.ModuloAutenticacao;
@@ -16,7 +18,8 @@ public class InserirAtividadeMedicaRequestHandler(
     IRepositorioPaciente repositorioPaciente,
     IContextoPersistencia contexto,
     ITenantProvider tenantProvider,
-    IValidator<AtividadeMedica> validador
+    IValidator<AtividadeMedica> validador,
+    IEmailSender emailSender
 ) : IRequestHandler<InserirAtividadeMedicaRequest, Result<InserirAtividadeMedicaResponse>>
 {
     public async Task<Result<InserirAtividadeMedicaResponse>> Handle(
@@ -75,6 +78,9 @@ public class InserirAtividadeMedicaRequestHandler(
             await repositorioAtividadeMedica.InserirAsync(atividade);
 
             await contexto.GravarAsync();
+
+            AdicionarAtividade adicionarAtividade = new(emailSender);
+            await adicionarAtividade.Execute(atividade, TipoEmailEnum.NovaAgenda);
         }
         catch (Exception ex)
         {
