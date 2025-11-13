@@ -19,8 +19,9 @@ public class Program
         // Validation
         builder.Services.ConfigureFluentValidation();
 
-        // Mail
+        // Mail & Hangfire
         builder.Services.ConfigureEmailSender(builder.Configuration);
+        builder.Services.ConfigureHangFire();
 
         // Services
         builder.Services.ConfigureRepositories();

@@ -1,24 +1,11 @@
-﻿using Hangfire;
-using OrganizaMed.Aplicacao.EmailSender.DTOs;
+﻿using OrganizaMed.Aplicacao.EmailSender.DTOs;
 using OrganizaMed.Dominio.ModuloAtividade;
 
-namespace OrganizaMed.Aplicacao.EmailSender.Commands;
+namespace OrganizaMed.Aplicacao.EmailSender.Helpers;
 
-public class AdicionarAtividade(IEmailSender emailSender)
+public static class EmailHelper
 {
-    public async Task Execute(AtividadeMedica atividade, TipoEmailEnum tipoEmail)
-    {
-        await Task.Delay(1000);
-
-        string[] medicos = atividade.Medicos.Select(m => m.Nome).ToArray();
-
-        EmailDto? email = TipoEmail(tipoEmail.ToString(), atividade, medicos)
-            ?? throw new Exception("Houve um erro interno ao enviar o email");
-
-        BackgroundJob.Enqueue(() => emailSender.EnviarEmailAsync(email));
-    }
-
-    private static EmailDto? TipoEmail(string tipo, AtividadeMedica atividade, string[] medicos)
+    public static EmailDto? TipoEmail(string tipo, AtividadeMedica atividade, string[] medicos)
     {
         return tipo switch
         {

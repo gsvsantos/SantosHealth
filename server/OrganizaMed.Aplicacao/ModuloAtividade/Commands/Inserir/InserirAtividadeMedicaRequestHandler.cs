@@ -19,7 +19,7 @@ public class InserirAtividadeMedicaRequestHandler(
     IContextoPersistencia contexto,
     ITenantProvider tenantProvider,
     IValidator<AtividadeMedica> validador,
-    IEmailSender emailSender
+    EnviarEmail enviarEmail
 ) : IRequestHandler<InserirAtividadeMedicaRequest, Result<InserirAtividadeMedicaResponse>>
 {
     public async Task<Result<InserirAtividadeMedicaResponse>> Handle(
@@ -79,8 +79,10 @@ public class InserirAtividadeMedicaRequestHandler(
 
             await contexto.GravarAsync();
 
-            AdicionarAtividade adicionarAtividade = new(emailSender);
-            await adicionarAtividade.Execute(atividade, TipoEmailEnum.NovaAgenda);
+            if (EhAtividadeValidaParaEmail(atividade))
+            {
+                await enviarEmail.Execute(atividade, TipoEmailEnum.NovaAgenda);
+            }
         }
         catch (Exception ex)
         {
@@ -91,4 +93,7 @@ public class InserirAtividadeMedicaRequestHandler(
 
         return Result.Ok(new InserirAtividadeMedicaResponse(atividade.Id));
     }
+
+    private static bool EhAtividadeValidaParaEmail(AtividadeMedica atividade) =>
+        atividade.Termino.HasValue && atividade.Termino.Value.Date >= DateTime.UtcNow.Date;
 }

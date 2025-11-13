@@ -11,7 +11,7 @@ namespace OrganizaMed.Aplicacao.ModuloAtividade.Commands.Excluir;
 public class ExcluirAtividadeMedicaRequestHandler(
     IRepositorioAtividadeMedica repositorioAtividadeMedica,
     IContextoPersistencia contexto,
-    IEmailSender emailSender
+    EnviarEmail enviarEmail
 ) : IRequestHandler<ExcluirAtividadeMedicaRequest, Result<ExcluirAtividadeMedicaResponse>>
 {
     public async Task<Result<ExcluirAtividadeMedicaResponse>> Handle(
@@ -30,10 +30,9 @@ public class ExcluirAtividadeMedicaRequestHandler(
 
             await contexto.GravarAsync();
 
-            if (!VerificarSeEhAntiga(atividadeSelecionada))
+            if (EhAtividadeValidaParaEmail(atividadeSelecionada))
             {
-                AdicionarAtividade adicionarAtividade = new(emailSender);
-                await adicionarAtividade.Execute(atividadeSelecionada, TipoEmailEnum.Cancelamento);
+                await enviarEmail.Execute(atividadeSelecionada, TipoEmailEnum.Cancelamento);
             }
         }
         catch (Exception ex)
@@ -46,5 +45,6 @@ public class ExcluirAtividadeMedicaRequestHandler(
         return Result.Ok(new ExcluirAtividadeMedicaResponse());
     }
 
-    private static bool VerificarSeEhAntiga(AtividadeMedica atividade) => atividade.Termino < DateTime.UtcNow;
+    private static bool EhAtividadeValidaParaEmail(AtividadeMedica atividade) =>
+        atividade.Termino.HasValue && atividade.Termino.Value.Date >= DateTime.UtcNow.Date;
 }

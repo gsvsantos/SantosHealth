@@ -189,13 +189,12 @@ public static class DependencyInjection
     {
         services.Configure<MailOptions>(configuration.GetSection("MailOptions"));
         services.AddScoped<IEmailSender, EmailSender>();
-        services.AddScoped<AdicionarAtividade>();
-        services.AddHangfire(config => config.UseMemoryStorage());
-        services.AddHangfireServer();
+        services.AddScoped<EnviarEmail>();
     }
 
     public static void ConfigureHangFire(this IServiceCollection services)
     {
-
+        services.AddHangfire(config => config.UseMemoryStorage());
+        services.AddHangfireServer();
     }
 }
