@@ -21,7 +21,7 @@ public class Program
 
         // Mail & Hangfire
         builder.Services.ConfigureEmailSender(builder.Configuration);
-        builder.Services.ConfigureHangFire();
+        builder.Services.ConfigureHangFire(builder.Configuration);
 
         // Services
         builder.Services.ConfigureRepositories();

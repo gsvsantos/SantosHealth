@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using Hangfire;
-using Hangfire.MemoryStorage;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using OrganizaMed.Aplicacao.EmailSender.Commands;
@@ -192,9 +191,11 @@ public static class DependencyInjection
         services.AddScoped<EnviarEmail>();
     }
 
-    public static void ConfigureHangFire(this IServiceCollection services)
+    public static void ConfigureHangFire(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddHangfire(config => config.UseMemoryStorage());
+        services.AddHangfire(config =>
+            config.UseSqlServerStorage(configuration["HANGFIRE_SQL_CONNECTION_STRING"]));
+
         services.AddHangfireServer();
     }
 }
