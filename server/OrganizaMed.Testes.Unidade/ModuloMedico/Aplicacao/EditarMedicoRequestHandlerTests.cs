@@ -21,14 +21,14 @@ public class EditarMedicoHandlerTests
     [TestInitialize]
     public void Inicializar()
     {
-        _contextoMock = new Mock<IContextoPersistencia>();
-        _repositorioMedicoMock = new Mock<IRepositorioMedico>();
-        _validador = new Mock<IValidator<Medico>>();
+        this._contextoMock = new Mock<IContextoPersistencia>();
+        this._repositorioMedicoMock = new Mock<IRepositorioMedico>();
+        this._validador = new Mock<IValidator<Medico>>();
 
-        _handler = new EditarMedicoRequestHandler(
-            _repositorioMedicoMock.Object,
-            _contextoMock.Object,
-            _validador.Object
+        this._handler = new EditarMedicoRequestHandler(
+            this._repositorioMedicoMock.Object,
+            this._contextoMock.Object,
+            this._validador.Object
         );
     }
 
@@ -36,34 +36,34 @@ public class EditarMedicoHandlerTests
     public async Task Deve_Editar_Medico_Com_Sucesso()
     {
         // Arrange
-        var request = new EditarMedicoRequest(Guid.NewGuid(), "João da Silva", "12345-SP");
+        EditarMedicoRequest request = new(Guid.NewGuid(), "João da Silva", "12345-SP");
 
-        _repositorioMedicoMock
+        this._repositorioMedicoMock
             .Setup(r => r.SelecionarPorIdAsync(request.Id))
             .ReturnsAsync(new Medico("Antônio Carlos", "67890-SP") { Id = request.Id });
 
-        _validador
+        this._validador
             .Setup(v => v.ValidateAsync(It.IsAny<Medico>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ValidationResult());
 
-        _repositorioMedicoMock
+        this._repositorioMedicoMock
             .Setup(r => r.SelecionarTodosAsync())
-            .ReturnsAsync(new List<Medico>());
+            .ReturnsAsync([]);
 
-        _repositorioMedicoMock
+        this._repositorioMedicoMock
             .Setup(r => r.EditarAsync(It.IsAny<Medico>()))
             .ReturnsAsync(true);
 
-        _contextoMock
+        this._contextoMock
             .Setup(c => c.GravarAsync())
             .ReturnsAsync(1);
 
         // Act
-        var result = await _handler.Handle(request, It.IsAny<CancellationToken>());
+        FluentResults.Result<EditarMedicoResponse> result = await this._handler.Handle(request, It.IsAny<CancellationToken>());
 
         // Assert
-        _repositorioMedicoMock.Verify(r => r.EditarAsync(It.IsAny<Medico>()), Times.Once);
-        _contextoMock.Verify(c => c.GravarAsync(), Times.Once);
+        this._repositorioMedicoMock.Verify(r => r.EditarAsync(It.IsAny<Medico>()), Times.Once);
+        this._contextoMock.Verify(c => c.GravarAsync(), Times.Once);
 
         Assert.IsTrue(result.IsSuccess);
     }
@@ -72,22 +72,22 @@ public class EditarMedicoHandlerTests
     public async Task Nao_Deve_Editar_Medico_Se_Nao_Encontrado()
     {
         // Arrange
-        var request = new EditarMedicoRequest(Guid.NewGuid(), "João da Silva", "12345-SP");
+        EditarMedicoRequest request = new(Guid.NewGuid(), "João da Silva", "12345-SP");
 
-        _repositorioMedicoMock
+        this._repositorioMedicoMock
             .Setup(r => r.SelecionarPorIdAsync(request.Id))
             .ReturnsAsync((Medico)null);
 
         // Act
-        var result = await _handler.Handle(request, It.IsAny<CancellationToken>());
+        FluentResults.Result<EditarMedicoResponse> result = await this._handler.Handle(request, It.IsAny<CancellationToken>());
 
         // Assert
-        _repositorioMedicoMock.Verify(r => r.EditarAsync(It.IsAny<Medico>()), Times.Never);
-        _contextoMock.Verify(c => c.GravarAsync(), Times.Never);
+        this._repositorioMedicoMock.Verify(r => r.EditarAsync(It.IsAny<Medico>()), Times.Never);
+        this._contextoMock.Verify(c => c.GravarAsync(), Times.Never);
 
         Assert.IsFalse(result.IsSuccess);
 
-        var mensagemErroEsperada = ErrorResults.NotFoundError(request.Id).Message;
+        string mensagemErroEsperada = ErrorResults.NotFoundError(request.Id).Message;
         Assert.AreEqual(mensagemErroEsperada, result.Errors.First().Message);
     }
 }

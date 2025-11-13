@@ -10,21 +10,21 @@ public abstract class AuthErrorResults
             .CausedBy($"A confirmação do email \"{email}\" está pendente")
             .WithMetadata("ErrorType", "BadRequest");
     }
-    
+
     public static Error CredenciaisIncorretasError()
     {
         return new Error("Credenciais incorretas")
             .CausedBy("O login ou a senha estão incorretos")
             .WithMetadata("ErrorType", "BadRequest");
     }
-    
+
     public static Error UsuarioBloqueadoError()
     {
         return new Error("Usuário bloqueado")
             .CausedBy("O acesso para este usuário foi bloqueado, tente mais tarde")
             .WithMetadata("ErrorType", "BadRequest");
     }
-    
+
     public static Error UsuarioNaoEncontradoError(string nome)
     {
         return new Error("Usuário não encontrado")

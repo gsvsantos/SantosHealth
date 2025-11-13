@@ -4,7 +4,7 @@ using OrganizaMed.Dominio.ModuloAtividade;
 namespace OrganizaMed.Aplicacao.ModuloAtividade.DTOs;
 
 public record SelecionarAtividadesDto(
-    Guid Id, 
+    Guid Id,
     SelecionarPacienteAtividadeDto Paciente,
     DateTime Inicio,
     DateTime? Termino,

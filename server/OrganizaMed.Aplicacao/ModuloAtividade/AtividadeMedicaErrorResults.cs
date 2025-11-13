@@ -10,7 +10,7 @@ public abstract class AtividadeMedicaErrorResults
             .CausedBy("Não foi possível obter o(s) médico(s) informado(s) na requisição")
             .WithMetadata("ErrorType", "BadRequest");
     }
-    
+
     public static Error PacienteNaoEncontradoError()
     {
         return new Error("Paciente requisitado não encontrado(s)")
@@ -18,11 +18,10 @@ public abstract class AtividadeMedicaErrorResults
             .WithMetadata("ErrorType", "BadRequest");
     }
 
-
     public static Error ConflitosDePeriodoError(Guid atividadeId)
     {
         return new Error("Conflito de períodos ao tentar registrar atividade")
-            .CausedBy($"Já existe uma atividade em conflito com o período informado. ID da atividade: {atividadeId.ToString()}")
+            .CausedBy($"Já existe uma atividade em conflito com o período informado. ID da atividade: {atividadeId}")
             .WithMetadata("ErrorType", "BadRequest"); ;
     }
 }

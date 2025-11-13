@@ -18,12 +18,12 @@ public class ExcluirPacienteRequesHandlerTests
     [TestInitialize]
     public void Inicializar()
     {
-        _contextoMock = new Mock<IContextoPersistencia>();
-        _repositorioPacienteMock = new Mock<IRepositorioPaciente>();
-        
-        _handler = new ExcluirPacienteRequestHandler(
-            _repositorioPacienteMock.Object, 
-            _contextoMock.Object
+        this._contextoMock = new Mock<IContextoPersistencia>();
+        this._repositorioPacienteMock = new Mock<IRepositorioPaciente>();
+
+        this._handler = new ExcluirPacienteRequestHandler(
+            this._repositorioPacienteMock.Object,
+            this._contextoMock.Object
         );
     }
 
@@ -31,31 +31,31 @@ public class ExcluirPacienteRequesHandlerTests
     public async Task Deve_Excluir_Paciente_Com_Sucesso()
     {
         // Arrange
-        var request = new ExcluirPacienteRequest(Guid.NewGuid());
-        var medicoSelecionado = new Paciente("João da Silva", "000.000.000-00", "joao@email.com", "(00) 00000-0000")
+        ExcluirPacienteRequest request = new(Guid.NewGuid());
+        Paciente medicoSelecionado = new("João da Silva", "000.000.000-00", "joao@email.com", "(00) 00000-0000")
         {
             Id = request.Id
         };
-        
-        _repositorioPacienteMock
+
+        this._repositorioPacienteMock
             .Setup(r => r.SelecionarPorIdAsync(request.Id))
             .ReturnsAsync(medicoSelecionado);
 
-        _repositorioPacienteMock
+        this._repositorioPacienteMock
             .Setup(r => r.ExcluirAsync(It.IsAny<Paciente>()))
             .ReturnsAsync(true);
 
-        _contextoMock
+        this._contextoMock
             .Setup(c => c.GravarAsync())
             .ReturnsAsync(1);
 
         // Act
-        var result = await _handler.Handle(request, It.IsAny<CancellationToken>());
+        FluentResults.Result<ExcluirPacienteResponse> result = await this._handler.Handle(request, It.IsAny<CancellationToken>());
 
         // Assert
-        _repositorioPacienteMock.Verify(r => r.ExcluirAsync(It.IsAny<Paciente>()), Times.Once);
-        _contextoMock.Verify(c => c.GravarAsync(), Times.Once);
-        
+        this._repositorioPacienteMock.Verify(r => r.ExcluirAsync(It.IsAny<Paciente>()), Times.Once);
+        this._contextoMock.Verify(c => c.GravarAsync(), Times.Once);
+
         Assert.IsTrue(result.IsSuccess);
     }
 
@@ -63,22 +63,22 @@ public class ExcluirPacienteRequesHandlerTests
     public async Task Nao_Deve_Excluir_Paciente_Se_Nao_Encontrado()
     {
         // Arrange
-        var request = new ExcluirPacienteRequest(Guid.NewGuid());
+        ExcluirPacienteRequest request = new(Guid.NewGuid());
 
-        _repositorioPacienteMock
+        this._repositorioPacienteMock
             .Setup(r => r.SelecionarPorIdAsync(request.Id))
             .ReturnsAsync((Paciente)null);
 
         // Act
-        var result = await _handler.Handle(request, It.IsAny<CancellationToken>());
+        FluentResults.Result<ExcluirPacienteResponse> result = await this._handler.Handle(request, It.IsAny<CancellationToken>());
 
         // Assert
-        _repositorioPacienteMock.Verify(r => r.ExcluirAsync(It.IsAny<Paciente>()), Times.Never);
-        _contextoMock.Verify(c => c.GravarAsync(), Times.Never);
-        
+        this._repositorioPacienteMock.Verify(r => r.ExcluirAsync(It.IsAny<Paciente>()), Times.Never);
+        this._contextoMock.Verify(c => c.GravarAsync(), Times.Never);
+
         Assert.IsFalse(result.IsSuccess);
-        
-        var mensagemErroEsperada = ErrorResults.NotFoundError(request.Id).Message;
+
+        string mensagemErroEsperada = ErrorResults.NotFoundError(request.Id).Message;
         Assert.AreEqual(mensagemErroEsperada, result.Errors.First().Message);
     }
 
@@ -86,35 +86,36 @@ public class ExcluirPacienteRequesHandlerTests
     public async Task Deve_Retornar_Erro_Se_Ocorreu_Excecao_Ao_Excluir()
     {
         // Arrange
-        var request = new ExcluirPacienteRequest(Guid.NewGuid());
+        ExcluirPacienteRequest request = new(Guid.NewGuid());
 
-        _repositorioPacienteMock
+        this._repositorioPacienteMock
             .Setup(r => r.SelecionarPorIdAsync(request.Id))
             .ReturnsAsync(new Paciente(
                 "João da Silva",
                 "000.000.000-00",
-                "joao@email.com", 
-                "(00) 00000-0000") { Id = request.Id }
+                "joao@email.com",
+                "(00) 00000-0000")
+            { Id = request.Id }
             );
 
-        _repositorioPacienteMock
+        this._repositorioPacienteMock
             .Setup(r => r.ExcluirAsync(It.IsAny<Paciente>()))
             .ThrowsAsync(new Exception("Erro ao excluir médico"));
 
-        _contextoMock
+        this._contextoMock
             .Setup(c => c.RollbackAsync())
             .Returns(Task.CompletedTask);
 
         // Act
-        var result = await _handler.Handle(request, It.IsAny<CancellationToken>());
+        FluentResults.Result<ExcluirPacienteResponse> result = await this._handler.Handle(request, It.IsAny<CancellationToken>());
 
         // Assert
-        _repositorioPacienteMock.Verify(r => r.ExcluirAsync(It.IsAny<Paciente>()), Times.Once);
-        _contextoMock.Verify(c => c.RollbackAsync(), Times.Once);
-        
+        this._repositorioPacienteMock.Verify(r => r.ExcluirAsync(It.IsAny<Paciente>()), Times.Once);
+        this._contextoMock.Verify(c => c.RollbackAsync(), Times.Once);
+
         Assert.IsFalse(result.IsSuccess);
 
-        var mensagemErroEsperada = ErrorResults.InternalServerError(new Exception()).Message;
+        string mensagemErroEsperada = ErrorResults.InternalServerError(new Exception()).Message;
         Assert.AreEqual(mensagemErroEsperada, result.Errors.First().Message);
     }
 }

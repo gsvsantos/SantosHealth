@@ -10,7 +10,7 @@ public record SelecionarAtividadePacienteDto(
     TipoAtividadeMedica TipoAtividade,
     IEnumerable<SelecionarMedicosDto> Medicos
 
-); 
+);
 
 public record SelecionarPacientePorIdResponse(
     Guid Id,

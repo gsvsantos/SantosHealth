@@ -22,16 +22,16 @@ public class InserirPacienteRequestHandlerTests
     [TestInitialize]
     public void Inicializar()
     {
-        _contextoMock = new Mock<IContextoPersistencia>();
-        _repositorioPacienteMock = new Mock<IRepositorioPaciente>();
-        _validadorMock = new Mock<IValidator<Paciente>>();
-        _tenantProviderMock = new Mock<ITenantProvider>();
+        this._contextoMock = new Mock<IContextoPersistencia>();
+        this._repositorioPacienteMock = new Mock<IRepositorioPaciente>();
+        this._validadorMock = new Mock<IValidator<Paciente>>();
+        this._tenantProviderMock = new Mock<ITenantProvider>();
 
-        _handler = new InserirPacienteRequestHandler(
-            _contextoMock.Object,
-            _repositorioPacienteMock.Object,
-            _tenantProviderMock.Object,
-            _validadorMock.Object
+        this._handler = new InserirPacienteRequestHandler(
+            this._contextoMock.Object,
+            this._repositorioPacienteMock.Object,
+            this._tenantProviderMock.Object,
+            this._validadorMock.Object
         );
     }
 
@@ -39,34 +39,34 @@ public class InserirPacienteRequestHandlerTests
     public async Task Deve_Inserir_Paciente()
     {
         // Arrange
-        var request = new InserirPacienteRequest(
+        InserirPacienteRequest request = new(
             "João da Silva",
             "000.000.000-00",
             "joao@email.com",
             "(00) 90000-0000"
         );
 
-        _validadorMock.Setup(v => v.ValidateAsync(It.IsAny<Paciente>(), It.IsAny<CancellationToken>()))
+        this._validadorMock.Setup(v => v.ValidateAsync(It.IsAny<Paciente>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ValidationResult());
 
-        _repositorioPacienteMock
+        this._repositorioPacienteMock
             .Setup(r => r.SelecionarTodosAsync())
-            .ReturnsAsync(new List<Paciente>());
+            .ReturnsAsync([]);
 
-        _repositorioPacienteMock
+        this._repositorioPacienteMock
             .Setup(r => r.InserirAsync(It.IsAny<Paciente>()))
             .ReturnsAsync(Guid.NewGuid());
 
-        _contextoMock
+        this._contextoMock
             .Setup(c => c.GravarAsync())
             .ReturnsAsync(1);
 
         // Act
-        var result = await _handler.Handle(request, It.IsAny<CancellationToken>());
+        FluentResults.Result<InserirPacienteResponse> result = await this._handler.Handle(request, It.IsAny<CancellationToken>());
 
         // Assert
-        _repositorioPacienteMock.Verify(x => x.InserirAsync(It.IsAny<Paciente>()), Times.Once);
-        _contextoMock.Verify(x => x.GravarAsync(), Times.Once);
+        this._repositorioPacienteMock.Verify(x => x.InserirAsync(It.IsAny<Paciente>()), Times.Once);
+        this._contextoMock.Verify(x => x.GravarAsync(), Times.Once);
 
         Assert.IsTrue(result.IsSuccess);
     }

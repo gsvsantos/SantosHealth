@@ -6,8 +6,8 @@ namespace OrganizaMed.Aplicacao.ModuloAtividade.Commands.SelecionarPorId;
 public record SelecionarAtividadeMedicaPorIdResponse(
     Guid Id,
     SelecionarPacienteAtividadeDto Paciente,
-    DateTime Inicio, 
-    DateTime? Termino, 
+    DateTime Inicio,
+    DateTime? Termino,
     TipoAtividadeMedica TipoAtividade,
     IEnumerable<SelecionarMedicoAtividadeDto> Medicos
 );

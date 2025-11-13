@@ -10,25 +10,22 @@ public class MedicoTests
     private ValidadorMedico _validador;
 
     [TestInitialize]
-    public void Inicializar()
-    {
-        _validador = new ValidadorMedico();
-    }
+    public void Inicializar() => this._validador = new ValidadorMedico();
 
     [TestMethod]
     public void Deve_Passar_Quando_Nome_E_Crm_Sao_Validos()
     {
-        var medico = new Medico("João da Silva", "12345-SP");
+        Medico medico = new("João da Silva", "12345-SP");
 
-        _validador.TestValidate(medico).ShouldNotHaveAnyValidationErrors();
+        this._validador.TestValidate(medico).ShouldNotHaveAnyValidationErrors();
     }
 
     [TestMethod]
     public void Deve_Falhar_Quando_Nome_Estiver_Vazio()
     {
-        var medico = new Medico("", "12345-SP");
+        Medico medico = new("", "12345-SP");
 
-        var result = _validador.TestValidate(medico);
+        TestValidationResult<Medico> result = this._validador.TestValidate(medico);
 
         result.ShouldHaveValidationErrorFor(m => m.Nome)
             .WithErrorMessage("O campo Nome é obrigatório");
@@ -37,9 +34,9 @@ public class MedicoTests
     [TestMethod]
     public void Deve_Falhar_Quando_Nome_For_Menor_Que_Tres_Caracteres()
     {
-        var medico = new Medico("Ab", "12345-SP");
+        Medico medico = new("Ab", "12345-SP");
 
-        var result = _validador.TestValidate(medico);
+        TestValidationResult<Medico> result = this._validador.TestValidate(medico);
 
         result.ShouldHaveValidationErrorFor(m => m.Nome)
             .WithErrorMessage("O campo Nome deve conter no mínimo 3 caracteres");
@@ -48,9 +45,9 @@ public class MedicoTests
     [TestMethod]
     public void Deve_Falhar_Quando_Crm_Estiver_Vazio()
     {
-        var medico = new Medico("João da Silva", "");
+        Medico medico = new("João da Silva", "");
 
-        var result = _validador.TestValidate(medico);
+        TestValidationResult<Medico> result = this._validador.TestValidate(medico);
 
         result.ShouldHaveValidationErrorFor(m => m.Crm)
             .WithErrorMessage("O campo Crm é obrigatório");
@@ -59,9 +56,9 @@ public class MedicoTests
     [TestMethod]
     public void Deve_Falhar_Quando_Crm_Nao_Tiver_Formato_Correto()
     {
-        var medico = new Medico("João da Silva", "1234-SP");
+        Medico medico = new("João da Silva", "1234-SP");
 
-        var result = _validador.TestValidate(medico);
+        TestValidationResult<Medico> result = this._validador.TestValidate(medico);
 
         result.ShouldHaveValidationErrorFor(m => m.Crm)
             .WithErrorMessage("O campo Crm deve seguir o formato 00000-UF");
@@ -70,9 +67,9 @@ public class MedicoTests
     [TestMethod]
     public void Deve_Falhar_Quando_Crm_Tiver_Letras_Minusculas_No_Estado()
     {
-        var medico = new Medico("João da Silva", "12345-sp");
+        Medico medico = new("João da Silva", "12345-sp");
 
-        var result = _validador.TestValidate(medico);
+        TestValidationResult<Medico> result = this._validador.TestValidate(medico);
 
         result.ShouldHaveValidationErrorFor(m => m.Crm)
             .WithErrorMessage("O campo Crm deve seguir o formato 00000-UF");

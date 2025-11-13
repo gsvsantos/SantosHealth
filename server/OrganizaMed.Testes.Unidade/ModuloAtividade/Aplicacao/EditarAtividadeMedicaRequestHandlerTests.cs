@@ -2,6 +2,7 @@
 using FluentValidation.Results;
 using Moq;
 using OrganizaMed.Aplicacao.Compartilhado;
+using OrganizaMed.Aplicacao.EmailSender.Commands;
 using OrganizaMed.Aplicacao.ModuloAtividade.Commands.Editar;
 using OrganizaMed.Dominio.Compartilhado;
 using OrganizaMed.Dominio.ModuloAtividade;
@@ -17,22 +18,26 @@ public class EditarAtividadeMedicaRequestHandlerTests
     private Mock<IRepositorioMedico> _repositorioMedicoMock;
     private Mock<IContextoPersistencia> _contextoMock;
     private Mock<IValidator<AtividadeMedica>> _validadorMock;
+    private Mock<EnviarEmail> _enviarEmailMock;
 
     private EditarAtividadeMedicaRequestHandler _requestHandler;
 
     [TestInitialize]
     public void Inicializar()
     {
-        _repositorioAtividadeMedicaMock = new Mock<IRepositorioAtividadeMedica>();
-        _repositorioMedicoMock = new Mock<IRepositorioMedico>();
-        _contextoMock = new Mock<IContextoPersistencia>();
-        _validadorMock = new Mock<IValidator<AtividadeMedica>>();
+        this._repositorioAtividadeMedicaMock = new Mock<IRepositorioAtividadeMedica>();
+        this._repositorioMedicoMock = new Mock<IRepositorioMedico>();
+        this._contextoMock = new Mock<IContextoPersistencia>();
+        this._validadorMock = new Mock<IValidator<AtividadeMedica>>();
+        this._enviarEmailMock = new Mock<EnviarEmail>();
 
-        _requestHandler = new EditarAtividadeMedicaRequestHandler(
-            _repositorioAtividadeMedicaMock.Object,
-            _repositorioMedicoMock.Object,
-            _contextoMock.Object,
-            _validadorMock.Object
+        this._requestHandler = new EditarAtividadeMedicaRequestHandler(
+            this._repositorioAtividadeMedicaMock.Object,
+            this._repositorioMedicoMock.Object,
+            this._contextoMock.Object,
+            this._validadorMock.Object,
+            this._enviarEmailMock.Object
+
         );
     }
 
@@ -40,43 +45,43 @@ public class EditarAtividadeMedicaRequestHandlerTests
     public async Task Deve_Editar_Atividade_Com_Sucesso()
     {
         // Arrange
-        var request = new EditarAtividadeMedicaRequest(
+        EditarAtividadeMedicaRequest request = new(
             Guid.NewGuid(),
             DateTime.Now,
             DateTime.Now.AddHours(1),
-            new List<Guid> { Guid.NewGuid() }
+            [Guid.NewGuid()]
         );
 
-        var atividade = new Consulta(DateTime.Now, DateTime.Now.AddHours(2), new Medico("Dr. João", "12345-SP"));
-        var medicoAdicionado = new Medico("Dr. Maria", "67890-SP");
-        var medicoRemovido = atividade.Medicos.First();
+        Consulta atividade = new(DateTime.Now, DateTime.Now.AddHours(2), new Medico("Dr. João", "12345-SP"));
+        Medico medicoAdicionado = new("Dr. Maria", "67890-SP");
+        Medico medicoRemovido = atividade.Medicos.First();
 
-        _repositorioAtividadeMedicaMock
+        this._repositorioAtividadeMedicaMock
             .Setup(r => r.SelecionarPorIdAsync(request.Id))
             .ReturnsAsync(atividade);
 
-        _repositorioMedicoMock
+        this._repositorioMedicoMock
             .Setup(r => r.SelecionarMuitosPorId(request.Medicos))
-            .ReturnsAsync(new List<Medico> { medicoAdicionado });
+            .ReturnsAsync([medicoAdicionado]);
 
-        _validadorMock
+        this._validadorMock
             .Setup(v => v.ValidateAsync(It.IsAny<AtividadeMedica>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ValidationResult());
 
-        _repositorioAtividadeMedicaMock
+        this._repositorioAtividadeMedicaMock
             .Setup(r => r.EditarAsync(It.IsAny<AtividadeMedica>()))
             .ReturnsAsync(true);
 
-        _contextoMock
+        this._contextoMock
             .Setup(c => c.GravarAsync())
             .ReturnsAsync(1);
 
         // Act
-        var result = await _requestHandler.Handle(request, It.IsAny<CancellationToken>());
+        FluentResults.Result<EditarAtividadeMedicaResponse> result = await this._requestHandler.Handle(request, It.IsAny<CancellationToken>());
 
         // Assert
-        _repositorioAtividadeMedicaMock.Verify(x => x.EditarAsync(It.IsAny<AtividadeMedica>()), Times.Once);
-        _contextoMock.Verify(x => x.GravarAsync(), Times.Once);
+        this._repositorioAtividadeMedicaMock.Verify(x => x.EditarAsync(It.IsAny<AtividadeMedica>()), Times.Once);
+        this._contextoMock.Verify(x => x.GravarAsync(), Times.Once);
 
         Assert.IsTrue(result.IsSuccess);
         Assert.IsNotNull(result.Value);
@@ -87,19 +92,19 @@ public class EditarAtividadeMedicaRequestHandlerTests
     public async Task Nao_Deve_Editar_Atividade_Nao_Encontrada()
     {
         // Arrange
-        var request = new EditarAtividadeMedicaRequest(
+        EditarAtividadeMedicaRequest request = new(
             Guid.NewGuid(),
             DateTime.Now,
             DateTime.Now.AddHours(1),
             null
         );
 
-        _repositorioAtividadeMedicaMock
+        this._repositorioAtividadeMedicaMock
             .Setup(r => r.SelecionarPorIdAsync(request.Id))
             .ReturnsAsync((AtividadeMedica)null);
 
         // Act
-        var result = await _requestHandler.Handle(request, It.IsAny<CancellationToken>());
+        FluentResults.Result<EditarAtividadeMedicaResponse> result = await this._requestHandler.Handle(request, It.IsAny<CancellationToken>());
 
         // Assert
         Assert.IsTrue(result.IsFailed);
@@ -110,28 +115,28 @@ public class EditarAtividadeMedicaRequestHandlerTests
     public async Task Nao_Deve_Editar_Atividade_Com_Erros_De_Validacao()
     {
         // Arrange
-        var request = new EditarAtividadeMedicaRequest(
+        EditarAtividadeMedicaRequest request = new(
             Guid.NewGuid(),
             DateTime.Now.AddDays(-1),
             DateTime.Now.AddDays(-2),
             null
         );
 
-        var atividade = new Consulta(DateTime.Now, DateTime.Now.AddHours(2), new Medico("Dr. João", "12345-SP"));
+        Consulta atividade = new(DateTime.Now, DateTime.Now.AddHours(2), new Medico("Dr. João", "12345-SP"));
 
-        _repositorioAtividadeMedicaMock
+        this._repositorioAtividadeMedicaMock
             .Setup(r => r.SelecionarPorIdAsync(request.Id))
             .ReturnsAsync(atividade);
 
-        _validadorMock
+        this._validadorMock
             .Setup(v => v.ValidateAsync(It.IsAny<AtividadeMedica>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new ValidationResult(new List<ValidationFailure>
-            {
+            .ReturnsAsync(new ValidationResult(
+            [
                 new ValidationFailure("Termino", "A data de término deve ser posterior à data de início")
-            }));
+            ]));
 
         // Act
-        var result = await _requestHandler.Handle(request, It.IsAny<CancellationToken>());
+        FluentResults.Result<EditarAtividadeMedicaResponse> result = await this._requestHandler.Handle(request, It.IsAny<CancellationToken>());
 
         // Assert
         Assert.IsTrue(result.IsFailed);
@@ -142,32 +147,32 @@ public class EditarAtividadeMedicaRequestHandlerTests
     public async Task Deve_Retornar_Erro_Interno_Em_Caso_De_Exception()
     {
         // Arrange
-        var request = new EditarAtividadeMedicaRequest(
+        EditarAtividadeMedicaRequest request = new(
             Guid.NewGuid(),
             DateTime.Now,
             DateTime.Now.AddHours(2),
             null
         );
 
-        var atividade = new Consulta(DateTime.Now, DateTime.Now.AddHours(2), new Medico("Dr. João", "12345-SP"));
+        Consulta atividade = new(DateTime.Now, DateTime.Now.AddHours(2), new Medico("Dr. João", "12345-SP"));
 
-        _repositorioAtividadeMedicaMock
+        this._repositorioAtividadeMedicaMock
             .Setup(r => r.SelecionarPorIdAsync(request.Id))
             .ReturnsAsync(atividade);
 
-        _validadorMock
+        this._validadorMock
             .Setup(v => v.ValidateAsync(It.IsAny<AtividadeMedica>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ValidationResult());
 
-        _repositorioAtividadeMedicaMock
+        this._repositorioAtividadeMedicaMock
             .Setup(r => r.EditarAsync(It.IsAny<AtividadeMedica>()))
             .Throws(new Exception("Erro de banco de dados"));
 
         // Act
-        var result = await _requestHandler.Handle(request, It.IsAny<CancellationToken>());
+        FluentResults.Result<EditarAtividadeMedicaResponse> result = await this._requestHandler.Handle(request, It.IsAny<CancellationToken>());
 
         // Assert
-        _contextoMock.Verify(x => x.RollbackAsync(), Times.Once);
+        this._contextoMock.Verify(x => x.RollbackAsync(), Times.Once);
 
         Assert.IsFalse(result.IsSuccess);
         Assert.AreEqual(ErrorResults.InternalServerError(new Exception()).Message, result.Errors.First().Message);

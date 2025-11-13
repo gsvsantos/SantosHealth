@@ -21,14 +21,14 @@ public class EditarPacienteRequestHandlerTests
     [TestInitialize]
     public void Inicializar()
     {
-        _contextoMock = new Mock<IContextoPersistencia>();
-        _repositorioPacienteMock = new Mock<IRepositorioPaciente>();
-        _validador = new Mock<IValidator<Paciente>>();
+        this._contextoMock = new Mock<IContextoPersistencia>();
+        this._repositorioPacienteMock = new Mock<IRepositorioPaciente>();
+        this._validador = new Mock<IValidator<Paciente>>();
 
-        _handler = new EditarPacienteRequestHandler(
-            _repositorioPacienteMock.Object,
-            _contextoMock.Object,
-            _validador.Object
+        this._handler = new EditarPacienteRequestHandler(
+            this._repositorioPacienteMock.Object,
+            this._contextoMock.Object,
+            this._validador.Object
         );
     }
 
@@ -36,43 +36,44 @@ public class EditarPacienteRequestHandlerTests
     public async Task Deve_Editar_Paciente_Com_Sucesso()
     {
         // Arrange
-        var request = new EditarPacienteRequest(Guid.NewGuid(), "João da Silva",
+        EditarPacienteRequest request = new(Guid.NewGuid(), "João da Silva",
             "000.000.000-00",
             "joao@email.com",
             "(00) 90000-0000"
         );
 
-        _repositorioPacienteMock
+        this._repositorioPacienteMock
             .Setup(r => r.SelecionarPorIdAsync(request.Id))
             .ReturnsAsync(new Paciente(
                 "Antônio Carlos",
-                "100.002.000-00", 
+                "100.002.000-00",
                 "joao@email.com",
-                "(00) 90000-0000") { Id = request.Id }
+                "(00) 90000-0000")
+            { Id = request.Id }
             );
 
-        _validador
+        this._validador
             .Setup(v => v.ValidateAsync(It.IsAny<Paciente>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ValidationResult());
 
-        _repositorioPacienteMock
+        this._repositorioPacienteMock
             .Setup(r => r.SelecionarTodosAsync())
-            .ReturnsAsync(new List<Paciente>());
+            .ReturnsAsync([]);
 
-        _repositorioPacienteMock
+        this._repositorioPacienteMock
             .Setup(r => r.EditarAsync(It.IsAny<Paciente>()))
             .ReturnsAsync(true);
 
-        _contextoMock
+        this._contextoMock
             .Setup(c => c.GravarAsync())
             .ReturnsAsync(1);
 
         // Act
-        var result = await _handler.Handle(request, It.IsAny<CancellationToken>());
+        FluentResults.Result<EditarPacienteResponse> result = await this._handler.Handle(request, It.IsAny<CancellationToken>());
 
         // Assert
-        _repositorioPacienteMock.Verify(r => r.EditarAsync(It.IsAny<Paciente>()), Times.Once);
-        _contextoMock.Verify(c => c.GravarAsync(), Times.Once);
+        this._repositorioPacienteMock.Verify(r => r.EditarAsync(It.IsAny<Paciente>()), Times.Once);
+        this._contextoMock.Verify(c => c.GravarAsync(), Times.Once);
 
         Assert.IsTrue(result.IsSuccess);
     }
@@ -81,26 +82,26 @@ public class EditarPacienteRequestHandlerTests
     public async Task Nao_Deve_Editar_Paciente_Se_Nao_Encontrado()
     {
         // Arrange
-        var request = new EditarPacienteRequest(Guid.NewGuid(), "João da Silva",
+        EditarPacienteRequest request = new(Guid.NewGuid(), "João da Silva",
             "000.000.000-00",
             "joao@email.com",
             "(00) 90000-0000"
         );
 
-        _repositorioPacienteMock
+        this._repositorioPacienteMock
             .Setup(r => r.SelecionarPorIdAsync(request.Id))
             .ReturnsAsync((Paciente)null);
 
         // Act
-        var result = await _handler.Handle(request, It.IsAny<CancellationToken>());
+        FluentResults.Result<EditarPacienteResponse> result = await this._handler.Handle(request, It.IsAny<CancellationToken>());
 
         // Assert
-        _repositorioPacienteMock.Verify(r => r.EditarAsync(It.IsAny<Paciente>()), Times.Never);
-        _contextoMock.Verify(c => c.GravarAsync(), Times.Never);
+        this._repositorioPacienteMock.Verify(r => r.EditarAsync(It.IsAny<Paciente>()), Times.Never);
+        this._contextoMock.Verify(c => c.GravarAsync(), Times.Never);
 
         Assert.IsFalse(result.IsSuccess);
 
-        var mensagemErroEsperada = ErrorResults.NotFoundError(request.Id).Message;
+        string mensagemErroEsperada = ErrorResults.NotFoundError(request.Id).Message;
         Assert.AreEqual(mensagemErroEsperada, result.Errors.First().Message);
     }
 }

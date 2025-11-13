@@ -17,38 +17,39 @@ public class SelecionarAtividadeMedicaPorIdRequestHandlerTests
     [TestInitialize]
     public void Inicializar()
     {
-        _repositorioAtividadeMedicaMock = new Mock<IRepositorioAtividadeMedica>();
-        _requestHandler = new SelecionarAtividadeMedicaPorIdRequestHandler(_repositorioAtividadeMedicaMock.Object);
+        this._repositorioAtividadeMedicaMock = new Mock<IRepositorioAtividadeMedica>();
+        this._requestHandler = new SelecionarAtividadeMedicaPorIdRequestHandler(this._repositorioAtividadeMedicaMock.Object);
     }
 
     [TestMethod]
     public async Task Deve_Retornar_AtividadeMedica_Com_Sucesso()
     {
         // Arrange
-        var medico = new Medico("Dr. João", "12345-SP");
-        var paciente = new Paciente("João da Silva", "123.456.789-00", "joao.silva@email.com", "(11) 91234-5678");
+        Medico medico = new("Dr. João", "12345-SP");
+        Paciente paciente = new("João da Silva", "123.456.789-00", "joao.silva@email.com", "(11) 91234-5678");
 
-        var atividade = new Consulta(DateTime.Now, DateTime.Now.AddHours(1), medico);
+        Consulta atividade = new(DateTime.Now, DateTime.Now.AddHours(1), medico)
+        {
+            PacienteId = paciente.Id,
+            Paciente = paciente
+        };
 
-        atividade.PacienteId = paciente.Id;
-        atividade.Paciente = paciente;
-
-        _repositorioAtividadeMedicaMock
+        this._repositorioAtividadeMedicaMock
             .Setup(r => r.SelecionarPorIdAsync(atividade.Id))
             .ReturnsAsync(atividade);
 
-        var request = new SelecionarAtividadeMedicaPorIdRequest(atividade.Id);
+        SelecionarAtividadeMedicaPorIdRequest request = new(atividade.Id);
 
         // Act
-        var result = await _requestHandler.Handle(request, It.IsAny<CancellationToken>());
+        FluentResults.Result<SelecionarAtividadeMedicaPorIdResponse> result = await this._requestHandler.Handle(request, It.IsAny<CancellationToken>());
 
         // Assert
-        _repositorioAtividadeMedicaMock.Verify(r => r.SelecionarPorIdAsync(atividade.Id), Times.Once);
+        this._repositorioAtividadeMedicaMock.Verify(r => r.SelecionarPorIdAsync(atividade.Id), Times.Once);
 
         Assert.IsTrue(result.IsSuccess);
         Assert.IsNotNull(result.Value);
 
-        var dto = result.Value;
+        SelecionarAtividadeMedicaPorIdResponse dto = result.Value;
 
         Assert.AreEqual(atividade.Id, dto.Id);
         Assert.AreEqual(atividade.Inicio, dto.Inicio);
@@ -56,7 +57,7 @@ public class SelecionarAtividadeMedicaPorIdRequestHandlerTests
         Assert.AreEqual(atividade.TipoAtividade, dto.TipoAtividade);
         Assert.AreEqual(1, dto.Medicos.Count());
 
-        var medicoDtos = dto.Medicos.ToList();
+        List<OrganizaMed.Aplicacao.ModuloAtividade.DTOs.SelecionarMedicoAtividadeDto> medicoDtos = dto.Medicos.ToList();
 
         for (int i = 0; i < medicoDtos.Count; i++)
         {
@@ -70,23 +71,23 @@ public class SelecionarAtividadeMedicaPorIdRequestHandlerTests
     public async Task Deve_Retornar_NotFound_Quando_Atividade_Nao_Existir()
     {
         // Arrange
-        var atividadeId = Guid.NewGuid();
+        Guid atividadeId = Guid.NewGuid();
 
-        _repositorioAtividadeMedicaMock
+        this._repositorioAtividadeMedicaMock
             .Setup(r => r.SelecionarPorIdAsync(atividadeId))
             .ReturnsAsync((AtividadeMedica)null);
 
-        var request = new SelecionarAtividadeMedicaPorIdRequest(atividadeId);
+        SelecionarAtividadeMedicaPorIdRequest request = new(atividadeId);
 
         // Act
-        var result = await _requestHandler.Handle(request, It.IsAny<CancellationToken>());
+        FluentResults.Result<SelecionarAtividadeMedicaPorIdResponse> result = await this._requestHandler.Handle(request, It.IsAny<CancellationToken>());
 
         // Assert
-        _repositorioAtividadeMedicaMock.Verify(r => r.SelecionarPorIdAsync(atividadeId), Times.Once);
+        this._repositorioAtividadeMedicaMock.Verify(r => r.SelecionarPorIdAsync(atividadeId), Times.Once);
 
         Assert.IsTrue(result.IsFailed);
 
-        var mensagemErroEsperada = ErrorResults.NotFoundError(atividadeId).Message;
+        string mensagemErroEsperada = ErrorResults.NotFoundError(atividadeId).Message;
         Assert.AreEqual(mensagemErroEsperada, result.Errors.First().Message);
     }
 }

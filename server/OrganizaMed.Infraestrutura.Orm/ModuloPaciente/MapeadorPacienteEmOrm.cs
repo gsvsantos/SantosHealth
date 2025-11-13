@@ -36,7 +36,7 @@ public class MapeadorPacienteEmOrm : IEntityTypeConfiguration<Paciente>
             .WithOne(a => a.Paciente)
             .HasForeignKey(a => a.PacienteId)
             .OnDelete(DeleteBehavior.NoAction);
-        
+
         modelBuilder
             .HasOne(a => a.Usuario)
             .WithMany()

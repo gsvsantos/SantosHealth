@@ -22,16 +22,16 @@ public class InserirMedicoRequestHandlerTests
     [TestInitialize]
     public void Inicializar()
     {
-        _contextoMock = new Mock<IContextoPersistencia>();
-        _repositorioMedicoMock = new Mock<IRepositorioMedico>();
-        _validadorMock = new Mock<IValidator<Medico>>();
-        _tenantProviderMock = new Mock<ITenantProvider>();
+        this._contextoMock = new Mock<IContextoPersistencia>();
+        this._repositorioMedicoMock = new Mock<IRepositorioMedico>();
+        this._validadorMock = new Mock<IValidator<Medico>>();
+        this._tenantProviderMock = new Mock<ITenantProvider>();
 
-        _handler = new InserirMedicoRequestHandler(
-            _contextoMock.Object,
-            _repositorioMedicoMock.Object,
-            _tenantProviderMock.Object,
-            _validadorMock.Object
+        this._handler = new InserirMedicoRequestHandler(
+            this._contextoMock.Object,
+            this._repositorioMedicoMock.Object,
+            this._tenantProviderMock.Object,
+            this._validadorMock.Object
         );
     }
 
@@ -39,29 +39,29 @@ public class InserirMedicoRequestHandlerTests
     public async Task Deve_Inserir_Medico()
     {
         // Arrange
-        var request = new InserirMedicoRequest("João da Silva", "12345-SP");
+        InserirMedicoRequest request = new("João da Silva", "12345-SP");
 
-        _validadorMock.Setup(v => v.ValidateAsync(It.IsAny<Medico>(), It.IsAny<CancellationToken>()))
+        this._validadorMock.Setup(v => v.ValidateAsync(It.IsAny<Medico>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ValidationResult());
 
-        _repositorioMedicoMock
+        this._repositorioMedicoMock
             .Setup(r => r.SelecionarTodosAsync())
-            .ReturnsAsync(new List<Medico>());
+            .ReturnsAsync([]);
 
-        _repositorioMedicoMock
+        this._repositorioMedicoMock
             .Setup(r => r.InserirAsync(It.IsAny<Medico>()))
             .ReturnsAsync(Guid.NewGuid());
 
-        _contextoMock
+        this._contextoMock
             .Setup(c => c.GravarAsync())
             .ReturnsAsync(1);
 
         // Act
-        var result = await _handler.Handle(request, It.IsAny<CancellationToken>());
+        FluentResults.Result<InserirMedicoResponse> result = await this._handler.Handle(request, It.IsAny<CancellationToken>());
 
         // Assert
-        _repositorioMedicoMock.Verify(x => x.InserirAsync(It.IsAny<Medico>()), Times.Once);
-        _contextoMock.Verify(x => x.GravarAsync(), Times.Once);
+        this._repositorioMedicoMock.Verify(x => x.InserirAsync(It.IsAny<Medico>()), Times.Once);
+        this._contextoMock.Verify(x => x.GravarAsync(), Times.Once);
 
         Assert.IsTrue(result.IsSuccess);
     }
