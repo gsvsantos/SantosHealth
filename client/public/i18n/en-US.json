@@ -1,0 +1,93 @@
+{
+  "_obs": "este é aplicado direto no sell.component.ts",
+  "sidenav": {
+    "navlinks": {
+      "home": "Home",
+      "activites": "Activities",
+      "patients": "Patients",
+      "doctors": "Doctors"
+    },
+    "buttons": {
+      "logout": "Logout"
+    }
+  },
+
+  "home": {
+    "dashboards": {
+      "quickActions": {
+        "title": "Quick Actions",
+        "subtitle": "Start here for new entries",
+        "content": {
+          "buttons": {
+            "activity": "Schedule New Activity",
+            "patient": "Register New Patient",
+            "doctor": "Register New Doctor"
+          }
+        }
+      },
+      "upcomingActivities": {
+        "title": "Upcoming Activities",
+        "subtitle": "A preview of the schedule",
+        "content": {
+          "itemTitle": "{{ activity }} - Doctors: {{ doctorsQuantity }}",
+          "itemLine": "Patient: {{ patient }} | {{ start }}",
+          "viewAllLink": "View full schedule..."
+        }
+      },
+      "top10Doctors": {
+        "title": "Top 10 Active Doctors",
+        "subtitle": "Professionals with the most activities in the period",
+        "content": {
+          "itemTitle": "{{ doctor }}",
+          "itemLine": "Worked hours: {{ totalHoursWorked }}h",
+          "viewAllLink": "View all doctors..."
+        }
+      }
+    }
+  },
+
+  "auth": {
+    "register": {
+      "main-title": "User Registration",
+      "card": {
+        "title": "Fill out the registration form",
+        "labels": {
+          "username": "Username",
+          "email": "Email",
+          "password": "Password"
+        },
+        "errors": {
+          "usernameRequired": "Username is required.",
+          "usernameLength": "Username must be at least 3 characters long.",
+          "emailRequired": "Email is required.",
+          "emailLength": "Must be a valid email (e.g., name@provider.com).",
+          "passwordRequired": "Password is required.",
+          "passwordLength": "Password must be at least 6 characters long."
+        },
+        "buttons": {
+          "login": "Already have an account?",
+          "confirm": "Confirm"
+        }
+      }
+    },
+    "login": {
+      "main-title": "User Login",
+      "card": {
+        "title": "Fill out the login form",
+        "labels": {
+          "username": "Username",
+          "password": "Password"
+        },
+        "errors": {
+          "usernameRequired": "Username is required.",
+          "passwordRequired": "Password is required.",
+          "passwordLength": "Password must be at least 6 characters long."
+        },
+        "buttons": {
+          "register": "Don't have an account yet?",
+          "confirm": "Login"
+        }
+      }
+    }
+  }
+}

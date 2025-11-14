@@ -1,29 +1,29 @@
 <div class="dashboard-grid">
-  <mat-card class="dashboard-card">
+  <mat-card class="dashboard-card" *transloco="let t; prefix: 'home.dashboards.quickActions'">
     <mat-card-header>
-      <mat-card-title>Quick Actions</mat-card-title>
-      <mat-card-subtitle>Start here for new entries</mat-card-subtitle>
+      <mat-card-title>{{ t('title') }}</mat-card-title>
+      <mat-card-subtitle>{{ t('subtitle') }}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content class="quick-actions">
       <button mat-stroked-button color="primary" [routerLink]="['/activities', 'register']">
         <mat-icon>add_circle_outline</mat-icon>
-        Schedule New Activity
+        {{ t('content.buttons.activity') }}
       </button>
       <button mat-stroked-button [routerLink]="['/patients', 'register']">
         <mat-icon>person_add</mat-icon>
-        Register New Patient
+        {{ t('content.buttons.patient') }}
       </button>
       <button mat-stroked-button [routerLink]="['/doctors', 'register']">
         <mat-icon>medical_services</mat-icon>
-        Register New Doctor
+        {{ t('content.buttons.doctor') }}
       </button>
     </mat-card-content>
   </mat-card>
 
-  <mat-card class="dashboard-card">
+  <mat-card class="dashboard-card" *transloco="let t; prefix: 'home.dashboards.upcomingActivities'">
     <mat-card-header>
-      <mat-card-title>Upcoming Activities</mat-card-title>
-      <mat-card-subtitle>A preview of the schedule</mat-card-subtitle>
+      <mat-card-title>{{ t('title') }}</mat-card-title>
+      <mat-card-subtitle>{{ t('subtitle') }}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
       <mat-list role="list">
@@ -31,38 +31,59 @@
           <mat-list-item role="listitem">
             <mat-icon matListItemIcon>calendar_month</mat-icon>
             <div matListItemTitle>
-              {{ item.tipoAtividade | titlecase }} - Doctors: {{ item.medicos.length }}
+              {{
+                t('content.itemTitle', {
+                  activity: item.tipoAtividade,
+                  doctorsQuantity: item.medicos.length,
+                })
+              }}
             </div>
             <div matListItemLine>
-              Patient: {{ item.paciente.nome | titlecase }} |
-              {{ item.inicio | date: 'dd/MM/yyyy HH:mm' : '-06:00' }}
+              {{
+                t('content.itemLine', {
+                  patient: item.paciente.nome,
+                  start: item.inicio | date: 'dd/MM/yyyy HH:mm',
+                })
+              }}
             </div>
           </mat-list-item>
           <mat-divider></mat-divider>
         }
         <mat-list-item class="view-all-link" routerLink="/activities" matRipple>
-          View full schedule...
+          {{ t('content.viewAllLink') }}
         </mat-list-item>
       </mat-list>
     </mat-card-content>
   </mat-card>
 
-  <mat-card class="dashboard-card">
+  <mat-card class="dashboard-card" *transloco="let t; prefix: 'home.dashboards.top10Doctors'">
     <mat-card-header>
-      <mat-card-title>Top 10 Active Doctors</mat-card-title>
-      <mat-card-subtitle>Professionals with the most activities in the period</mat-card-subtitle>
+      <mat-card-title>{{ t('title') }}</mat-card-title>
+      <mat-card-subtitle>{{ t('subtitle') }}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
       <mat-list role="list">
         @for (item of top10Doctors$ | async; track item.medicoId) {
           <mat-list-item role="listitem">
-            <div matListItemTitle>{{ item.medico | titlecase }}</div>
-            <div matListItemLine>Worked hours: {{ item.totalDeHorasTrabalhadas }}h</div>
+            <div matListItemTitle>
+              {{
+                t('content.itemTitle', {
+                  doctor: item.medico | titlecase,
+                })
+              }}
+            </div>
+            <div matListItemLine>
+              {{
+                t('content.itemLine', {
+                  totalHoursWorked: item.totalDeHorasTrabalhadas,
+                })
+              }}
+            </div>
           </mat-list-item>
           <mat-divider></mat-divider>
         }
         <mat-list-item class="view-all-link" routerLink="/doctors" matRipple>
-          View all doctors...
+          {{ t('content.viewAllLink') }}
         </mat-list-item>
       </mat-list>
     </mat-card-content>

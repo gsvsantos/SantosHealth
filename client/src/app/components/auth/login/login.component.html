@@ -1,25 +1,25 @@
-<section class="login-section">
+<section class="login-section" *transloco="let t; prefix: 'auth.login'">
   <div class="main-content">
-    <h2>User Login</h2>
+    <h2>{{ t('main-title') }}</h2>
     <hr />
     <mat-card class="card">
       <form [formGroup]="formGroup" (ngSubmit)="login()">
         <mat-card-header>
-          <mat-card-title>Fill out the login form</mat-card-title>
+          <mat-card-title>{{ t('card.title') }}</mat-card-title>
         </mat-card-header>
 
         <mat-card-content class="card-content">
           <mat-form-field appearance="outline" class="form-field">
-            <mat-label>Username</mat-label>
+            <mat-label>{{ t('card.labels.username') }}</mat-label>
             <input matInput formControlName="userName" type="text" autocomplete="nickname" />
 
             @if (userName?.errors?.['required']) {
-              <mat-error>Username is required.</mat-error>
+              <mat-error>{{ t('card.errors.usernameRequired') }}</mat-error>
             }
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="form-field">
-            <mat-label>Password</mat-label>
+            <mat-label>{{ t('card.labels.password') }}</mat-label>
             <input
               matInput
               formControlName="password"
@@ -28,19 +28,19 @@
             />
 
             @if (password?.errors?.['required']) {
-              <mat-error>Password is required.</mat-error>
+              <mat-error>{{ t('card.errors.passwordRequired') }}</mat-error>
             }
             @if (password?.errors?.['minlength']) {
-              <mat-error>Password must be at least 6 characters long.</mat-error>
+              <mat-error>{{ t('card.errors.passwordLength') }}</mat-error>
             }
           </mat-form-field>
         </mat-card-content>
 
         <mat-card-actions align="end">
-          <a mat-stroked-button routerLink="/auth/register">Don't have an account yet?</a>
+          <a mat-stroked-button routerLink="/auth/register">{{ t('card.buttons.register') }}</a>
           <button mat-flat-button class="button" type="submit" [disabled]="formGroup.invalid">
             <mat-icon>arrow_forward</mat-icon>
-            Log in
+            {{ t('card.buttons.confirm') }}
           </button>
         </mat-card-actions>
       </form>

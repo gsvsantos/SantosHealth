@@ -1,4 +1,3 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import {
   AbstractControl,
@@ -110,7 +109,7 @@ export class RegisterActivitiesComponent {
 
     const registerObserver: Observer<IdApiResponse> = {
       next: () => this.notificationService.success(`Activity registered successfully!`, 'OK'),
-      error: (err: string) => (console.log(err), this.notificationService.error(err, 'OK')),
+      error: (err: string) => this.notificationService.error(err, 'OK'),
       complete: () => void this.router.navigate(['/activities']),
     };
 

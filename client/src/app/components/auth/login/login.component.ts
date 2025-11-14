@@ -1,4 +1,3 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import {
   FormBuilder,
@@ -17,6 +16,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { TranslocoModule } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-login.component',
@@ -28,6 +28,7 @@ import { MatInputModule } from '@angular/material/input';
     MatInputModule,
     RouterLink,
     ReactiveFormsModule,
+    TranslocoModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
@@ -57,7 +58,7 @@ export class LoginComponent {
     const loginModel: LoginAuthDto = this.formGroup.value as LoginAuthDto;
 
     const loginObserver: PartialObserver<AuthApiResponse> = {
-      error: (err: string) => (console.log(err), this.notificationService.error(err, 'OK')),
+      error: (err: string) => this.notificationService.error(err, 'OK'),
       complete: () => void this.router.navigate(['/home']),
     };
 

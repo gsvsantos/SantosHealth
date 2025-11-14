@@ -1,4 +1,3 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import {
   FormBuilder,
@@ -17,6 +16,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { AuthApiResponse, RegisterAuthDto } from '../../../models/auth.models';
+import { TranslocoModule } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-register.component',
@@ -28,6 +28,7 @@ import { AuthApiResponse, RegisterAuthDto } from '../../../models/auth.models';
     MatInputModule,
     RouterLink,
     ReactiveFormsModule,
+    TranslocoModule,
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
@@ -62,7 +63,7 @@ export class RegisterComponent {
     const registerModel: RegisterAuthDto = this.formGroup.value as RegisterAuthDto;
 
     const registerObserver: PartialObserver<AuthApiResponse> = {
-      error: (err: string) => (console.log(err), this.notificationService.error(err, 'OK')),
+      error: (err: string) => this.notificationService.error(err, 'OK'),
       complete: () => void this.router.navigate(['/home']),
     };
 

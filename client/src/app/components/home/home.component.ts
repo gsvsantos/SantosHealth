@@ -6,9 +6,11 @@ import { MatDivider } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
-import { filter, map, tap } from 'rxjs';
+import { filter, map } from 'rxjs';
 import { DoctorDtoToTop10 } from '../../models/doctor.models';
 import { Activity } from '../../models/activity.models';
+import dayjs from 'dayjs';
+import { TranslocoModule } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-home',
@@ -22,6 +24,7 @@ import { Activity } from '../../models/activity.models';
     MatIcon,
     MatCardModule,
     MatListModule,
+    TranslocoModule,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
@@ -37,8 +40,13 @@ export class Home {
       const nowUtcMs = Date.now();
 
       return activities
+        .map((test) => ({
+          ...test,
+          inicio: dayjs(test.inicio).locale('pt-br').format(),
+        }))
         .filter((activity) => {
           const inicio = activity.inicio;
+
           if (!inicio) return false;
 
           const inicioMs = new Date(inicio).getTime();
