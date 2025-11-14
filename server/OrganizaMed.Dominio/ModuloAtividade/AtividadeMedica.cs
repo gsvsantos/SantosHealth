@@ -14,8 +14,8 @@ public abstract class AtividadeMedica : EntidadeBase
 {
     public Guid PacienteId { get; set; }
     public Paciente? Paciente { get; set; }
-    public DateTime Inicio { get; set; }
-    public DateTime? Termino { get; set; }
+    public DateTimeOffset Inicio { get; set; }
+    public DateTimeOffset? Termino { get; set; }
     public bool ConfirmacaoEnviada { get; set; }
     public List<Medico> Medicos { get; set; }
 
@@ -24,10 +24,10 @@ public abstract class AtividadeMedica : EntidadeBase
 
     protected AtividadeMedica() => this.Medicos = [];
 
-    protected AtividadeMedica(DateTime inicio, DateTime? termino) : this()
+    protected AtividadeMedica(DateTimeOffset inicio, DateTimeOffset? termino) : this()
     {
-        this.Inicio = inicio;
-        this.Termino = termino;
+        this.Inicio = inicio.ToUniversalTime();
+        this.Termino = termino?.ToUniversalTime();
     }
 
     public abstract TimeSpan ObterPeriodoDescanso();
